@@ -1,6 +1,7 @@
 #include "def.h"
 
 BYTE cbuf[512];
+BYTE n_port=0;
 
 #define CM2_WHO_ARE_YOU 0x01
 #define UID_WHO_ARE_YOU 0x8001
@@ -131,9 +132,8 @@ void cmd_common_process (void)
 
 void cmd_usart_process (void)
 {
-	// бег по портам
-	static BYTE n_port=0;	
+	// бег по портам	
+	if(n_port==4){n_port=0;}
+	usart_send_mess(n_port);//выполнить действия для порта n_portn
 	n_port++;
-	if(n_port==5){n_port=1;}
-	test_funx(n_port);//выполнить действия для порта n_portn
 }
