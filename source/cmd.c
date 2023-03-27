@@ -1,7 +1,6 @@
 #include "def.h"
 
 BYTE cbuf[512];
-BYTE ch = CH_TRUE;
 
 #define CM2_WHO_ARE_YOU 0x01
 #define UID_WHO_ARE_YOU 0x8001
@@ -136,37 +135,5 @@ void cmd_usart_process (void)
 	static BYTE n_port=0;	
 	n_port++;
 	if(n_port==5){n_port=1;}
-	test_funx(n_port);//выполнить действия для порта n_port
-// 	volatile size = sizeof(TRUE);//4
-// 	static sizeCh = sizeof(CH_TRUE);//1	
-// 	switch (n_port)
-// 	{
-// 		case 1:
-// 			if (ch == CH_TRUE)
-// 			{
-// 				test_funx();
-// 				break;
-// 			}
-// 		case 2:
-// 			if (ch == CH_TRUE)
-// 			{
-// 				//usart_1_write(test_mess,8);//2
-// 				//ch = CH_FALSE;
-// 				break;
-// 			}
-// 		case 3:
-// 			if (ch == CH_TRUE)
-// 			{
-// 				//usart_2_write(test_mess,8);//3
-// 				//ch = CH_FALSE;
-// 				break;
-// 			}
-// 		case 4:
-// 			if (ch == CH_TRUE)
-// 			{
-// 				//usart_3_write(test_mess,8);//4
-// 				//ch = CH_FALSE;
-// 				break;
-// 			}
-// 	}
+	test_funx(n_port);//выполнить действия для порта n_portn
 }
