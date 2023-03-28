@@ -1,22 +1,19 @@
 #include "def.h"
 
-//BYTE hallo[] = {0x0A,0x0D,0x0A,0x0D,0x48,0x61,0x6C,0x6C,0x6F,0x21,0x20,0x49,0x20,0x61,0x6D,0x20,0x4D,0x43,0x53,0x31,0x30,0x30,0x2D,0x34,0x52,0x31,0x0A,0x0D};
-//BYTE test_mess[] = {0x20,0x52,0x5A,0x2D,0x31,0x30,0x39,0x22,0x74,0x65,0x73,0x74,0x7E,0x6D,0x65,0x73,0x73,0x65,0x67,0x65,0x30,0x22,0x0A,0x0D};//RZ-109"TEST~MESSEGE"
-//BYTE an_stat[] = {0x0A,0x0D,0x53,0x74,0x61,0x74,0x75,0x73,0x20,0x45,0x54,0x48,0x20,0x3D,0x20,0x43,0x48,0x45,0x43,0x4B,0x0A,0x0D,0x30e};//2+13+5+2
-BYTE mess[] = {0x00,0x00,0x03,0xFF,0xFC};
-//BYTE mess[] = {0xaa};
-//BYTE mess[] = {0xFC,0xFF,0x03,0x00,0x00};
+BYTE mess[] = {0x00,0x00,0x03,0xFC,0xFF};
+BYTE testBuf[10];
 
 BYTE messN = 0x00;
 
 void usart_send_mess (BYTE n_port)
 {
-	if (port[n_port].wx == port[n_port].wn /*& port[n_port].rx == port[n_port].rn*/ ) //проверка занятости и выполнение задачи
+	if (port[n_port].wx == port[n_port].wn & port[n_port].rx == port[n_port].rn ) //проверка занятости и выполнение задачи
 	{
 		switch (messN)
 		{
 			case 0:
-				usart_write(n_port, &mess, sizeof(mess));//2
+				usart_write(n_port, mess, sizeof(mess));//2
+				//usart_read(n_port,testBuf,port[n_port].rn-port[n_port].rx);
 				messN++;//next mess
 				break;
 			case 1:
@@ -45,15 +42,37 @@ void usart_write (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответст
 			break;
 		case 1:
 			usart_1_write(mess,len);
-			messN--;
+			//messN--;
 			break;
 		case 2:
 			usart_2_write(mess,len);
-			messN--;
+			//messN--;
 			break;
 		case 3:
 			usart_3_write(mess,len);
-			messN--;
+			//messN--;
 			break;	
+	}
+}
+
+void usart_read (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответствующую функцию
+{
+	switch (n_port)
+	{
+		case 0:
+			usart_0_read(mess,len);
+			break;
+		case 1:
+			usart_1_read(mess,len);
+			//messN--;
+			break;
+		case 2:
+			usart_2_read(mess,len);
+			//messN--;
+			break;
+		case 3:
+			usart_3_read(mess,len);
+			//messN--;
+			break;
 	}
 }
