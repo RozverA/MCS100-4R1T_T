@@ -1,19 +1,18 @@
 #include "def.h"
 
 BYTE mess[] = {0x00,0x00,0x03,0xFC,0xFF};
-BYTE testBuf[10];
+BYTE testBuf[20];
 
 BYTE messN = 0x00;
 
 void usart_send_mess (BYTE n_port)
 {
-	if (port[n_port].wx == port[n_port].wn & port[n_port].rx == port[n_port].rn ) //проверка занятости и выполнение задачи
+	if (port[n_port].wx == port[n_port].wn) //проверка на занятость записью
 	{
 		switch (messN)
 		{
 			case 0:
 				usart_write(n_port, mess, sizeof(mess));//2
-				//usart_read(n_port,testBuf,port[n_port].rn-port[n_port].rx);
 				messN++;//next mess
 				break;
 			case 1:
@@ -30,6 +29,10 @@ void usart_send_mess (BYTE n_port)
 				break;
 		}
 	}
+	if (port[n_port].rx != port[n_port].rn)
+	{
+		usart_read(n_port,testBuf,port[n_port].rn - port[n_port].rx);
+	} 
 	else {return;}
 }
 
@@ -74,5 +77,9 @@ void usart_read (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответств
 			usart_3_read(mess,len);
 			//messN--;
 			break;
+	}
+	if (testBuf[2] != 0 )
+	{
+		testBuf[0] = 0x01;
 	}
 }
