@@ -134,6 +134,7 @@ void cmd_usart_process (void)
 {
 	// бег по портам	
 	if(n_port==4){n_port=0;}
-	usart_process(n_port);//выполнить действия для порта n_portn
+	cbuf[0] = 0x05;
+	usart_process(n_port,cbuf);//выполнить действия для порта n_portn
 	n_port++;
  }
