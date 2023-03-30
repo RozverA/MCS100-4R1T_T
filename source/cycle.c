@@ -44,28 +44,6 @@ void usart_write (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответст
 	}
 }
 
-// void usart_write (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответствующую функцию
-// {
-// 	switch (n_port)
-// 	{
-// 		case 0:
-// 		usart_0_write(mess,len);
-// 		break;
-// 		case 1:
-// 		usart_1_write(mess,len);
-// 		//messN--;
-// 		break;
-// 		case 2:
-// 		usart_2_write(mess,len);
-// 		//messN--;
-// 		break;
-// 		case 3:
-// 		usart_3_write(mess,len);
-// 		//messN--;
-// 		break;
-// 	}
-// }
-
 void usart_read (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответствующую функцию
 {
 	switch (n_port)
@@ -91,32 +69,6 @@ void usart_read (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответств
 		testBuf[0] = 0x01;
 	}
 }
-
-// void usart_read (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответствующую функцию
-// {
-// 	switch (n_port)
-// 	{
-// 		case 0:
-// 			usart_0_read(mess,len);
-// 			break;
-// 		case 1:
-// 			usart_1_read(mess,len);
-// 			//messN--;
-// 			break;
-// 		case 2:
-// 			usart_2_read(mess,len);
-// 			//messN--;
-// 			break;
-// 		case 3:
-// 			usart_3_read(mess,len);
-// 			//messN--;
-// 			break;
-// 	}
-// 	if (testBuf[2] != 0 )
-// 	{
-// 		testBuf[0] = 0x01;
-// 	}
-// }
 
 void usart_forward_down (BYTE n_port, BYTE* e_cb_p)//eth to uart
 {
