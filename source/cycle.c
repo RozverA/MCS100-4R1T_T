@@ -1,11 +1,7 @@
 #include "def.h"
 
 BYTE mess[] = {0x00,0x00,0x03,0xFC,0xFF};
-BYTE testBuf[20];
-
-BYTE lasta[]  = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-
-BYTE messN = 0x00;
+BYTE lasta[]  = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 
 void usart_process (BYTE n_port,BYTE* cbuf_p)
 {
@@ -15,7 +11,7 @@ void usart_process (BYTE n_port,BYTE* cbuf_p)
 		usart_forward_down(n_port,e_cb_p);
 	} 
 
-	if (port[n_port-1].rx != port[n_port-1].rn) //проверка на занятость чтением
+	if (port[n_port-1].rx != port[n_port-1].rn) //проверка на наличие нового сообщения в uart
 	{
 		usart_forward_up(n_port, cbuf_p, e_cb_p);
 	} 
@@ -31,42 +27,32 @@ void usart_write (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответст
 			break;
 		case 2:
 			usart_1_write(mess,len);
-			//messN--;
 			break;
 		case 3:
 			usart_2_write(mess,len);
-			//messN--;
 			break;
 		case 4:
 			usart_3_write(mess,len);
-			//messN--;
 			break;	
 	}
 }
 
-void usart_read (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответствующую функцию
+WORD usart_read (BYTE n_port,BYTE* mess,int len)//преобразует цифру в соответствующую функцию
 {
 	switch (n_port)
 	{
 		case 1:
-		usart_0_read(mess,len);
-		break;
+			usart_0_read(mess,len);
+			break;
 		case 2:
-		usart_1_read(mess,len);
-		//messN--;
-		break;
+			usart_1_read(mess,len);
+			break;
 		case 3:
-		usart_2_read(mess,len);
-		//messN--;
-		break;
+			usart_2_read(mess,len);
+			break;
 		case 4:
-		usart_3_read(mess,len);
-		//messN--;
-		break;
-	}
-	if (testBuf[2] != 0 )
-	{
-		testBuf[0] = 0x01;
+			usart_3_read(mess,len);
+			break;
 	}
 }
 
@@ -80,9 +66,13 @@ void usart_forward_down (BYTE n_port, BYTE* e_cb_p)//eth to uart
 
 void usart_forward_up (BYTE n_port, BYTE* cbuf_p, BYTE* e_cb_p)//uart to eth
 {
-	BYTE a = port[n_port].rn - port[n_port].rx;
-	usart_read(n_port,cbuf_p,a);
+	BYTE a = port[n_port-1].rn - port[n_port-1].rx;
+	WORD ch = usart_read(n_port,cbuf_p,a);
 	// место для сдвига поинтеров
-	memcpy(e_cb_p,cbuf_p,a);
-	port_udp[n_port].w_status = 1;
+	if (ch != 0)
+	{
+		memcpy(e_cb_p,cbuf_p,30);
+		port_udp[n_port].w_status = 1;
+	}
+	
 }
