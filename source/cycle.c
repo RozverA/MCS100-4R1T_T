@@ -21,7 +21,7 @@ void usart_write (BYTE n_port,WORD len)//преобразует цифру в соответствующую фун
 	switch (n_port)
 	{
 		case 1:
-			usart_0_write( (port_udp[n_port].data)/*e_cb_p8*/, len);//запись в uart 0 (5001 port)
+			usart_0_write( (port_udp[n_port].data), len);//запись в uart 0 (5001 port)
 			break;
 		case 2:
 			usart_1_write( (port_udp[n_port].data), len);//запись в uart 1 (5002 port)
