@@ -1,27 +1,20 @@
 #include "def.h"
 
 WORD last_ptr_rx_buf[]  = {0x00,0x00,0x00,0x00};
-BYTE uart_cmd = 0;
+BYTE port_stat[] = {UCMD_CH,UCMD_CH,UCMD_CH,UCMD_CH};
 WORD u_size = 0;
-WORD a = 0;
 
 void usart_process (BYTE n_port)//вход
 {
-	switch(uart_cmd)
+	
+	switch(port_stat[n_port-1])
 	{
 		case UCMD_CH:
-			if (port_udp[n_port].r_status)				{uart_cmd = UCMD_WR;return;}
-			if (port[n_port-1].rx != port[n_port-1].rn) {uart_cmd = UCMD_RD;return;}
+			if (port_udp[n_port].r_status)				{port_stat[n_port-1] = UCMD_RD;return;}
+			if (port[n_port-1].rx != port[n_port-1].rn) {port_stat[n_port-1] = UCMD_WR;return;}
 		break;
 			
-		case UCMD_WR:
-			u_wr(n_port, ( (port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1] ) - 8));//прочитать (порт, куда, длина(сумма байт))
-			last_ptr_rx_buf[n_port-1] = port_udp[n_port].ptr_rx_buf;//запись последнего положения указателя для сравнения при изменении
-			port_udp[n_port].r_status = 0;// read_status выкл (для корректной работы условия проверяющего наличие нового сообщения в usart_proc
-			uart_cmd = UCMD_CH;
-		break;
-			
-		case UCMD_RD:
+		case UCMD_WR://UP
 			u_rd(n_port, (port[n_port-1].rn - port[n_port-1].rx) );   //получить размер сообщения
 			if (u_size != 0)
 			{
@@ -29,7 +22,14 @@ void usart_process (BYTE n_port)//вход
 				port_udp[n_port].len[0] = (u_size & 0xFF00) >> 8;	port_udp[n_port].len[1] = u_size & 0x00FF; //указание размера сообщения port_udp
 				port_udp[n_port].w_status = 1;// указание на запись
 			}
-			uart_cmd = UCMD_CH;
+			port_stat[n_port-1] = UCMD_CH;
+		break;
+			
+		case UCMD_RD://DWN
+			u_wr(n_port, ( (port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1] ) - 8));//прочитать (порт, куда, длина(сумма байт))
+			last_ptr_rx_buf[n_port-1] = port_udp[n_port].ptr_rx_buf;//запись последнего положения указателя для сравнения при изменении
+			port_udp[n_port].r_status = 0;// read_status выкл (для корректной работы условия проверяющего наличие нового сообщения в usart_proc
+			port_stat[n_port-1] = UCMD_CH;
 		break;
 	}
 }
