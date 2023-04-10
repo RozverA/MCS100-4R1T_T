@@ -70,5 +70,4 @@ void u_rd (BYTE n_port, WORD len)//преобразует цифру в соответствующую функцию
 			u_size = usart_3_read((port[n_port-1].rbuf),len);//чтение из uart 3 (5004 port)
 			break;
 	}
-	//return u_size;
 }
