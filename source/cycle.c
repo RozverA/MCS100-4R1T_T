@@ -11,15 +11,12 @@ void usart_process (BYTE n_port)//вход
 	switch(port_stat[n_port-1])
 	{
 		case UCMD_CH:
-			if (!port_time[n_port-1])//блокировка (0 - True)
+			if ((!port_time[n_port-1]) && (port_udp[n_port].r_status))//блокировка (0 - True) и проверка по статусу приема
 			{
-				if (port_udp[n_port].r_status)//проверка наличия новых данных
-				{
-					port_stat[n_port-1] = UCMD_RD; //статус для кейса
-					if ( (port[n_port-1].rtime >> 24) == 0x000F )	{port_time[n_port-1] = (port[n_port-1].rtime - 0xF000);}//проверка по переполнению и назначение проверочного времени
-					else {port_time[n_port-1] = port[0].rtime + TC3_100m;}//альтернативная установка времени проверки
-					return;
-				}
+				port_stat[n_port-1] = UCMD_RD; //статус для кейса
+				if ( (port[n_port-1].rtime >> 24) == 0x000F )	{port_time[n_port-1] = (port[n_port-1].rtime - 0xF000);}//проверка по переполнению и назначение проверочного времени
+				else {port_time[n_port-1] = port[0].rtime + TC3_100m;}//альтернативная установка времени проверки
+				return;
 			}
 			if (port[n_port-1].rx != port[n_port-1].rn) {port_stat[n_port-1] = UCMD_WR;return;}
 		break;
