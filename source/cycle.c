@@ -2,24 +2,27 @@
 
 WORD last_ptr_rx_buf[]  = {0x00,0x00,0x00,0x00};
 BYTE port_stat[] = {UCMD_CH,UCMD_CH,UCMD_CH,UCMD_CH};
-WORD port_time[] = {0x00,0x00,0x00,0x00};
+WORD port_time[] = {0x0000,0x0000,0x0000,0x0000};
 WORD u_size = 0;
 
 void usart_process (BYTE n_port)//вход
 {
-	if ( port_time[n_port-1] > port[0].rtime )	{port_time[n_port-1] = 0;};//проверка на завершение блокировки порта
+	if (eth_wait > TC3_lim) 
+	{eth_wait=0;}//чиво??
+	if ( port_time[n_port-1] < eth_wait )	{port_time[n_port-1] = 0;};//проверка на завершение блокировки порта
 	switch(port_stat[n_port-1])
 	{
 		case UCMD_CH:
 			if ((!port_time[n_port-1]) && (port_udp[n_port].r_status))//блокировка (0 - True) и проверка по статусу приема
 			{
-				port_stat[n_port-1] = UCMD_RD; //статус для кейса
-				if ( (port[n_port-1].rtime >> 24) == 0x000F )	{port_time[n_port-1] = (port[n_port-1].rtime - 0xF000);}//проверка по переполнению и назначение проверочного времени
-				else {port_time[n_port-1] = port[0].rtime + TC3_100m;}//альтернативная установка времени проверки
-				return;
+				port_stat[n_port-1] = UCMD_RD; //статус для свитч-кейса
+				if ( eth_wait > (TC3_lim - TC3_coeff))	
+					{port_time[n_port-1] = (eth_wait - (TC3_lim - TC3_coeff));return;}//проверка по переполнению и назначение проверочного времени
+				else
+					{port_time[n_port-1] = eth_wait + TC3_coeff;return;}//альтернативная установка времени проверки
 			}
-			if (port[n_port-1].rx != port[n_port-1].rn) {port_stat[n_port-1] = UCMD_WR;return;}
-		break;
+			if (port[n_port-1].rx != port[n_port-1].rn) {port_stat[n_port-1] = UCMD_WR;return;}//проверка на чтение 
+		return;
 			
 		case UCMD_WR://UP
 			u_rd(n_port, (port[n_port-1].rn - port[n_port-1].rx) );   //получить размер сообщения
@@ -30,14 +33,14 @@ void usart_process (BYTE n_port)//вход
 				port_udp[n_port].w_status = 1;// указание на запись
 			}
 			port_stat[n_port-1] = UCMD_CH;
-		break;
+		return;
 			
 		case UCMD_RD://DWN
 			u_wr(n_port, ( (port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1] ) - 8));//прочитать (порт, куда, длина(сумма байт))
 			last_ptr_rx_buf[n_port-1] = port_udp[n_port].ptr_rx_buf;//запись последнего положения указателя для сравнения при изменении
 			port_udp[n_port].r_status = 0;// read_status выкл (для корректной работы условия проверяющего наличие нового сообщения в usart_proc
 			port_stat[n_port-1] = UCMD_CH;
-		break;
+		return;
 	}
 }
 
