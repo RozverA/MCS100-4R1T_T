@@ -7,8 +7,6 @@ WORD u_size = 0;
 
 void usart_process (BYTE n_port)//вход
 {
-	if (eth_wait > TC3_lim) 
-	{eth_wait=0;}//чиво??
 	if ( port_time[n_port-1] < eth_wait )	{port_time[n_port-1] = 0;};//проверка на завершение блокировки порта
 	switch(port_stat[n_port-1])
 	{
@@ -16,10 +14,8 @@ void usart_process (BYTE n_port)//вход
 			if ((!port_time[n_port-1]) && (port_udp[n_port].r_status))//блокировка (0 - True) и проверка по статусу приема
 			{
 				port_stat[n_port-1] = UCMD_RD; //статус для свитч-кейса
-				if ( eth_wait > (TC3_lim - TC3_coeff))	
-					{port_time[n_port-1] = (eth_wait - (TC3_lim - TC3_coeff));return;}//проверка по переполнению и назначение проверочного времени
-				else
-					{port_time[n_port-1] = eth_wait + TC3_coeff;return;}//альтернативная установка времени проверки
+				if ( eth_wait > TIMER_LMT)	{port_time[n_port-1] = eth_wait - TIMER_LMT;	return;}//проверка по переполнению и назначение проверочного времени
+				else						{port_time[n_port-1] = eth_wait + TIMER_COEF;	return;}//альтернативная установка времени проверки
 			}
 			if (port[n_port-1].rx != port[n_port-1].rn) {port_stat[n_port-1] = UCMD_WR;return;}//проверка на чтение 
 		return;
@@ -81,5 +77,3 @@ void u_rd (BYTE n_port, WORD len)//преобразует цифру в соответствующую функцию
 			break;
 	}
 }
-
-//test change
