@@ -28,10 +28,6 @@ extern BYTE* eth_cbuf_ptr();
 #define SOCKET_6 6
 #define SOCKET_7 7
 
-
-
-
-
 typedef struct
 {
 DWORD check_sock_0;
