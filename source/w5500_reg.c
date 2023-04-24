@@ -92,21 +92,21 @@ WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf)
 	
 	switch(st_cmd_w5500)
 	{
-		case 0:		
-			addr_w5500=ADDR_SOC_RX_RECEIVED_SIZE_0;
-			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
-			ptr_buf=(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27;
-			len_buf=2;
-			cmd=READ_DATA;
-			st_cmd_w5500++;
+		case 0://прочесть размер полученного сообщения
+			addr_w5500=ADDR_SOC_RX_RECEIVED_SIZE_0;//аддр в w5500 
+			cb_w5500=SOCKET_REGISTER | SOCKET(numb);//bsb
+			ptr_buf=(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27;//место записи результата
+			len_buf=2;//len
+			cmd=READ_DATA;//mode
+			st_cmd_w5500++;//"next"
 								
 			size=0;
 		break;	
 		case 1:					
-			sizert=(*(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case1<<8) | (*(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case2);
-			if(sizert!=0x0000)
+			sizert=(*(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case1<<8) | (*(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case2);//проверить размер
+			if(sizert!=0x0000)//back & return
 			{
-				addr_w5500=port_udp[numb].ptr_rx_buf;
+				addr_w5500=port_udp[numb].ptr_rx_buf;//адресс в конец размера 
 				cb_w5500=SOCKET_RX_BUFFER | SOCKET(numb);
 				ptr_buf=buf;
 				len_buf=(*(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case1<<8 | *(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case2);
@@ -123,7 +123,6 @@ WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf)
 
 			wbuf_w55[cnt]=(port_udp[numb].ptr_rx_buf>>8);			cnt++;
 			wbuf_w55[cnt]=(BYTE)port_udp[numb].ptr_rx_buf;			cnt++;
-			
 			addr_w5500=ADDR_SOC_RX_READ_PTR_0;
 			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
 			ptr_buf=wbuf_w55;
@@ -146,9 +145,6 @@ WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf)
 			st_cmd_w5500=0;
 			return (size);
 		break;
-		
-		
-		
 	}
 	return 0;
 }
