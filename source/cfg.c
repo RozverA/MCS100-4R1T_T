@@ -72,8 +72,8 @@ void cfg_default(void)
 	//...........................................................................
 	for(i=0;i<4;++i)
 	{
-		cfg.sock_rs485[i].mode	   = UDP_MODE;
-		//cfg.sock_rs485[i].mode	   = TCP_MODE;
+		//cfg.sock_rs485[i].mode	   = UDP_MODE;
+		cfg.sock_rs485[i].mode	   = TCP_MODE;
 		cfg.sock_rs485[i].en	   = TRUE;
 		
 		cfg.sock_rs485[i].src_port =5001+i;

@@ -28,6 +28,7 @@ func_st socket_init (BYTE numb, WORD src_port, BYTE mode)
 			//socket_listen
 			buf[0]=CMD_LISTEN;
 			spi_write_timeout(ADDR_SOC_COMMAND,(SOCKET_REGISTER | SOCKET(numb)),buf,1,10);
+			
 	 	}
 		
 	return SUCCESS;

@@ -83,7 +83,6 @@ WORD spi_process (uint16_t addr, uint8_t cb, uint8_t *buf, uint16_t len, BYTE cm
 		break;
 		case READ_DATA:
 			rn_wn=spi_read(addr,cb,buf,len);
-				
 		break;
 		case WRITE_DATA:
 			rn_wn=spi_write(addr,cb,buf,len);
