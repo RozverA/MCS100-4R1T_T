@@ -7,7 +7,6 @@ CFG cfg_tmp;
 
 void cfg_init(void)
 {
-
 	memset(&cfg    ,0x00,sizeof(CFG));
 	memset(&cfg_tmp,0x00,sizeof(CFG));
 }
@@ -41,7 +40,7 @@ void cfg_default(void)
 
 	cfg.com_network.src_port    = 5000;
 	
-	//mac 5A:5B:5C:5D:17:17
+	//mac 5A:5B:5C:5D:17:17 /SHAR
 	cfg.com_network.mac_addr[0]=0x5A;
 	cfg.com_network.mac_addr[1]=0x5b;
 	cfg.com_network.mac_addr[2]=0x5c;
@@ -49,19 +48,19 @@ void cfg_default(void)
 	cfg.com_network.mac_addr[4]=0x17;
 	cfg.com_network.mac_addr[5]=0x17;
 	
-	//ip 192.168.1.102
+	//ip 192.168.1.102 /SIPR
 	cfg.com_network.ip_addr[0]=0xC0;//192
 	cfg.com_network.ip_addr[1]=0xA8;//168
 	cfg.com_network.ip_addr[2]=0x01;//1
 	cfg.com_network.ip_addr[3]=0x66;//102
 
-	//mask 255.255.255.0
+	//mask 255.255.255.0 /SUBR
 	cfg.com_network.ip_mask[0]=0xFF;
 	cfg.com_network.ip_mask[1]=0xFF;
 	cfg.com_network.ip_mask[2]=0xFF;
 	cfg.com_network.ip_mask[3]=0x00;
 	
-	//gateway 192.168.1.1
+	//gateway 192.168.1.1 /GAR
 	cfg.com_network.ip_gate[0]=0xC0;
 	cfg.com_network.ip_gate[1]=0xA8;
 	cfg.com_network.ip_gate[2]=0x01;

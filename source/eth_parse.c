@@ -151,7 +151,7 @@ BYTE check_data_wr_process (BYTE *data_buf)
 		if(port_udp[r].w_status==1)
 			{
 				size=((port_udp[r].len[0]<<8) | (port_udp[r].len[1]))+LEN_HDR;
-				if(size>DEFAULT_MTU_UDP){size=DEFAULT_MTU_UDP;}
+				if(size>DEFAULT_MTU_TCP){size=DEFAULT_MTU_TCP;}
 				memcpy(data_buf,(BYTE*)&port_udp[r],size);
 				port_udp[r].w_status=0;
 				return r;

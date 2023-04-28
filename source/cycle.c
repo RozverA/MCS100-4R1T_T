@@ -46,16 +46,16 @@ void u_wr (BYTE n_port, WORD len)//преобразует цифру в соответствующую функцию
 	{
 		case 1:
 			usart_0_write( (port_udp[n_port].data), len);//запись в uart 0 (5001 port)
-			break;
+		break;
 		case 2:
 			usart_1_write( (port_udp[n_port].data), len);//запись в uart 1 (5002 port)
-			break;
+		break;
 		case 3:
 			usart_2_write( (port_udp[n_port].data), len);//запись в uart 2 (5003 port)
-			break;
+		break;
 		case 4:
 			usart_3_write( (port_udp[n_port].data), len);//запись в uart 3 (5004 port)
-			break;	
+		break;	
 	}
 }
 
@@ -65,15 +65,15 @@ void u_rd (BYTE n_port, WORD len)//преобразует цифру в соответствующую функцию
 	{
 		case 1:
 			u_size = usart_0_read((port[n_port-1].rbuf),len);//чтение из uart 0 (5001 port)
-			break;
+		break;
 		case 2:
 			u_size = usart_1_read((port[n_port-1].rbuf),len);//чтение из uart 1 (5002 port)
-			break;
+		break;
 		case 3:
 			u_size = usart_2_read((port[n_port-1].rbuf),len);//чтение из uart 2 (5003 port)
-			break;
+		break;
 		case 4:
 			u_size = usart_3_read((port[n_port-1].rbuf),len);//чтение из uart 3 (5004 port)
-			break;
+		break;
 	}
 }
