@@ -50,8 +50,6 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
 	static BYTE w5500_st=0;
 	WORD rtrn=0;
 	if(!cmd_spi_wait){w5500_st=0;return 2;} //если 20 мс нет ответа, то процесс сбрасывается
-	if (cfg.sock_rs485[sock_numb].mode == TCP_MODE)	{if ((spi_mode == MODE_OP_READ_UDP) || (spi_mode == MODE_OP_WRITE_UDP))	
-	{spi_mode = spi_mode + 2;}}
 	switch (w5500_st)
 	{
 		case NULLS:
@@ -73,7 +71,7 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
 		break;
 		case MODE_OP_READ_TCP:
 								rtrn=w5500_cmd_read_socket_tcp(sock_numb,buf);
-								//if(rtrn)	{w5500_st=0;spi_mode=0;return (rtrn);}
+								if(rtrn)	{w5500_st=0;spi_mode=0;return (rtrn);}
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_WRITE_TCP:

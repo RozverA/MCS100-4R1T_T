@@ -151,7 +151,7 @@ WORD spi_read(uint16_t addr, uint8_t cb, uint8_t *rx_buf, uint16_t len)
 		case 1:
 			if(spi.wx)							{return 0;}
 			if(spi.rn!=spi.wn)					{return 0;}
-			memcpy(rx_buf,&spi.rbuf[3],spi.rn-3);
+			memcpy(rx_buf,&spi.rbuf[3],spi.rn);
 			st_read--;
 			CS_set();
 				
