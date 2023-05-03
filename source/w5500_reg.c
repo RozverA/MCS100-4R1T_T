@@ -71,7 +71,7 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
 		break;
 		case MODE_OP_READ_TCP:
 								rtrn=w5500_cmd_read_socket_tcp(sock_numb,buf);
-								if(rtrn)	{w5500_st=0;spi_mode=0;return (rtrn);}
+								//if(rtrn)	{w5500_st=0;spi_mode=0;return (rtrn);}
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_WRITE_TCP:
@@ -248,7 +248,7 @@ WORD w5500_write_socket_udp (BYTE numb, BYTE *buf)
 
 void w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 {
-	static BYTE numb_static_r_tcp=0;
+	//static BYTE numb_static_r_tcp=0;
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
 	BYTE cnt=0;
