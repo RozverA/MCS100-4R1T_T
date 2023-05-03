@@ -548,6 +548,8 @@ extern func_st ip_init(void);
 extern WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf);
 extern WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf);
 extern WORD w5500_write_socket_udp (BYTE numb, BYTE *buf);
+extern WORD w5500_cmd_read_socket_tcp (BYTE numb, BYTE *buf);
+extern WORD w5500_write_socket_tcp (BYTE numb, BYTE *buf);
 //extern WORD w5500_check_rx_buffer (BYTE numb);
 
 

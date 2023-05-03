@@ -48,7 +48,8 @@ void eth_process(void)
 		case READ_PROCESS:
 								rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
 								if(rtrn==2){eth_st=0;break;}
-								if(rtrn   ){eth_udp_parse(w5500_mode.numb_socket,eth_cbuf,rtrn); eth_st=0;}
+								if(rtrn   )
+								{eth_udp_parse(w5500_mode.numb_socket,eth_cbuf,rtrn); eth_st=0;}
 		break;
 		case WRITE_PROCESS:
 								rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);

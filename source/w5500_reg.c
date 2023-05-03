@@ -71,11 +71,11 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
 		break;
 		case MODE_OP_READ_TCP:
 								rtrn=w5500_cmd_read_socket_tcp(sock_numb,buf);
-								//if(rtrn)	{w5500_st=0;spi_mode=0;return (rtrn);}
+								if(rtrn)	{w5500_st=0;spi_mode=0;return (rtrn);}
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_WRITE_TCP:
-								//if(w5500_write_socket_tcp(sock_numb,buf))	{w5500_st=0;spi_mode=0;return 1;}
+								if(w5500_write_socket_tcp(sock_numb,buf))	{w5500_st=0;spi_mode=0;return 1;}
 								w5500_st=SPI_PROCESS;
 		break;
 	}
@@ -246,7 +246,7 @@ WORD w5500_write_socket_udp (BYTE numb, BYTE *buf)
 	return 0;
 }
 
-void w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
+WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 {
 	//static BYTE numb_static_r_tcp=0;
 	static BYTE st_cmd_w5500=0;
@@ -291,10 +291,10 @@ void w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 					st_cmd_w5500 = RD_TCP_GIVE_LEN;
 				break;
 		case RD_TCP_GIVE_LEN:
-			addr_w5500=ADDR_SOC_STATUS;//аддр в w5500 
+			addr_w5500=ADDR_SOC_RX_RECEIVED_SIZE_0;//аддр в w5500 
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb скок комон
 			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27;
-			len_buf=1;
+			len_buf=2;
 			cmd=READ_DATA;//mode
 			st_cmd_w5500 = RD_TCP_MES_PART_READ;//"next"
 			size=0; 
@@ -327,12 +327,12 @@ void w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			st_cmd_w5500++;
 		break;
 		case RD_TCP_RCV_CMD:
-			wbuf_w55[cnt]=CMD_RECV;					cnt++;//перейти в режим приема(возобновить прием)
-			addr_w5500=ADDR_SOC_COMMAND;
-			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
-			ptr_buf=wbuf_w55;
-			len_buf=cnt;
-			cmd=WRITE_DATA;
+// 			wbuf_w55[cnt]=CMD_RECV;					cnt++;//перейти в режим приема(возобновить прием)
+// 			addr_w5500=ADDR_SOC_COMMAND;
+// 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
+// 			ptr_buf=wbuf_w55;
+// 			len_buf=cnt;
+// 			cmd=WRITE_DATA;
 			st_cmd_w5500++;
 		break;	
 		case RD_TCP_DROP_TO_START:
