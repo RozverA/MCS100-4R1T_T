@@ -17,7 +17,11 @@ void usart_process (BYTE n_port)//вход
 				if ( eth_wait > TIMER_LMT)	{port_time[n_port-1] = eth_wait - TIMER_LMT;	return;}//проверка по переполнению и назначение проверочного времени
 				else						{port_time[n_port-1] = eth_wait + TIMER_COEF;	return;}//альтернативная установка времени проверки
 			}
-			if (port[n_port-1].rx != port[n_port-1].rn) {port_stat[n_port-1] = UCMD_WR;return;}//проверка на чтение 
+			if (port[n_port-1].rx != port[n_port-1].rn)	
+			{
+				port_stat[n_port-1] = UCMD_WR;
+				return;
+			}//проверка на чтение 
 		return;
 			
 		case UCMD_WR://UP
