@@ -33,7 +33,7 @@ extern BYTE* eth_cbuf_ptr();
 #define RD_TCP_GIVE_LEN 2
 #define RD_TCP_MES_PART_READ 3
 #define RD_TCP_PTR_OFFSET 4
-#define RD_TCP_RCV_CMD 5
+#define RD_TCP_GIVE_WR_PTR 5
 #define RD_TCP_DROP_TO_START 6
 
 

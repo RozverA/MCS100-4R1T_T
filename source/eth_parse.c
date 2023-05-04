@@ -94,8 +94,8 @@ void check_sockets_process (BYTE *buf)
 	}
 	index++;
 	if(index==MAX_SOCKETS){index=0;}
-	if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE){modes.mode_op=MODE_OP_READ_TCP;}
-	else                                                        {modes.mode_op=MODE_OP_READ_UDP;}
+	if (cfg.sock_rs485[1].mode == TCP_MODE){modes.mode_op=MODE_OP_READ_TCP;} /////////////////////////////danger не меняется проверочный номер 
+	else                                   {modes.mode_op=MODE_OP_READ_UDP;}
 	memcpy(buf,(BYTE*)&modes,sizeof(W5500_MODE));
 	return;
 }
@@ -104,40 +104,56 @@ void check_sockets_process (BYTE *buf)
 void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 {	
 	if(size < LEN_HDR)		{return;} //size_ip+size_port
-		
-	switch(numb_sock)
+	WORD default_mtu;
+	BYTE* ptr_port_udp;
+	if (cfg.sock_rs485[1].mode == TCP_MODE)
 	{
-					case SOCKET_0:
-									if(size>DEFAULT_MTU_TCP){size=DEFAULT_MTU_TCP;}
-									memcpy((BYTE*)&port_udp[0],buf,size);
-									port_udp[0].r_status=1;
-									test.sock_parse_0++;
-					break;
-					case SOCKET_1:
-									if(size>DEFAULT_MTU_TCP){size=DEFAULT_MTU_TCP;}
-									memcpy((BYTE*)&port_udp[1],buf,size);
-									port_udp[1].r_status=1;
-									test.sock_parse_1++;					
-					break;
-					case SOCKET_2:
-									if(size>DEFAULT_MTU_TCP){size=DEFAULT_MTU_TCP;}
-									memcpy((BYTE*)&port_udp[2],buf,size);
-									port_udp[2].r_status=1;
-									test.sock_parse_2++;						
-					break;
-					case SOCKET_3:
-									if(size>DEFAULT_MTU_TCP){size=DEFAULT_MTU_TCP;}
-									memcpy((BYTE*)&port_udp[3],buf,size);
-									port_udp[3].r_status=1;
-									test.sock_parse_3++;						
-					break;
-					case SOCKET_4:
-									if(size>DEFAULT_MTU_TCP){size=DEFAULT_MTU_TCP;}
-									memcpy((BYTE*)&port_udp[4],buf,size);
-									port_udp[4].r_status=1;
-									test.sock_parse_4++;					
-					break;
+		default_mtu=DEFAULT_MTU_TCP;
+		ptr_port_udp=((BYTE*)&port_udp[numb_sock]);
+		ptr_port_udp=ptr_port_udp+8;
 	}
+	else
+	{
+		default_mtu=DEFAULT_MTU_UDP;
+		ptr_port_udp=(BYTE*)&port_udp[numb_sock];
+	}
+	if(size>default_mtu){size=default_mtu;}
+	memcpy(ptr_port_udp,buf,size);
+	port_udp[numb_sock].r_status=1;
+	
+// 	switch(numb_sock)
+// 	{
+// 					case SOCKET_0:
+// 									if(size>default_mtu){size=default_mtu;}
+// 									memcpy((BYTE*)&port_udp[0],buf,size);
+// 									port_udp[0].r_status=1;
+// 									test.sock_parse_0++;
+// 					break;
+// 					case SOCKET_1:
+// 									if(size>default_mtu){size=default_mtu;}
+// 									memcpy((BYTE*)&port_udp[1],buf,size);
+// 									port_udp[1].r_status=1;
+// 									test.sock_parse_1++;					
+// 					break;
+// 					case SOCKET_2:
+// 									if(size>default_mtu){size=default_mtu;}
+// 									memcpy((BYTE*)&port_udp[2],buf,size);
+// 									port_udp[2].r_status=1;
+// 									test.sock_parse_2++;						
+// 					break;
+// 					case SOCKET_3:
+// 									if(size>default_mtu){size=default_mtu;}
+// 									memcpy((BYTE*)&port_udp[3],buf,size);
+// 									port_udp[3].r_status=1;
+// 									test.sock_parse_3++;						
+// 					break;
+// 					case SOCKET_4:
+// 									if(size>default_mtu){size=default_mtu;}
+// 									memcpy((BYTE*)&port_udp[4],buf,size);
+// 									port_udp[4].r_status=1;
+// 									test.sock_parse_4++;					
+// 					break;
+// 	}
 }
 
 
