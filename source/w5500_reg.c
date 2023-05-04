@@ -334,7 +334,7 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			cmd=READ_DATA;//mode
 			st_cmd_w5500++;
 		break;	
-		case RD_TCP_DROP_TO_START:
+		case RD_TCP_DROP_TO_START://бесполезно
 			len_buf=(*(BYTE*)&chip.sockReg[sock_numb].R019_Sn_RX_WR_2A_2B.case1<<8 | *(BYTE*)&chip.sockReg[sock_numb].R019_Sn_RX_WR_2A_2B.case2);
 			if (len_buf)
 			{

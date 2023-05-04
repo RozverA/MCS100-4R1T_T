@@ -120,40 +120,6 @@ void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 	if(size>default_mtu){size=default_mtu;}
 	memcpy(ptr_port_udp,buf,size);
 	port_udp[numb_sock].r_status=1;
-	
-// 	switch(numb_sock)
-// 	{
-// 					case SOCKET_0:
-// 									if(size>default_mtu){size=default_mtu;}
-// 									memcpy((BYTE*)&port_udp[0],buf,size);
-// 									port_udp[0].r_status=1;
-// 									test.sock_parse_0++;
-// 					break;
-// 					case SOCKET_1:
-// 									if(size>default_mtu){size=default_mtu;}
-// 									memcpy((BYTE*)&port_udp[1],buf,size);
-// 									port_udp[1].r_status=1;
-// 									test.sock_parse_1++;					
-// 					break;
-// 					case SOCKET_2:
-// 									if(size>default_mtu){size=default_mtu;}
-// 									memcpy((BYTE*)&port_udp[2],buf,size);
-// 									port_udp[2].r_status=1;
-// 									test.sock_parse_2++;						
-// 					break;
-// 					case SOCKET_3:
-// 									if(size>default_mtu){size=default_mtu;}
-// 									memcpy((BYTE*)&port_udp[3],buf,size);
-// 									port_udp[3].r_status=1;
-// 									test.sock_parse_3++;						
-// 					break;
-// 					case SOCKET_4:
-// 									if(size>default_mtu){size=default_mtu;}
-// 									memcpy((BYTE*)&port_udp[4],buf,size);
-// 									port_udp[4].r_status=1;
-// 									test.sock_parse_4++;					
-// 					break;
-// 	}
 }
 
 
