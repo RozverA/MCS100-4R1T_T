@@ -7,24 +7,25 @@ WORD u_size = 0;
 
 void usart_process (BYTE n_port)//вход
 {
+	WORD len_mes;
 	if ( port_time[n_port-1] < eth_wait )	{port_time[n_port-1] = 0;};//проверка на завершение блокировки порта
 	switch(port_stat[n_port-1])
 	{
 		case UCMD_CH:
 			if ((!port_time[n_port-1]) && (port_udp[n_port].r_status))//блокировка (0 - True) и проверка по статусу приема
 			{
-				port_stat[n_port-1] = UCMD_RD; //статус для свитч-кейса
+				port_stat[n_port-1] = UCMD_DWN; //статус для свитч-кейса
 				if ( eth_wait > TIMER_LMT)	{port_time[n_port-1] = eth_wait - TIMER_LMT;	return;}//проверка по переполнению и назначение проверочного времени
 				else						{port_time[n_port-1] = eth_wait + TIMER_COEF;	return;}//альтернативная установка времени проверки
 			}
 			if (port[n_port-1].rx != port[n_port-1].rn)	
 			{
-				port_stat[n_port-1] = UCMD_WR;
+				port_stat[n_port-1] = UCMD_UP;
 				return;
 			}//проверка на чтение 
 		return;
 			
-		case UCMD_WR://UP
+		case UCMD_UP://UP
 			u_rd(n_port, (port[n_port-1].rn - port[n_port-1].rx) );   //получить размер сообщения
 			if (u_size != 0)
 			{
@@ -35,8 +36,10 @@ void usart_process (BYTE n_port)//вход
 			port_stat[n_port-1] = UCMD_CH;
 		return;
 			
-		case UCMD_RD://DWN
-			u_wr(n_port, ( (port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1] ) - 8));//прочитать (порт, куда, длина(сумма байт))
+		case UCMD_DWN://DWN
+			if (cfg.sock_rs485[1].mode == TCP_MODE){len_mes = port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1];} /////////////////////////////danger не меняется проверочный номер 
+			else                                   {len_mes = port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1] - 8;}
+			u_wr(n_port, len_mes);//прочитать (порт, куда, длина(сумма байт))
 			last_ptr_rx_buf[n_port-1] = port_udp[n_port].ptr_rx_buf;//запись последнего положения указателя для сравнения при изменении
 			port_udp[n_port].r_status = 0;// read_status выкл (для корректной работы условия проверяющего наличие нового сообщения в usart_proc
 			port_stat[n_port-1] = UCMD_CH;
