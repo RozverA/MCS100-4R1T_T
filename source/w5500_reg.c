@@ -355,5 +355,100 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 
 WORD w5500_write_socket_tcp (BYTE numb, BYTE *buf)
 {
+	static BYTE st_wr_w5500=0;
+	static BYTE numb_static=0;
+	WORD cnt=0;
+	WORD size=0;
 	
+	if(numb_static!=numb){numb_static=numb;st_wr_w5500=0;}
+	if(st_wr_w5500==0)
+	{
+		memcpy((BYTE*)&udp_msg,buf,8);
+		size=(udp_msg.len[0] << 8) | (udp_msg.len[1]);
+		memcpy((BYTE*)&udp_msg.data,&buf[8],size);
+	}
+	switch(st_wr_w5500)
+	{
+		case 0:																	//read reg tx status FSR
+			addr_w5500=ADDR_SOC_TX_FREE_SIZE_0;
+			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
+			ptr_buf=(BYTE*)&chip.sockReg[numb].R014_Sn_TX_FSR_20_21;
+			len_buf=6;
+			cmd=READ_DATA;
+			st_wr_w5500++;
+		break;
+		case 1:																	//write ip
+// 			addr_w5500=ADDR_SOC_D_IP_ADDR0;
+// 			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
+// 			ptr_buf=(BYTE*)&udp_msg.ip_addr;
+// 			len_buf=4;
+// 			cmd=WRITE_DATA;
+			st_wr_w5500++;
+		break;
+		case 2:																	//write port
+// 			addr_w5500=ADDR_SOC_D_PORT0;
+// 			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
+// 			ptr_buf=(BYTE*)&udp_msg.port;
+// 			len_buf=2;
+// 			cmd=WRITE_DATA;
+			st_wr_w5500++;
+		break;
+		case 3:																	//write data
+			addr_w5500=port_udp[numb].ptr_tx_buf;
+			cb_w5500=SOCKET_TX_BUFFER | SOCKET(numb);
+			ptr_buf=(BYTE*)&udp_msg.data;
+			len_buf=(udp_msg.len[0] << 8) | (udp_msg.len[1]);
+			port_udp[numb].ptr_tx_buf=port_udp[numb].ptr_tx_buf+len_buf;
+			cmd=WRITE_DATA;
+			st_wr_w5500++;
+		break;
+		case 4:																	//write ptr
+			wbuf_w55[cnt]=(port_udp[numb].ptr_tx_buf>>8);		cnt++;
+			wbuf_w55[cnt]=(BYTE)port_udp[numb].ptr_tx_buf;		cnt++;
+		
+			addr_w5500=ADDR_SOC_TX_WRITE_PTR_0;
+			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
+			ptr_buf=wbuf_w55;
+			len_buf=cnt;
+			cmd=WRITE_DATA;
+			st_wr_w5500++;
+		break;
+		case 5:																	//write cmd SEND
+			wbuf_w55[cnt]=CMD_SEND;				cnt++;
+		
+			addr_w5500=ADDR_SOC_COMMAND;
+			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
+			ptr_buf=wbuf_w55;
+			len_buf=cnt;
+			cmd=WRITE_DATA;
+			st_wr_w5500++;
+		break;
+		case 6:																//read status_SEND_OK
+			addr_w5500=ADDR_SOC_INT;
+			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
+			ptr_buf=(BYTE*)&chip.sockReg[numb].R03_Sn_IR_02;
+			len_buf=1;
+			cmd=READ_DATA;
+			st_wr_w5500++;
+		break;
+		case 7:																//clear status SEND_OK
+			if(chip.sockReg[numb].R03_Sn_IR_02.SEND_OK==1)
+			{
+				wbuf_w55[cnt]=SR_2C_SEND_OK;			cnt++;
+				addr_w5500=ADDR_SOC_INT;
+				cb_w5500=SOCKET_REGISTER | SOCKET(numb);
+				ptr_buf=wbuf_w55;
+				len_buf=cnt;
+				cmd=WRITE_DATA;
+				st_wr_w5500++;
+				break;
+			}
+			st_wr_w5500--;
+		break;
+		case 8:
+			st_wr_w5500=0;
+			return 1;
+		break;
+	}
+	return 0;
 }
