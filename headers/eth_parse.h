@@ -23,17 +23,17 @@ extern void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size);
 extern BYTE* eth_cbuf_ptr();
 
 /////socket_read_udp
-#define RD_UDP_GIVE_LEN 0
-#define RD_UDP_MES_PART_READ 1
-#define RD_UDP_PTR_OFFSET 2
-#define RD_UDP_RCV_CMD 3
-#define RD_UDP_DROP_TO_START 4
+#define UDP_GIVE_LEN 0
+#define UDP_PART_RD 1
+#define UDP_PTR_MOVE 2
+#define UDP_RCV_CMD 3
+#define UDP_BK_START 4
 /////socket_read_tcp
-#define RD_TCP_GIVE_LEN 0
-#define RD_TCP_MES_PART_READ 1
-#define RD_TCP_PTR_OFFSET 2
-#define RD_TCP_GIVE_WR_PTR 3
-#define RD_TCP_DROP_TO_START 4
+#define TCP_GIVE_LEN 0
+#define TCP_PART_RD 1
+#define TCP_PTR_MOVE 2
+#define TCP_DATA_UPD 3
+#define TCP_BK_START 4
 
 
 /////socket_status_tcp
