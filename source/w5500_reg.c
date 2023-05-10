@@ -287,24 +287,6 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			st_cmd_w5500--;
 			return 2;
 		break;
-// 		case TCP_PTR_MOVE:
-// 			wbuf_w55[cnt]=(port_udp[sock_numb].ptr_rx_buf>>8);//смещение начала сообщения
-// 			wbuf_w55[cnt]=(BYTE)port_udp[sock_numb].ptr_rx_buf;//(убрать прочитанное)
-// 			addr_w5500=ADDR_SOC_RX_READ_PTR_0;//reg RX_RD(28)
-// 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
-// 			ptr_buf=wbuf_w55;/*(записать в него смещение)*/
-// 			len_buf=2;
-// 			cmd=WRITE_DATA;
-// 			st_cmd_w5500++;
-// 		break;
-// 		case TCP_DATA_UPD://test CLEAR
-//  			addr_w5500=ADDR_SOC_RX_RECEIVED_SIZE_0;//аддр в w5500 
-// 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb скок комон
-// 			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27;
-// 			len_buf=6;
-// 			cmd=READ_DATA;//mode
-// 			st_cmd_w5500++;
-// 		break;	
 		case TCP_BK_START://бесполезно
 			st_cmd_w5500=0;//сброс параметров
 			return (size);
