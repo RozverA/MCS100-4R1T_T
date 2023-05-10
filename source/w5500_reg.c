@@ -253,48 +253,11 @@ WORD w5500_write_socket_udp (BYTE numb, BYTE *buf)
 
 WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 {
-	//static BYTE numb_static_r_tcp=0;
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
 	BYTE cnt=0;
-	//if(numb_static_r_tcp!=sock_numb){numb_static_r_tcp=sock_numb;st_cmd_w5500=0;}
 	switch(st_cmd_w5500)
 	{
-		case RD_TCP_GIVE_STATUS:
-			addr_w5500=ADDR_SOC_STATUS;//аддр в w5500 
-			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb скок комон
-			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R04_Sn_SR_03.Status;//место записи результата
-			len_buf=1;
-			cmd=READ_DATA;//mode
-			st_cmd_w5500 = RD_TCP_STATUS_FORK;//"next"
-			size=0; 
-		break;
-		case RD_TCP_STATUS_FORK://status fork
-			switch(chip.sockReg[sock_numb].R04_Sn_SR_03.Status)
-				case STATUS_CLOSE:
-					wbuf_w55[cnt]=CMD_OPEN;			cnt++;
-					addr_w5500=ADDR_SOC_COMMAND;
-					cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
-					ptr_buf=wbuf_w55;
-					len_buf=cnt;
-					cmd=WRITE_DATA;
-					st_cmd_w5500 = RD_TCP_GIVE_LEN;
-				break;
-				case STATUS_INIT:
-					wbuf_w55[cnt]=CMD_LISTEN;			cnt++;//смещение начала сообщения
-					addr_w5500=ADDR_SOC_COMMAND;
-					cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
-					ptr_buf=wbuf_w55;
-					len_buf=cnt;
-					cmd=WRITE_DATA;
-					st_cmd_w5500 = RD_TCP_GIVE_STATUS;
-				break;
-				case STATUS_LISTEN:
-					st_cmd_w5500 = RD_TCP_GIVE_STATUS;
-				break;
-				case STATUS_ESTABLISHED:
-					st_cmd_w5500 = RD_TCP_GIVE_LEN;
-				break;
 		case RD_TCP_GIVE_LEN:
 			addr_w5500=ADDR_SOC_RX_RECEIVED_SIZE_0;//аддр в w5500 
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb скок комон

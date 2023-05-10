@@ -29,13 +29,11 @@ extern BYTE* eth_cbuf_ptr();
 #define RD_UDP_RCV_CMD 3
 #define RD_UDP_DROP_TO_START 4
 /////socket_read_tcp
-#define RD_TCP_GIVE_STATUS 0
-#define RD_TCP_STATUS_FORK 1
-#define RD_TCP_GIVE_LEN 2
-#define RD_TCP_MES_PART_READ 3
-#define RD_TCP_PTR_OFFSET 4
-#define RD_TCP_GIVE_WR_PTR 5
-#define RD_TCP_DROP_TO_START 6
+#define RD_TCP_GIVE_LEN 0
+#define RD_TCP_MES_PART_READ 1
+#define RD_TCP_PTR_OFFSET 2
+#define RD_TCP_GIVE_WR_PTR 3
+#define RD_TCP_DROP_TO_START 4
 
 
 /////socket_status_tcp

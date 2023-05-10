@@ -35,48 +35,50 @@ void eth_process(void)
 	switch(eth_st)
 	{
 		case CHECK:				
-								if (cfg.sock_rs485[1].mode == TCP_MODE)
-								{
-									ch_pause++;
-									if (ch_pause<CH_TIMER){break;}//не часто проверять
-									ch_pause = 0;//проверяешь обнули
-									eth_st = TCP_SOCK_PROCESS;// иди проверяй
-									w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;
-									w5500_mode.numb_socket = ch_sock;
-									return;
-								}
-								rtrn=check_data_wr_process(eth_cbuf);          //check wr_status
-								if(rtrn!=MAX_SOCKETS) //если сокет задействован, то изменить статус в структуре w5500
-								{
-									eth_st=WRITE_PROCESS;
-									if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE){w5500_mode.mode_op=MODE_OP_WRITE_TCP;}
-									else                                                        {w5500_mode.mode_op=MODE_OP_WRITE_UDP;}
-									w5500_mode.numb_socket=rtrn;
-									break;
-								}
+			if (cfg.sock_rs485[1].mode == TCP_MODE)
+			{
+				ch_pause++;
+				if (ch_pause>CH_TIMER)
+				{
+					ch_pause = 0;//проверяешь обнули
+					eth_st = TCP_SOCK_PROCESS;// иди проверяй
+					w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;
+					w5500_mode.numb_socket = ch_sock;
+					return;
+				}
+			}
+			rtrn=check_data_wr_process(eth_cbuf);          //check wr_status
+			if(rtrn!=MAX_SOCKETS) //если сокет задействован, то изменить статус в структуре w5500
+			{
+				eth_st=WRITE_PROCESS;
+				if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE){w5500_mode.mode_op=MODE_OP_WRITE_TCP;}
+				else                                                        {w5500_mode.mode_op=MODE_OP_WRITE_UDP;}
+				w5500_mode.numb_socket=rtrn;
+				break;
+			}
 								
-								check_sockets_process((BYTE*)&w5500_mode);          //select sockets for read
-								eth_st=READ_PROCESS;
+			check_sockets_process((BYTE*)&w5500_mode);          //select sockets for read
+			eth_st=READ_PROCESS;
 		break;
 		case READ_PROCESS:
-								rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
-								if(rtrn==2){eth_st=0;break;}
-								if(rtrn   )
-								{eth_udp_parse(w5500_mode.numb_socket,eth_cbuf,rtrn); eth_st=0;}
+			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
+			if(rtrn==2){eth_st=0;break;}
+			if(rtrn   )
+			{eth_udp_parse(w5500_mode.numb_socket,eth_cbuf,rtrn); eth_st=0;}
 		break;
 		case WRITE_PROCESS:
-								rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
-								if(rtrn){eth_st=0;}
+			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
+			if(rtrn){eth_st=0;}
 		break;
 		case TCP_SOCK_PROCESS:
-								rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
-								if(rtrn)		
-								{
-									eth_st=0;
-									if(ch_sock == 4){ch_sock = 1;}
-									else			{ch_sock++;}
-									break;
-								}
+			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
+			if(rtrn)		
+			{
+				eth_st=0;
+				if(ch_sock == 4){ch_sock = 1;ch_pause=0;}
+				else			{ch_sock++;ch_pause=0;}
+				break;
+			}
 
 		break;
 	}
@@ -91,30 +93,31 @@ void check_sockets_process (BYTE *buf)
 	W5500_MODE modes;
 	
 	switch(index)
-	{			case 0:
-						modes.numb_socket=SOCKET_0;
-						test.check_sock_0++;//флаг о прочтении
-				break;
-				case 1:
-						if(cfg.sock_rs485[0].en==FALSE) {index++;return;}
-						modes.numb_socket=SOCKET_1;
-						test.check_sock_1++;
-				break;
-				case 2:
-						if(cfg.sock_rs485[1].en==FALSE) {index++;return;}			
-						modes.numb_socket=SOCKET_2;
-						test.check_sock_2++;
-				break;
-				case 3:
-						if(cfg.sock_rs485[2].en==FALSE) {index++;return;}				
-						modes.numb_socket=SOCKET_3;
-						test.check_sock_3++;
-				break;
-				case 4:
-						if(cfg.sock_rs485[3].en==FALSE) {index=0;return;}
-						modes.numb_socket=SOCKET_4;
-						test.check_sock_4++;
-				break;
+	{			
+		case 0:
+				modes.numb_socket=SOCKET_0;
+				test.check_sock_0++;//флаг о прочтении
+		break;
+		case 1:
+				if(cfg.sock_rs485[0].en==FALSE) {index++;return;}
+				modes.numb_socket=SOCKET_1;
+				test.check_sock_1++;
+		break;
+		case 2:
+				if(cfg.sock_rs485[1].en==FALSE) {index++;return;}			
+				modes.numb_socket=SOCKET_2;
+				test.check_sock_2++;
+		break;
+		case 3:
+				if(cfg.sock_rs485[2].en==FALSE) {index++;return;}				
+				modes.numb_socket=SOCKET_3;
+				test.check_sock_3++;
+		break;
+		case 4:
+				if(cfg.sock_rs485[3].en==FALSE) {index=0;return;}
+				modes.numb_socket=SOCKET_4;
+				test.check_sock_4++;
+		break;
 	}
 	index++;
 	if(index==MAX_SOCKETS){index=0;}
