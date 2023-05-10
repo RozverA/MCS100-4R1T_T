@@ -3,7 +3,9 @@
 BYTE eth_cbuf[MAX_SIZE_BUF_SPI];
 volatile WORD size_rd=0;
 TEST test;
-
+BYTE ch_pause = 0;
+BYTE ch_sock = 1;
+#define CH_TIMER 75
 
 void eth_init(void)
 {
@@ -23,6 +25,7 @@ void eth_init(void)
 #define CHECK 0
 #define READ_PROCESS 1
 #define WRITE_PROCESS 2
+#define TCP_SOCK_PROCESS 3
 
 void eth_process(void)
 {
@@ -32,6 +35,16 @@ void eth_process(void)
 	switch(eth_st)
 	{
 		case CHECK:				
+								if (cfg.sock_rs485[1].mode == TCP_MODE)
+								{
+									ch_pause++;
+									if (ch_pause<CH_TIMER){break;}//не часто проверять
+									ch_pause = 0;//проверяешь обнули
+									eth_st = TCP_SOCK_PROCESS;// иди проверяй
+									w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;
+									w5500_mode.numb_socket = ch_sock;
+									return;
+								}
 								rtrn=check_data_wr_process(eth_cbuf);          //check wr_status
 								if(rtrn!=MAX_SOCKETS) //если сокет задействован, то изменить статус в структуре w5500
 								{
@@ -54,6 +67,17 @@ void eth_process(void)
 		case WRITE_PROCESS:
 								rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
 								if(rtrn){eth_st=0;}
+		break;
+		case TCP_SOCK_PROCESS:
+								rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
+								if(rtrn)		
+								{
+									eth_st=0;
+									if(ch_sock == 4){ch_sock = 1;}
+									else			{ch_sock++;}
+									break;
+								}
+
 		break;
 	}
 

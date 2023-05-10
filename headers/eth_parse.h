@@ -7,6 +7,7 @@
 #define MODE_OP_WRITE_UDP 3
 #define MODE_OP_READ_TCP 4
 #define MODE_OP_WRITE_TCP 5
+#define MODE_OP_SOCK_TCP_CH 6
 
 #define LEN_HDR 8
 #define MAX_SOCKETS 5

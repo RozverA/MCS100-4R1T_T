@@ -180,6 +180,11 @@
 #define SR_2C_TIMEOUT		(0x01<<3)   // Sn_IR(TIMEOUT) Interrupt Mask
 #define SR_2C_SEND_OK		(0x01<<4)   // Sn_IR(SENDOK) Interrupt Mask
 
+#define ST_CLOSE		0x00
+#define ST_INIT			0x13
+#define ST_LISTEN		0x14
+#define ST_ESTABLISHED	0x17
+#define ST_CLOSE_WAIT	0x1c
 
 #define CMD_OPEN		0x01
 #define CMD_LISTEN		0x02
@@ -548,8 +553,9 @@ extern func_st ip_init(void);
 extern WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf);
 extern WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf);
 extern WORD w5500_write_socket_udp (BYTE numb, BYTE *buf);
-extern WORD w5500_cmd_read_socket_tcp (BYTE numb, BYTE *buf);
+extern WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf);
 extern WORD w5500_write_socket_tcp (BYTE numb, BYTE *buf);
+extern WORD w5500_ch_sock (BYTE sock_numb, BYTE *buf);
 //extern WORD w5500_check_rx_buffer (BYTE numb);
 
 
