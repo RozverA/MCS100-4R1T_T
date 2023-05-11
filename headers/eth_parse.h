@@ -31,7 +31,9 @@ extern BYTE* eth_cbuf_ptr();
 /////socket_read_tcp
 #define TCP_GIVE_LEN 0
 #define TCP_PART_RD 1
-#define TCP_BK_START 2
+#define TCP_RSV_CMD 2
+#define TCP_DROP_PTR 3
+#define TCP_BK_START 4
 
 
 /////socket_status_tcp

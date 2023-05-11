@@ -255,7 +255,9 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 {
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
-	static WORD ptrLast[5];
+	//static WORD ptrLast[5];
+	static WORD ptrWR = 0;
+	static WORD ptrRD = 0;
 	BYTE cnt=0;
 	switch(st_cmd_w5500)
 	{
@@ -269,25 +271,43 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			size=0; 
 		break;	
 		case TCP_PART_RD:	
-			sizert=(*(BYTE*)&chip.sockReg[sock_numb].R019_Sn_RX_WR_2A_2B.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R019_Sn_RX_WR_2A_2B.case2);//проверить размер
-			if(sizert != ptrLast[sock_numb])//back & return
+			ptrWR = (*(BYTE*)&chip.sockReg[sock_numb].R019_Sn_RX_WR_2A_2B.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R019_Sn_RX_WR_2A_2B.case2);//получить WR
+			ptrRD = (*(BYTE*)&chip.sockReg[sock_numb].R018_Sn_RX_RD_28_29.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R018_Sn_RX_RD_28_29.case2);//получить RD
+			if(ptrWR != ptrRD)//back & return
 			{
-				sizert = sizert - ptrLast[sock_numb];
-				ptrLast[sock_numb] = (*(BYTE*)&chip.sockReg[sock_numb].R019_Sn_RX_WR_2A_2B.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R019_Sn_RX_WR_2A_2B.case2);
 				addr_w5500=port_udp[sock_numb].ptr_rx_buf;//адресс начала указателя сообщения
 				cb_w5500=SOCKET_RX_BUFFER | SOCKET(sock_numb);//bsb сок эр икс буфф
 				ptr_buf=buf;
-				len_buf=sizert;
-				port_udp[sock_numb].ptr_rx_buf=port_udp[sock_numb].ptr_rx_buf+sizert;
+				len_buf = ptrWR - ptrRD;
+				port_udp[sock_numb].ptr_rx_buf=port_udp[sock_numb].ptr_rx_buf+len_buf;
 				if(len_buf>DEFAULT_MTU_TCP){size=2;/*min value '8'*/}else{size=len_buf;}							
 				cmd=READ_DATA;
-				st_cmd_w5500 = TCP_BK_START;
+				st_cmd_w5500 = TCP_DROP_PTR;
 				break;
 			}
 			st_cmd_w5500--;
 			return 2;
 		break;
-		case TCP_BK_START://бесполезно
+		case TCP_DROP_PTR:
+			wbuf_w55[0]=(ptrWR>>8);
+			wbuf_w55[1]=(ptrWR);
+			addr_w5500=ADDR_SOC_RX_READ_PTR_0;
+			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
+			ptr_buf=wbuf_w55;
+			len_buf=2;
+			cmd=WRITE_DATA;
+			st_cmd_w5500 = TCP_RSV_CMD;//"next" 
+		break;
+		case TCP_RSV_CMD:
+			wbuf_w55[cnt]=CMD_RECV;					cnt++;//перейти в режим приема(возобновить прием)
+			addr_w5500=ADDR_SOC_COMMAND;
+			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
+			ptr_buf=wbuf_w55;
+			len_buf=cnt;
+			cmd=WRITE_DATA;
+			st_cmd_w5500 = TCP_BK_START;//"next" 
+		break;
+		case TCP_BK_START:
 			st_cmd_w5500=0;//сброс параметров
 			return (size);
 		break;
