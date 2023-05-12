@@ -17,10 +17,10 @@ int main(void)
 	
 	cfg_init  ();
 
-	//if(cfg_read() == CFG_ERR)
-	//{
+	if(cfg_read() == CFG_ERR)
+	{
 		cfg_default();
-	//}
+	}
 	
 	gpio_init();
 	TC3_init();
@@ -55,17 +55,5 @@ int main(void)
 		
 		eth_process();
 		cmd_process();
-		
-		/*size=usart_0_read(rec,100);
-		if(size){usart_0_write(rec,size);size=0;}	
-				
-		size=usart_1_read(rec,100);
-		if(size){usart_1_write(rec,size);size=0;}
-			
-		size=usart_2_read(rec,100);
-		if(size){usart_2_write(rec,size);size=0;}
-			
-		size=usart_3_read(rec,100);
-		if(size){usart_3_write(rec,size);size=0;}	*/			
 	}
 }

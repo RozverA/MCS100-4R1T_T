@@ -3,6 +3,8 @@
 BYTE cbuf[512];
 BYTE n_port=1;
 
+BYTE mass[10];
+
 #define CM2_WHO_ARE_YOU 0x01
 #define UID_WHO_ARE_YOU 0x8001
 
@@ -20,7 +22,7 @@ void cmd_common_process (void)
 	WORD  addr = 0;
 	WORD  ixo  = 0;
 	WORD  cnt  = 0;
-	WORD  wn   = 0;
+    WORD  wn   = 0;
 	WORD  cs   = 0;
 	
 	if(port_udp[0].r_status==FALSE) {return;}	
@@ -61,13 +63,16 @@ void cmd_common_process (void)
 		case 0x07:  				
 										if(size != 7) { return; }             // CMD=0x07 Read CFG
 		
-										ixo=*(__packed WORD*)(cbuf+wn);									wn+=sizeof(WORD);
+										//ixo=*(__packed WORD*)(cbuf+wn);									wn+=sizeof(WORD);
+									    ixo=cbuf[3]<<8 | cbuf[4];											wn+=sizeof(WORD);									
 										cnt= sizeof(CFG) - ixo;
 
 										if(ixo > sizeof(CFG)) { break ;  }
 										if(cnt > 256       ) { cnt=256;  }
 
-										*(__packed WORD*)(cbuf+wn)=cnt;									wn+=sizeof(WORD);
+										cbuf[wn]=cnt>>8; cbuf[wn+1]=cnt & 0x00FF;							wn+=sizeof(WORD);
+										
+										//*(__packed WORD*)(cbuf[wn])=cnt;									wn+=sizeof(WORD);
 		
 										memcpy(&cbuf[wn],((BYTE*)&cfg)+ixo,cnt);						wn+=cnt;
 		break;
