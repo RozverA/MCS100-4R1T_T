@@ -36,7 +36,7 @@ void cmd_common_process (void)
 	
 	
 	if(size						  <    5)	{ return; }
-	if(size                       >  256)	{ return; }
+	if(size                       >  1024)	{ return; }
 		
 	if(crc16_ccit(cbuf,size)   !=   0)		{ return; }	
 	
@@ -68,12 +68,12 @@ void cmd_common_process (void)
 										cnt= sizeof(CFG) - ixo;
 
 										if(ixo > sizeof(CFG)) { break ;  }
-										if(cnt > 256       ) { cnt=256;  }
+										if(cnt > 512       ) { cnt=512;  }
 
 										cbuf[wn]=cnt>>8; cbuf[wn+1]=cnt & 0x00FF;							wn+=sizeof(WORD);
 										
 										//*(__packed WORD*)(cbuf[wn])=cnt;									wn+=sizeof(WORD);
-		
+										
 										memcpy(&cbuf[wn],((BYTE*)&cfg)+ixo,cnt);						wn+=cnt;
 		break;
 
@@ -85,8 +85,8 @@ void cmd_common_process (void)
 		//......................................................................
 		case 0x17:						if(size  <  7) { return; }
 		
-										ixo=*(__packed WORD*)(cbuf+wn); wn+=sizeof(WORD);            // CMD=0x17 Send CFG
-										cnt=*(__packed WORD*)(cbuf+wn); wn+=sizeof(WORD);
+										ixo=cbuf[3]<<8 | cbuf[4];	 wn+=sizeof(WORD);            // CMD=0x17 Send CFG
+										cnt=sizeof(CFG) - ixo;		 wn+=sizeof(WORD);
 		
 										if(cnt  ==  0) { break; }
 										if(ixo  ==  0)

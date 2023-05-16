@@ -16,12 +16,14 @@ int main(void)
 	
 	
 	cfg_init  ();
-
-	if(cfg_read() == CFG_ERR)
-	{
+	
+	
+	
+	//if(cfg_read() == CFG_ERR)
+	//{
 		cfg_default();
-		//cfg_save();
-	}
+		cfg_save();
+	//}
 	
 	gpio_init();
 	TC3_init();

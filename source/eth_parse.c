@@ -35,7 +35,7 @@ void eth_process(void)
 	switch(eth_st)
 	{
 		case CHECK:				
-			if (cfg.sock_rs485[ch_sock].mode == TCP_MODE)
+			if (cfg.sock_rs485[ch_sock].mode == TCP_MODE)//!
 			{
 				ch_pause++;
 				if (ch_pause>CH_TIMER)
@@ -123,7 +123,7 @@ void check_sockets_process (BYTE *buf)
 	if(index==MAX_SOCKETS){index=0;}
 	if(index == 0)	
 	{modes.mode_op=MODE_OP_READ_UDP;}
-	else if (cfg.sock_rs485[index].mode == TCP_MODE)	{modes.mode_op=MODE_OP_READ_TCP;} 
+	else if (cfg.sock_rs485[1].mode == TCP_MODE)	{modes.mode_op=MODE_OP_READ_TCP;} 
 	else												{modes.mode_op=MODE_OP_READ_UDP;}
 	memcpy(buf,(BYTE*)&modes,sizeof(W5500_MODE));
 	return;
@@ -135,7 +135,7 @@ void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 	if(size < LEN_HDR)		{return;} //size_ip+size_port
 	WORD default_mtu;
 	BYTE* ptr_port_udp;
-	if (cfg.sock_rs485[numb_sock].mode == TCP_MODE)
+	if (cfg.sock_rs485[numb_sock].mode == TCP_MODE)//!
 	{
 		default_mtu=DEFAULT_MTU_TCP;
 		ptr_port_udp=((BYTE*)&port_udp[numb_sock]);

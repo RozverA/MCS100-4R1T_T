@@ -10,7 +10,7 @@
 typedef struct
 //-----------------------------------------------------------------------------
 {
-	BYTE  type_ip;        
+	WORD  type_ip;        
 	WORD  src_port;   
 	BYTE  mac_addr[6];
 	BYTE  ip_addr[4]; 
@@ -57,7 +57,7 @@ typedef struct             // size 512 bytes
 	COMMON_CFG com_network;
 	SOCKET_RS485_CFG sock_rs485[4];
 	
-	BYTE  reserv[427];        
+	BYTE  reserv[426];    
 	WORD  cs; 					
 }CFG;
 #pragma pack()
