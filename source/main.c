@@ -20,6 +20,7 @@ int main(void)
 	if(cfg_read() == CFG_ERR)
 	{
 		cfg_default();
+		//cfg_save();
 	}
 	
 	gpio_init();

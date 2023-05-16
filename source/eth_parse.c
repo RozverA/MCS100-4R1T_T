@@ -35,20 +35,20 @@ void eth_process(void)
 	switch(eth_st)
 	{
 		case CHECK:				
-			if (cfg.sock_rs485[1].mode == TCP_MODE)
+			if (cfg.sock_rs485[ch_sock].mode == TCP_MODE)
 			{
 				ch_pause++;
 				if (ch_pause>CH_TIMER)
 				{
-					ch_pause = 0;//проверяешь обнули
-					eth_st = TCP_SOCK_PROCESS;// иди проверяй
-					w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;
-					w5500_mode.numb_socket = ch_sock;
+					ch_pause = 0;								//check drop
+					eth_st = TCP_SOCK_PROCESS;					//check set
+					w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;	//check status tcp port
+					w5500_mode.numb_socket = ch_sock;			//set port fur set
 					return;
 				}
 			}
-			rtrn=check_data_wr_process(eth_cbuf);          //check wr_status
-			if(rtrn!=MAX_SOCKETS) //если сокет задействован, то изменить статус в структуре w5500
+			rtrn=check_data_wr_process(eth_cbuf);				
+			if(rtrn!=MAX_SOCKETS)								
 			{
 				eth_st=WRITE_PROCESS;
 				if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE){w5500_mode.mode_op=MODE_OP_WRITE_TCP;}
@@ -96,7 +96,7 @@ void check_sockets_process (BYTE *buf)
 	{			
 		case 0:
 				modes.numb_socket=SOCKET_0;
-				test.check_sock_0++;//флаг о прочтении
+				test.check_sock_0++;			//flag about read
 		break;
 		case 1:
 				if(cfg.sock_rs485[0].en==FALSE) {index++;return;}
@@ -121,8 +121,10 @@ void check_sockets_process (BYTE *buf)
 	}
 	index++;
 	if(index==MAX_SOCKETS){index=0;}
-	if (cfg.sock_rs485[1].mode == TCP_MODE){modes.mode_op=MODE_OP_READ_TCP;} /////////////////////////////danger не меняется проверочный номер 
-	else                                   {modes.mode_op=MODE_OP_READ_UDP;}
+	if(index == 0)	
+	{modes.mode_op=MODE_OP_READ_UDP;}
+	else if (cfg.sock_rs485[index].mode == TCP_MODE)	{modes.mode_op=MODE_OP_READ_TCP;} 
+	else												{modes.mode_op=MODE_OP_READ_UDP;}
 	memcpy(buf,(BYTE*)&modes,sizeof(W5500_MODE));
 	return;
 }
@@ -133,7 +135,7 @@ void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 	if(size < LEN_HDR)		{return;} //size_ip+size_port
 	WORD default_mtu;
 	BYTE* ptr_port_udp;
-	if (cfg.sock_rs485[1].mode == TCP_MODE)
+	if (cfg.sock_rs485[numb_sock].mode == TCP_MODE)
 	{
 		default_mtu=DEFAULT_MTU_TCP;
 		ptr_port_udp=((BYTE*)&port_udp[numb_sock]);

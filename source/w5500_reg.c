@@ -97,10 +97,10 @@ WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf)
 	
 	switch(st_cmd_w5500)
 	{
-		case UDP_GIVE_LEN://прочесть размер полученного сообщения
-			addr_w5500=ADDR_SOC_RX_RECEIVED_SIZE_0;//аддр в w5500 
-			cb_w5500=SOCKET_REGISTER | SOCKET(numb);//bsb скок комон
-			ptr_buf=(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27;//место записи результата
+		case UDP_GIVE_LEN:
+			addr_w5500=ADDR_SOC_RX_RECEIVED_SIZE_0;//addr in w5500 1,2
+			cb_w5500=SOCKET_REGISTER | SOCKET(numb);//cb 3
+			ptr_buf=(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27;//4 data (point write data aus w5500)
 			len_buf=2;//len
 			cmd=READ_DATA;//mode
 			st_cmd_w5500++;//"next"
@@ -108,11 +108,11 @@ WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf)
 			size=0;
 		break;	
 		case UDP_PART_RD:					
-			sizert=(*(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case1<<8) | (*(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case2);//проверить размер
+			sizert=(*(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case1<<8) | (*(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case2);//check len
 			if(sizert!=0x0000)//back & return
 			{
-				addr_w5500=port_udp[numb].ptr_rx_buf;//адресс начала указателя сообщения
-				cb_w5500=SOCKET_RX_BUFFER | SOCKET(numb);//bsb сок RX буфф
+				addr_w5500=port_udp[numb].ptr_rx_buf;
+				cb_w5500=SOCKET_RX_BUFFER | SOCKET(numb);
 				ptr_buf=buf;
 				len_buf=(*(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case1<<8 | *(BYTE*)&chip.sockReg[numb].R017_Sn_RX_RSR_26_27.case2);
 				port_udp[numb].ptr_rx_buf=port_udp[numb].ptr_rx_buf+len_buf;
@@ -125,8 +125,8 @@ WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf)
 			return 2;
 		break;
 		case UDP_PTR_MOVE:
-			wbuf_w55[cnt]=(port_udp[numb].ptr_rx_buf>>8);			cnt++;//смещение начала сообщения
-			wbuf_w55[cnt]=(BYTE)port_udp[numb].ptr_rx_buf;			cnt++;//(убрать прочитанное)
+			wbuf_w55[cnt]=(port_udp[numb].ptr_rx_buf>>8);			cnt++;//move to next part messege data 1
+			wbuf_w55[cnt]=(BYTE)port_udp[numb].ptr_rx_buf;			cnt++;//2d byte data 2
 			addr_w5500=ADDR_SOC_RX_READ_PTR_0;//reg RX_RD(28)
 			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
 			ptr_buf=wbuf_w55;/*(записать в него смещение)*/
