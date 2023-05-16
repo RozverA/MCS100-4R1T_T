@@ -20,8 +20,8 @@ void cmd_common_process (void)
 {
 	WORD  size = 0;
 	WORD  addr = 0;
-	WORD  ixo  = 0;
-	WORD  cnt  = 0;
+	WORD  ixo  = 0;//offset send/rsv
+	WORD  cnt  = 0;//count fur send
     WORD  wn   = 0;
 	WORD  cs   = 0;
 	
@@ -102,7 +102,13 @@ void cmd_common_process (void)
 										wn+=cnt;
 		break;
 		//......................................................................
-		case 0x27:						if(size  !=  5) { return; }
+		case 0x26:						if(size  !=  5) { return; }
+				
+										cfg_drop();
+										reset=1;
+		break;
+		//......................................................................
+		case 0x27:						if(size  !=  5) { return; } 
 				
 										if(crc16_ccit((BYTE*)&cfg_tmp,sizeof(CFG)) != 0)
 										{
