@@ -28,8 +28,9 @@ WORD iap_process(BYTE *buf, WORD size)
 		
 		break;
 		case CM2_R_LOAD_DATA_PAGE   :									iap_buf[wn] = CM2_A_DATA_PAGE_LOAD;			wn += sizeof(BYTE );
-																		iap_size  =*(WORD *)(iap_buf+wn);			wn += sizeof(WORD );
-																		iap_addr  =*(DWORD*)(iap_buf+wn);			wn += sizeof(DWORD);
+																		iap_size  =iap_buf[wn] | (iap_buf[wn+1]<<8);		wn += sizeof(WORD );
+																		iap_addr  =iap_buf[wn] | (iap_buf[wn+1]<<8) | (iap_buf[wn+2]<<16) | (iap_buf[wn+3]<<24);
+																		wn += sizeof(DWORD);
 		
 																		memcpy(iap_page,buf+wn,iap_size);		wn += iap_size;
 		
