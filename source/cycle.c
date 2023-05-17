@@ -47,6 +47,7 @@ void usart_process (BYTE n_port)//вход
 	}
 }
 
+//DWN
 void u_wr (BYTE n_port, WORD len)//преобразует цифру в соответствующую функцию
 {
 	switch (n_port)
@@ -66,6 +67,7 @@ void u_wr (BYTE n_port, WORD len)//преобразует цифру в соответствующую функцию
 	}
 }
 
+//UP
 void u_rd (BYTE n_port, WORD len)//преобразует цифру в соответствующую функцию
 {
 	switch (n_port)

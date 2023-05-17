@@ -51,7 +51,7 @@ void eth_process(void)
 				{
 					rtrn = 0;
 				}
-			else if (cfg.sock_rs485[rtrn-1].mode == TCP_MODE)//!
+			if (cfg.sock_rs485[ch_sock].mode == TCP_MODE)//!
 			{
 				ch_pause++;
 				if (ch_pause>CH_TIMER)
@@ -60,8 +60,15 @@ void eth_process(void)
 					eth_st = TCP_SOCK_PROCESS;					//check set
 					w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;	//check status tcp port
 					w5500_mode.numb_socket = ch_sock;			//set port fur set
+					ch_sock++;
+					if (ch_sock == 4){ch_sock = 0;}
 					return;
 				}
+			}
+			else 
+			{
+				ch_sock++;
+				if (ch_sock == 4){ch_sock = 0;}
 			}	
 						
 			check_sockets_process((BYTE*)&w5500_mode);          //select sockets for read
@@ -82,8 +89,8 @@ void eth_process(void)
 			if(rtrn)		
 			{
 				eth_st=0;
-				if(ch_sock == 4){ch_sock = 1;ch_pause=0;}
-				else			{ch_sock++;ch_pause=0;}
+// 				if(ch_sock == 4){ch_sock = 1;ch_pause=0;}
+// 				else			{ch_sock++;ch_pause=0;}
 				break;
 			}
 
