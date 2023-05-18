@@ -79,7 +79,7 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_SOCK_TCP_CH:
- 								rtrn = w5500_ch_sock(sock_numb,buf);
+								rtrn = w5500_ch_sock(sock_numb,buf);
 								if(rtrn)	{w5500_st=0;spi_mode=0;return 1;}
 								w5500_st=SPI_PROCESS;
 		break;
@@ -401,7 +401,6 @@ WORD w5500_ch_sock(BYTE sock_numb, BYTE *buf)
 {
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
-	sock_numb++;
 	BYTE cnt=0;
 	switch(st_cmd_w5500)
 	{

@@ -59,7 +59,7 @@ void eth_process(void)
 					ch_pause = 0;								//check drop
 					eth_st = TCP_SOCK_PROCESS;					//check set
 					w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;	//check status tcp port
-					w5500_mode.numb_socket = ch_sock;			//set port fur set
+					w5500_mode.numb_socket = ch_sock+1;			//set port fur set
 					ch_sock++;
 					if (ch_sock == 4){ch_sock = 0;}
 					return;
