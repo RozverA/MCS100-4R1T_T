@@ -49,7 +49,7 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
 {
 	static BYTE w5500_st=0;
 	WORD rtrn=0;
-	if(!cmd_spi_wait){w5500_st=0;return 2;} //если 20 мс нет ответа, то процесс сбрасывается
+	if(!cmd_spi_wait){w5500_st=0;return 2;} //if 20 mS no answer, break process
 	switch (w5500_st)
 	{
 		case NULLS:
@@ -262,9 +262,9 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 	switch(st_cmd_w5500)
 	{
 		case TCP_GIVE_LEN:
-			addr_w5500=ADDR_SOC_RX_RECEIVED_SIZE_0;//аддр в w5500 
-			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb скок комон
-			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27;
+			addr_w5500=ADDR_SOC_RX_RECEIVED_SIZE_0;//addr
+			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb
+			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27;//data
 			len_buf=6;
 			cmd=READ_DATA;//mode
 			st_cmd_w5500 = TCP_PART_RD;//"next"
@@ -275,8 +275,8 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			ptrRD = (*(BYTE*)&chip.sockReg[sock_numb].R018_Sn_RX_RD_28_29.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R018_Sn_RX_RD_28_29.case2);//получить RD
 			if(ptrWR != ptrRD)//back & return
 			{
-				addr_w5500=port_udp[sock_numb].ptr_rx_buf;//адресс начала указателя сообщения
-				cb_w5500=SOCKET_RX_BUFFER | SOCKET(sock_numb);//bsb сок эр икс буфф
+				addr_w5500=port_udp[sock_numb].ptr_rx_buf;//addr start messege
+				cb_w5500=SOCKET_RX_BUFFER | SOCKET(sock_numb);//bsb sock RX
 				ptr_buf=buf;
 				len_buf = ptrWR - ptrRD;
 				port_udp[sock_numb].ptr_rx_buf=port_udp[sock_numb].ptr_rx_buf+len_buf;
@@ -299,7 +299,7 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			st_cmd_w5500 = TCP_RSV_CMD;//"next" 
 		break;
 		case TCP_RSV_CMD:
-			wbuf_w55[cnt]=CMD_RECV;					cnt++;//перейти в режим приема(возобновить прием)
+			wbuf_w55[cnt]=CMD_RECV;					cnt++;//go to reciv mode (and rewrite number)
 			addr_w5500=ADDR_SOC_COMMAND;
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
 			ptr_buf=wbuf_w55;
@@ -405,9 +405,9 @@ WORD w5500_ch_sock(BYTE sock_numb, BYTE *buf)
 	switch(st_cmd_w5500)
 	{
 		case 0://READ
-			addr_w5500=ADDR_SOC_STATUS;//аддр в w5500 
-			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb скок комон
-			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R04_Sn_SR_03.Status;//место записи результата
+			addr_w5500=ADDR_SOC_STATUS;//addr in w5500 
+			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb
+			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R04_Sn_SR_03.Status;//place for write result
 			len_buf=1;
 			cmd=READ_DATA;//mode
 			st_cmd_w5500 = 1;//"next"
