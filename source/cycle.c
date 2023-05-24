@@ -37,8 +37,8 @@ void usart_process (BYTE n_port)//вход
 		return;
 			
 		case UCMD_DWN://DWN
-			if (cfg.sock_rs485[1].mode == TCP_MODE){len_mes = port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1];} /////////////////////////////danger не меняется проверочный номер 
-			else                                   {len_mes = port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1] - 8;}
+			if (cfg.sock_rs485[n_port-1].mode == TCP_MODE)	{len_mes = port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1];} 
+			else                                   			{len_mes = port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1] - 8;}
 			u_wr(n_port, len_mes);//прочитать (порт, куда, длина(сумма байт))
 			last_ptr_rx_buf[n_port-1] = port_udp[n_port].ptr_rx_buf;//запись последнего положения указателя для сравнения при изменении
 			port_udp[n_port].r_status = 0;// read_status выкл (для корректной работы условия проверяющего наличие нового сообщения в usart_proc
