@@ -19,9 +19,6 @@ void eth_init(void)
 	if(cfg.sock_rs485[1].en==TRUE) {socket_init(SOCKET_2,cfg.sock_rs485[1].src_port,cfg.sock_rs485[1].mode);}
 	if(cfg.sock_rs485[2].en==TRUE) {socket_init(SOCKET_3,cfg.sock_rs485[2].src_port,cfg.sock_rs485[2].mode);}
 	if(cfg.sock_rs485[3].en==TRUE) {socket_init(SOCKET_4,cfg.sock_rs485[3].src_port,cfg.sock_rs485[3].mode);}
-	
-	//telnet socket
-	socket_init(SOCKET_5,TELNET_PORT,TCP_MODE);
 }
 
 
@@ -39,17 +36,22 @@ void eth_process(void)
 	{
 		case CHECK:				
 			rtrn=check_data_wr_process(eth_cbuf);// copy to port_udp ;rtrn - sock numb;			
-			if(rtrn!=TMAX_SOCKETS)								
+			if(rtrn!=MAX_SOCKETS)								
 			{
 				eth_st=WRITE_PROCESS;
-				if (rtrn == 5)														{w5500_mode.mode_op=MODE_OP_READ_TCP;}//telnet
-				else if (cfg.sock_rs485[w5500_mode.numb_socket-1].mode == TCP_MODE)	{w5500_mode.mode_op=MODE_OP_WRITE_TCP;}//подозрительно сопоставить numbsock  с rs485
-				else																{w5500_mode.mode_op=MODE_OP_WRITE_UDP;}//cfg port
+				if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE)
+																			{w5500_mode.mode_op=MODE_OP_WRITE_TCP;}
+				else                                                        
+																			{w5500_mode.mode_op=MODE_OP_WRITE_UDP;}
 				w5500_mode.numb_socket=rtrn;
 				break;
 			}
 			//write-tcp_check
-			if ((cfg.sock_rs485[ch_sock].mode == TCP_MODE) || (ch_sock == 4))//0-3 485 | 4 - telnet
+			if (rtrn == 5)
+				{
+					rtrn = 0;
+				}
+			if (cfg.sock_rs485[ch_sock].mode == TCP_MODE)//!
 			{
 				ch_pause++;
 				if (ch_pause>CH_TIMER)
@@ -59,19 +61,24 @@ void eth_process(void)
 					w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;	//check status tcp port
 					w5500_mode.numb_socket = ch_sock;			//set port fur set
 					ch_sock++;
-					if (ch_sock == 5){ch_sock = 0;}
+					if (ch_sock == 4){ch_sock = 0;}
 					return;
 				}
 			}
-			else {ch_sock++;if (ch_sock == 5){ch_sock = 0;}	}	
-			//tcp_check - read						
+			else 
+			{
+				ch_sock++;
+				if (ch_sock == 4){ch_sock = 0;}
+			}	
+						
 			check_sockets_process((BYTE*)&w5500_mode);          //select sockets for read
 			eth_st=READ_PROCESS;
 		break;
 		case READ_PROCESS:
 			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
 			if(rtrn==2){eth_st=0;break;}
-			if(rtrn   ){eth_udp_parse(w5500_mode.numb_socket,eth_cbuf,rtrn); eth_st=0;}
+			if(rtrn   )
+			{eth_udp_parse(w5500_mode.numb_socket,eth_cbuf,rtrn); eth_st=0;}
 		break;
 		case WRITE_PROCESS:
 			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
@@ -79,9 +86,17 @@ void eth_process(void)
 		break;
 		case TCP_SOCK_PROCESS:
 			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
-			if(rtrn){eth_st=0;break;}
+			if(rtrn)		
+			{
+				eth_st=0;
+// 				if(ch_sock == 4){ch_sock = 1;ch_pause=0;}
+// 				else			{ch_sock++;ch_pause=0;}
+				break;
+			}
+
 		break;
 	}
+
 }
 
 
@@ -89,44 +104,51 @@ void eth_process(void)
 void check_sockets_process (BYTE *buf)
 {
 	static BYTE index=0;
+	//W5500_MODE modes;
+	
 	switch(index)
 	{			
 		case 0:
 				w5500_mode.numb_socket=SOCKET_0;
+				test.check_sock_0++;			//flag about read
 		break;
 		case 1:
 				if(cfg.sock_rs485[0].en==FALSE) {index++;return;}
 				w5500_mode.numb_socket=SOCKET_1;
+				test.check_sock_1++;
 		break;
 		case 2:
 				if(cfg.sock_rs485[1].en==FALSE) {index++;return;}			
 				w5500_mode.numb_socket=SOCKET_2;
+				test.check_sock_2++;
 		break;
 		case 3:
 				if(cfg.sock_rs485[2].en==FALSE) {index++;return;}				
 				w5500_mode.numb_socket=SOCKET_3;
+				test.check_sock_3++;
 		break;
 		case 4:
 				if(cfg.sock_rs485[3].en==FALSE) {index=0;return;}
 				w5500_mode.numb_socket=SOCKET_4;
-		break;
-		case 5:
-				w5500_mode.numb_socket=SOCKET_5;
+				test.check_sock_4++;
 		break;
 	}
-	if(w5500_mode.numb_socket == 0)										{w5500_mode.mode_op=MODE_OP_READ_UDP;/*cfg port 5000*/}
-	else if (w5500_mode.numb_socket == 5)								{w5500_mode.mode_op=MODE_OP_READ_TCP;/*telnet port 23*/} 
-	else if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE)	{w5500_mode.mode_op=MODE_OP_READ_TCP;/*rs485 port 5001-5004;*/} 
-	else																{w5500_mode.mode_op=MODE_OP_READ_UDP;/*rs485 port 5001-5004*/}
+	if(w5500_mode.numb_socket == 0)	
+																	{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
+	else if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE)	
+																	{w5500_mode.mode_op=MODE_OP_READ_TCP;/*modes.mode_op=MODE_OP_READ_TCP;*/} 
+	else												
+																	{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
 	index++;
-	if(index==TMAX_SOCKETS){index=0;}
+	if(index==MAX_SOCKETS){index=0;}
+	/*memcpy(buf,(BYTE*)&modes,sizeof(W5500_MODE));*/
 	return;
 }
 
 
 void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 {	
-	if(size < LEN_HDR)		{return;} //size_ip+size_port+cs
+	if(size < LEN_HDR)		{return;} //size_ip+size_port
 	WORD default_mtu;
 	BYTE* ptr_port_udp;
 	if (numb_sock == 0)
@@ -134,13 +156,7 @@ void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 		default_mtu=DEFAULT_MTU_UDP;
 		ptr_port_udp=(BYTE*)&port_udp[numb_sock];
 	}
-	else if (numb_sock == 5)
-	{
-		default_mtu=DEFAULT_MTU_TCP;
-		ptr_port_udp=((BYTE*)&port_udp[numb_sock]);
-		ptr_port_udp=ptr_port_udp+8;
-	}
-	else if (cfg.sock_rs485[numb_sock-1].mode == TCP_MODE)
+	else if (cfg.sock_rs485[numb_sock-1].mode == TCP_MODE)//!
 	{
 		default_mtu=DEFAULT_MTU_TCP;
 		ptr_port_udp=((BYTE*)&port_udp[numb_sock]);
@@ -163,7 +179,7 @@ BYTE check_data_wr_process (BYTE *data_buf)
 	BYTE sock_numb=0;
 	WORD size=0;		
 
-	for(sock_numb=0;sock_numb<TMAX_SOCKETS;sock_numb++)
+	for(sock_numb=0;sock_numb<MAX_SOCKETS;sock_numb++)
 	{
 		if(port_udp[sock_numb].w_status==1)
 		{
