@@ -9,7 +9,6 @@ int main(void)
 	SCB->VTOR=0x00004000;
 	
     sys_clock_init_USE_DFLL48M();
-	//das fur telnet
 	__enable_irq();
 	
 	wdt_start();
