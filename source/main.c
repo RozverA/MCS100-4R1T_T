@@ -7,8 +7,8 @@ WORD reset;
 int main(void)
 {
 	SCB->VTOR=0x00004000;
-	
-    sys_clock_init_USE_DFLL48M();
+	sys_clock_init_USE_OSC8M();
+    //sys_clock_init_USE_DFLL48M();
 	__enable_irq();
 	
 	wdt_start();

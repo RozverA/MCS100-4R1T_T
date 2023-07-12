@@ -2,7 +2,7 @@
 #define TIMER_H_
 
 
-#define TC3_100mk 75
+#define TC3_100mk 50
 #define TC3_1m 750
 #define TC3_10m 7500
 #define TC3_100m 75000

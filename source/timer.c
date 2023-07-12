@@ -34,7 +34,7 @@ void TC3_init(void)
 	PM->APBCMASK.bit.TC3_  =0x01; //
 
 	TC3->COUNT16.CTRLA.bit.MODE     =0x0; // Bits 3:2   - MODE: (0-Counter in 16-bit mode)
-	TC3->COUNT16.CTRLA.bit.PRESCALER=TC_CTRLA_PRESCALER_DIV64_Val; // Bits 10:8  - PRESCALER: Prescaler (4: GCLK_TC/16)
+	TC3->COUNT16.CTRLA.bit.PRESCALER=TC_CTRLA_PRESCALER_DIV16_Val; // Bits 10:8  - PRESCALER: Prescaler (4: GCLK_TC/16)
 	TC3->COUNT16.CTRLA.bit.PRESCSYNC=0x00; // Bits 13:12 - PRESCSYNC: Prescaler and Counter Synchronization (Reload or reset the counter on next generic clock)
 	TC3->COUNT16.CTRLA.bit.WAVEGEN  =0x01; // Bits 6:5   - WAVEGEN: Waveform Generation Operation
 
