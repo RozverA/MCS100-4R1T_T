@@ -57,7 +57,7 @@ void spi_init(void)
      / baudrate = 1000000
     */	
 
-	SERCOM5->SPI.BAUD.bit.BAUD        = (float)(48000000 ) / (2 * (float)(8000000 )) - 1;
+	SERCOM5->SPI.BAUD.bit.BAUD        = (float)(PROC_HERZ ) / (2 * (float)(8000000 )) - 1;
 	SERCOM5->SPI.INTENSET.bit.TXC	  = 0x00;
 	SERCOM5->SPI.INTENSET.bit.DRE     = 0x00;
 	SERCOM5->SPI.INTENSET.bit.RXC     = 0x00;	

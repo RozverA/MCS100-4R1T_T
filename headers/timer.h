@@ -2,11 +2,13 @@
 #define TIMER_H_
 
 
-#define TC3_100mk 50
-#define TC3_1m 750
-#define TC3_10m 7500
-#define TC3_100m 75000
-#define TC3_1SEC_TICKS 750000
+#define TC3_100mk		50	//8H
+//#define TC3_100mk		75	//48H
+
+#define TC3_1m			(TC3_100mk * 10)
+#define TC3_10m			(TC3_100mk * 100)
+#define TC3_100m		(TC3_100mk * 1000)
+#define TC3_1SEC_TICKS	(TC3_100mk * 10000)
 
 
 static inline void TC3_start(WORD cc) { TC3->COUNT16.CC[0].reg=cc-1; TC3->COUNT16.CTRLBSET.bit.CMD=0x01; }

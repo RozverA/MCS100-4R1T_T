@@ -23,6 +23,17 @@ typedef unsigned int   DWORD;
 #include <string.h>
 #include <stdlib.h>
 
+#define PROC_HERZ48		48000000
+#define PROC_HERZ8		8000000
+#define PROC_HERZ		PROC_HERZ8 // need change: TC3_100mk (right click "Go implementation")
+
+#define ANSWER	0
+#define SPAM	1
+#define LED_BIP	3
+#define NO		200
+#define BIP		2
+#define SPI_DOLBIT 4
+#define DMA_TEST	5
 
 #include "samr21g18a.h"
 #include "gpio.h"

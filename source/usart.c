@@ -57,7 +57,7 @@ void usart_0_init(void)
 	SERCOM1->USART.CTRLB.bit.CHSIZE  =0x00;  // Bits 2:0   - CHSIZE: Character Size (0: 8 bits)
 
 	//SERCOM0->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(9600))/(float)(8000000));
-	SERCOM1->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(38400))/(float)(8000000));
+	SERCOM1->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(38400))/(float)(PROC_HERZ));
 	//SERCOM0->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(115200))/(float)(8000000));
 
 	SERCOM1->USART.INTENSET.bit.RXC  =0x01; // Bit 2 RXC: Receive Complete Interrupt Enable
@@ -206,7 +206,7 @@ void usart_1_init(void)
 	SERCOM0->USART.CTRLB.bit.CHSIZE  =0x00;  // Bits 2:0   - CHSIZE: Character Size (0: 8 bits)
 
 	//SERCOM0->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(9600))/(float)(8000000));
-	SERCOM0->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(38400))/(float)(8000000));
+	SERCOM0->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(38400))/(float)(PROC_HERZ));
 	//SERCOM0->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(115200))/(float)(8000000));
 
 	SERCOM0->USART.INTENSET.bit.RXC  =0x01; // Bit 2 RXC: Receive Complete Interrupt Enable
@@ -355,7 +355,7 @@ void usart_2_init(void)
 	SERCOM2->USART.CTRLB.bit.CHSIZE  =0x00;  // Bits 2:0   - CHSIZE: Character Size (0: 8 bits)
 
 	//SERCOM0->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(9600))/(float)(8000000));
-	SERCOM2->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(38400))/(float)(8000000));
+	SERCOM2->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(38400))/(float)(PROC_HERZ));
 	//SERCOM0->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(115200))/(float)(8000000));
 
 	SERCOM2->USART.INTENSET.bit.RXC  =0x01; // Bit 2 RXC: Receive Complete Interrupt Enable
@@ -503,7 +503,7 @@ void usart_3_init(void)
 	SERCOM3->USART.CTRLB.bit.CHSIZE  =0x00;  // Bits 2:0   - CHSIZE: Character Size (0: 8 bits)
 
 	//SERCOM0->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(9600))/(float)(8000000));
-	SERCOM3->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(38400))/(float)(8000000));
+	SERCOM3->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(38400))/(float)(PROC_HERZ));
 	//SERCOM0->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(115200))/(float)(8000000));
 
 	SERCOM3->USART.INTENSET.bit.RXC  =0x01; // Bit 2 RXC: Receive Complete Interrupt Enable
