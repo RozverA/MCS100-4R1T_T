@@ -23,7 +23,7 @@ typedef struct
 
 
 
-extern UDP_HDR port_udp[MAX_SOCKETS];
+extern UDP_HDR u_port[MAX_SOCKETS];
 
 
 #endif /* UDP_H_ */

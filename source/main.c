@@ -8,10 +8,8 @@ int main(void)
 {
 	SCB->VTOR=0x00004000;
 	
-	if (PROC_HERZ == PROC_HERZ8)
-	{sys_clock_init_USE_OSC8M();}   //8MHz
-	else
-	{sys_clock_init_USE_DFLL48M();}	//48MHz
+	if (PROC_HERZ == PROC_HERZ8)	{sys_clock_init_USE_OSC8M();}   //8MHz
+	else							{sys_clock_init_USE_DFLL48M();}	//48MHz
 		
 	__enable_irq();
 	
@@ -103,7 +101,9 @@ void debug_funx(BYTE mode)
 		// 		break;
 		case LED_BIP:
 		LED_TX0_TGL();
-		wait(TC3_100mk);
+		if (PROC_HERZ == PROC_HERZ8)	{wait(TC3_8);}
+		else							{wait(TC3_48);}
+		/*wait(TC3_100mk);*/
 		break;
 		case NO:
 		for (int i = 0 ; i<1;i++){}

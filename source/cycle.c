@@ -1,48 +1,73 @@
 #include "def.h"
 
-WORD last_ptr_rx_buf[]  = {0x00,0x00,0x00,0x00};
-BYTE port_stat[] = {UCMD_CH,UCMD_CH,UCMD_CH,UCMD_CH};
-WORD port_time[] = {0x0000,0x0000,0x0000,0x0000};
+// WORD last_ptr_rx_buf[]  = {0x00,0x00,0x00,0x00,0x00};
+// BYTE port_stat[] = {UCMD_CH,UCMD_CH,UCMD_CH,UCMD_CH,UCMD_CH};
+// WORD port_time[] = {0x0000,0x0000,0x0000,0x0000,0x0000};
 WORD u_size = 0;
+
+VAR var;
 
 void usart_process (BYTE n_port)
 {
 	WORD len_mes;
-	if ( port_time[n_port-1] < eth_wait )	{port_time[n_port-1] = 0;};//check end block port
-	switch(port_stat[n_port-1])
+	if ( var.port_time[n_port-1] < eth_wait )	{var.port_time[n_port-1] = 0;};//check end block port
+	switch(var.port_stat[n_port-1])
 	{
 		case UCMD_CH:
-			if ((!port_time[n_port-1]) && (port_udp[n_port].r_status))//block (0 - True) and check by read staus
+			if ((!var.port_time[n_port-1]) && (u_port[n_port].r_status))//block (0 - True) and check by read staus
 			{
-				port_stat[n_port-1] = UCMD_DWN; //status for switch case
-				if ( eth_wait > TIMER_LMT)	{port_time[n_port-1] = eth_wait - TIMER_LMT;	return;}//check read timeout
-				else						{port_time[n_port-1] = eth_wait + TIMER_COEF;	return;}//check read timeout (alternative)
+				var.port_stat[n_port-1] = UCMD_ETH_RS485; //status for switch case
+				if ( eth_wait > TIMER_LMT)	{var.port_time[n_port-1] = eth_wait - TIMER_LMT;	return;}//check read timeout
+				else						
+					{if (PROC_HERZ == PROC_HERZ48)	{var.port_time[n_port-1] = eth_wait + TIMER_COEF_48;return;}
+					else							{var.port_time[n_port-1] = eth_wait + TIMER_COEF_8 ;return;}}//check read timeout (alternative)
 			}
 			if (port[n_port-1].rx != port[n_port-1].rn)	
 			{
-				port_stat[n_port-1] = UCMD_UP;
+				var.port_stat[n_port-1] = UCMD_RS485_ETH;
 				return;
 			}//проверка на чтение 
-		return;
 			
-		case UCMD_UP://UP
+			
+			if (MODUL_TELNET == OFF){return;}
+			if ( (n_port == 5) && (u_port[TEL_SOCK].r_status) && (!var.port_time[n_port-1]) )// (5port - read mode on - timeout)
+			{
+			 	var.port_stat[n_port-1] = UCMD_TLN;
+			 	if ( eth_wait > TIMER_LMT)	{var.port_time[TEL_SOCK] = eth_wait - TIMER_LMT;	return;}//check read timeout
+			 	else						{var.port_time[TEL_SOCK] = eth_wait + TIMER_COEF;	return;}//check read timeout (alternative)
+			 	return;
+			}
+			
+		return;
+		
+		
+		//__________________________________________________________________________________//	
+		case UCMD_RS485_ETH://UP
 			u_rd(n_port, (port[n_port-1].rn - port[n_port-1].rx) );   //give mess size
 			if (u_size != 0)
 			{
-				memcpy(port_udp[n_port].data, port[n_port-1].rbuf, u_size);//copy in buffer
-				port_udp[n_port].len[0] = (u_size & 0xFF00) >> 8;	port_udp[n_port].len[1] = u_size & 0x00FF; //write mess size in port_udp
-				port_udp[n_port].w_status = 1;
+				memcpy(u_port[n_port].data, port[n_port-1].rbuf, u_size);//copy in buffer
+				u_port[n_port].len[0] = (u_size & 0xFF00) >> 8;	u_port[n_port].len[1] = u_size & 0x00FF; //write mess size in port_udp
+				u_port[n_port].w_status = 1;
 			}
-			port_stat[n_port-1] = UCMD_CH;
+			var.port_stat[n_port-1] = UCMD_CH;
 		return;
-			
-		case UCMD_DWN://DWN
-			if (cfg.sock_rs485[n_port-1].mode == TCP_MODE)	{len_mes = port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1];} 
-			else                                   			{len_mes = port_udp[n_port].ptr_rx_buf - last_ptr_rx_buf[n_port-1] - 8;}
+		
+		
+		//__________________________________________________________________________________//
+		case UCMD_ETH_RS485://DWN
+			if (cfg.sock_rs485[n_port-1].mode == TCP_MODE)	{len_mes = u_port[n_port].ptr_rx_buf - var.last_ptr_rx_buf[n_port-1];} 
+			else                                   			{len_mes = u_port[n_port].ptr_rx_buf - var.last_ptr_rx_buf[n_port-1] - 8;}
 			u_wr(n_port, len_mes);
-			last_ptr_rx_buf[n_port-1] = port_udp[n_port].ptr_rx_buf;//write last position pointer for compare 
-			port_udp[n_port].r_status = 0;// read_status off for correct work usart_proc
-			port_stat[n_port-1] = UCMD_CH;
+			var.last_ptr_rx_buf[n_port-1] = u_port[n_port].ptr_rx_buf;//write last position pointer for compare 
+			u_port[n_port].r_status = 0;// read_status off for correct work usart_proc
+			var.port_stat[n_port-1] = UCMD_CH;
+		return;
+		
+		
+		//__________________________________________________________________________________//
+		case UCMD_TLN:
+			tell_funx(n_port,&var.port_stat[TEL_SOCK-1]);
 		return;
 	}
 }
@@ -53,16 +78,16 @@ void u_wr (BYTE n_port, WORD len)//number number to funx
 	switch (n_port)
 	{
 		case 1:
-			usart_0_write( (port_udp[n_port].data), len);//write in uart 0 (5001 port)
+			usart_0_write( (u_port[n_port].data), len);//write in uart 0 (5001 port)
 		break;
 		case 2:
-			usart_1_write( (port_udp[n_port].data), len);//write in uart 1 (5002 port)
+			usart_1_write( (u_port[n_port].data), len);//write in uart 1 (5002 port)
 		break;
 		case 3:
-			usart_2_write( (port_udp[n_port].data), len);//write in uart 2 (5003 port)
+			usart_2_write( (u_port[n_port].data), len);//write in uart 2 (5003 port)
 		break;
 		case 4:
-			usart_3_write( (port_udp[n_port].data), len);//write in uart 3 (5004 port)
+			usart_3_write( (u_port[n_port].data), len);//write in uart 3 (5004 port)
 		break;	
 	}
 }

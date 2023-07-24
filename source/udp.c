@@ -2,4 +2,4 @@
 
 
 
-UDP_HDR port_udp[5];
+UDP_HDR u_port[5];

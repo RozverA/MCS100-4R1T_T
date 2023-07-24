@@ -51,6 +51,9 @@ typedef unsigned int   DWORD;
 #include "socket.h"
 #include "udp.h"
 #include "cycle.h"
+#include "moduls.h"
+#include "dma.h"
+#include "telnet.h"
 
 extern WORD reset;
 

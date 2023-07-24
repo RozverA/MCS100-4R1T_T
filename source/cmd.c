@@ -25,13 +25,13 @@ void cmd_common_process (void)
     WORD  wn   = 0;
 	WORD  cs   = 0;
 	
-	if(port_udp[0].r_status==FALSE) {return;}	
-	port_udp[0].r_status=FALSE;
+	if(u_port[0].r_status==FALSE) {return;}	
+	u_port[0].r_status=FALSE;
 	
 	//size=size_data_sock(0);
-	size=((port_udp[0].len[0]<<8) | (port_udp[0].len[1]));
+	size=((u_port[0].len[0]<<8) | (u_port[0].len[1]));
 		
-	memcpy(cbuf,(BYTE*)&port_udp[0].data,size);
+	memcpy(cbuf,(BYTE*)&u_port[0].data,size);
 
 	
 	
@@ -131,13 +131,13 @@ void cmd_common_process (void)
 	cbuf[wn] = (BYTE)((cs & 0xff00) >> 8);  wn++;
 	
 
-	memcpy((BYTE*)&port_udp[0].data,cbuf,wn);
+	memcpy((BYTE*)&u_port[0].data,cbuf,wn);
 	
 	
 
-	port_udp[0].len[0]=((wn & 0xFF00)>>8);
-	port_udp[0].len[1]=(wn & 0x00FF);
-	port_udp[0].w_status=1;
+	u_port[0].len[0]=((wn & 0xFF00)>>8);
+	u_port[0].len[1]=(wn & 0x00FF);
+	u_port[0].w_status=1;
 
 }
 

@@ -1,9 +1,9 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-
-#define TC3_100mk		50	//8H
-//#define TC3_100mk		75	//48H
+#define TC3_8			50
+#define TC3_48			75
+#define TC3_100mk		TC3_8	
 
 #define TC3_1m			(TC3_100mk * 10)
 #define TC3_10m			(TC3_100mk * 100)

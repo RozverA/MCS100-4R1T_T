@@ -58,7 +58,9 @@ void TC3_init(void)
 	
 	
 	eth_wait = 0;
-	TC3_start(TC3_100mk);
+	if (PROC_HERZ == PROC_HERZ8)	{TC3_start(TC3_8);}
+	else							{TC3_start(TC3_48);}
+	/*TC3_start(TC3_100mk);*/
 }
 
 
