@@ -67,6 +67,7 @@ void usart_process (BYTE n_port)
 		
 		//__________________________________________________________________________________//
 		case UCMD_TLN:
+			if (MODUL_TELNET == OFF){return;}
 			tell_funx(n_port,&var.port_stat[TEL_SOCK-1]);
 		return;
 	}

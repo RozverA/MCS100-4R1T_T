@@ -10,7 +10,7 @@
 #define MODE_OP_SOCK_TCP_CH 6
 
 #define LEN_HDR 8
-#define MAX_SOCKETS 5
+#define MAX_SOCKETS 6
 #define DEFAULT_MTU_UDP 1480 //1472(MTU) + ip + port + data
 #define DEFAULT_MTU_TCP 1460
 
@@ -59,24 +59,5 @@ extern BYTE* eth_cbuf_ptr();
 #define SOCKET_5 5
 #define SOCKET_6 6
 #define SOCKET_7 7
-
-typedef struct
-{
-DWORD check_sock_0;
-DWORD check_sock_1;
-DWORD check_sock_2;
-DWORD check_sock_3;
-DWORD check_sock_4;	
-	
-DWORD sock_parse_0;
-DWORD sock_parse_1;
-DWORD sock_parse_2;
-DWORD sock_parse_3;
-DWORD sock_parse_4;
-
-}TEST;
-
-extern TEST test;
-
 
 #endif

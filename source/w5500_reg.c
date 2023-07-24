@@ -12,7 +12,6 @@ BYTE wbuf_w55[10];
 W5500_MODE w5500_mode;
 
 volatile WORD sizert=0;
-volatile UDP_HDR udp_msg;
 
 func_st w5500_init_reg(void)
 {
@@ -161,9 +160,9 @@ WORD w5500_write_socket_udp (BYTE numb, BYTE *buf)
 	if(numb_static!=numb){numb_static=numb;st_wr_w5500=0;}
 	if(st_wr_w5500==0)
 	{
-		memcpy((BYTE*)&udp_msg,buf,8);
-		size=(udp_msg.len[0] << 8) | (udp_msg.len[1]);
-		memcpy((BYTE*)&udp_msg.data,&buf[8],size);
+		memcpy((BYTE*)&u_port[numb],buf,8);
+		size=(u_port[numb].len[0] << 8) | (u_port[numb].len[1]);
+		memcpy((BYTE*)&u_port[numb].data,&buf[8],size);
 	}
 	switch(st_wr_w5500)
 	{
@@ -178,7 +177,7 @@ WORD w5500_write_socket_udp (BYTE numb, BYTE *buf)
 		case 1:																	//write ip
 			addr_w5500=ADDR_SOC_D_IP_ADDR0;
 			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
-			ptr_buf=(BYTE*)&udp_msg.ip_addr;
+			ptr_buf=(BYTE*)&u_port[numb].ip_addr;
 			len_buf=4;
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
@@ -186,7 +185,7 @@ WORD w5500_write_socket_udp (BYTE numb, BYTE *buf)
 		case 2:																	//write port
 			addr_w5500=ADDR_SOC_D_PORT0;
 			cb_w5500=SOCKET_REGISTER | SOCKET(numb);
-			ptr_buf=(BYTE*)&udp_msg.port;
+			ptr_buf=(BYTE*)&u_port[numb].port;
 			len_buf=2;
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
@@ -194,8 +193,8 @@ WORD w5500_write_socket_udp (BYTE numb, BYTE *buf)
 		case 3:																	//write data
 			addr_w5500=u_port[numb].ptr_tx_buf;
 			cb_w5500=SOCKET_TX_BUFFER | SOCKET(numb);
-			ptr_buf=(BYTE*)&udp_msg.data;
-			len_buf=(udp_msg.len[0] << 8) | (udp_msg.len[1]);
+			ptr_buf=(BYTE*)&u_port[numb].data;
+			len_buf=(u_port[numb].len[0] << 8) | (u_port[numb].len[1]);
 			u_port[numb].ptr_tx_buf=u_port[numb].ptr_tx_buf+len_buf;
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
@@ -325,9 +324,9 @@ WORD w5500_write_socket_tcp (BYTE numb, BYTE *buf)
 	if(numb_static!=numb){numb_static=numb;st_wr_w5500=0;}
 	if(st_wr_w5500==0)
 	{
-		memcpy((BYTE*)&udp_msg,buf,8);
-		size=(udp_msg.len[0] << 8) | (udp_msg.len[1]);
-		memcpy((BYTE*)&udp_msg.data,&buf[8],size);
+		memcpy((BYTE*)&u_port[numb],buf,8);
+		size=(u_port[numb].len[0] << 8) | (u_port[numb].len[1]);
+		memcpy((BYTE*)&u_port[numb].data,&buf[8],size);
 	}
 	switch(st_wr_w5500)
 	{
@@ -342,8 +341,8 @@ WORD w5500_write_socket_tcp (BYTE numb, BYTE *buf)
 		case 3:																	//write data
 			addr_w5500=u_port[numb].ptr_tx_buf;
 			cb_w5500=SOCKET_TX_BUFFER | SOCKET(numb);
-			ptr_buf=(BYTE*)&udp_msg.data;
-			len_buf=(udp_msg.len[0] << 8) | (udp_msg.len[1]);
+			ptr_buf=(BYTE*)&u_port[numb].data;
+			len_buf=(u_port[numb].len[0] << 8) | (u_port[numb].len[1]);
 			u_port[numb].ptr_tx_buf=u_port[numb].ptr_tx_buf+len_buf;
 			cmd=WRITE_DATA;
 			st_wr_w5500++;

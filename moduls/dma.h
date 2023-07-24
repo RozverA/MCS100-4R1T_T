@@ -9,6 +9,8 @@ typedef struct {
 	__IO DMAC_DESCADDR_Type        DESCADDR;    /**< \brief Offset: 0x0C (R/W 32) Next Descriptor Address */
 } Descriptor;
 
+void dma_init();
+
 extern Descriptor DESCR;
 
 #endif /* DMA_H_ */

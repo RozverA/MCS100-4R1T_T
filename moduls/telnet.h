@@ -22,6 +22,7 @@ typedef struct
 extern TELNET tel;
 
 #define TEL_SOCK 5
+#define TELNET_PORT 23
 
 #define NAME			1
 #define IP				1

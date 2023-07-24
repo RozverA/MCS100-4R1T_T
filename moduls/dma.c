@@ -2,13 +2,20 @@
 #include "moduls.h"
 
 Descriptor DESCR;
+BYTE test_ptr_1[64];
+BYTE test_ptr_2[64];
+BYTE test_ptr_3[64];
 
-void dma_init(DWORD* test_ptr1, DWORD* test_ptr2, DWORD* test_ptr3)
+
+void dma_init()
 {
-
+	for (BYTE i; i < 64; i++)	{test_ptr_1[i] = i;}
+	DWORD* test_ptr1;
+	DWORD* test_ptr2;
+	DWORD* test_ptr3;
 	deb_descriptor_setup(test_ptr1, test_ptr2);
 	deb_dma_setup(test_ptr3);
-	
+	//_____INSTRUCTION_______________
 	//if this register if disable
 		//we can change value this register
 	

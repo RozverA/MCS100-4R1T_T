@@ -12,7 +12,7 @@ extern WORD spi_write(uint16_t addr, uint8_t cb, uint8_t *tx_buf, uint16_t len);
 
 
 
-#define MAX_SIZE_BUF_SPI 1500
+#define MAX_SIZE_BUF_SPI 1480
 
 typedef struct
 {

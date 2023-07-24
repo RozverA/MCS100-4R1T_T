@@ -2,7 +2,6 @@
 
 BYTE eth_cbuf[MAX_SIZE_BUF_SPI];
 volatile WORD size_rd=0;
-TEST test;
 BYTE ch_pause = 0;
 BYTE ch_sock = 1;
 #define CH_TIMER 75
@@ -110,27 +109,22 @@ void check_sockets_process (BYTE *buf)
 	{			
 		case 0:
 				w5500_mode.numb_socket=SOCKET_0;
-				test.check_sock_0++;			//flag about read
 		break;
 		case 1:
 				if(cfg.sock_rs485[0].en==FALSE) {index++;return;}
 				w5500_mode.numb_socket=SOCKET_1;
-				test.check_sock_1++;
 		break;
 		case 2:
 				if(cfg.sock_rs485[1].en==FALSE) {index++;return;}			
 				w5500_mode.numb_socket=SOCKET_2;
-				test.check_sock_2++;
 		break;
 		case 3:
 				if(cfg.sock_rs485[2].en==FALSE) {index++;return;}				
 				w5500_mode.numb_socket=SOCKET_3;
-				test.check_sock_3++;
 		break;
 		case 4:
 				if(cfg.sock_rs485[3].en==FALSE) {index=0;return;}
 				w5500_mode.numb_socket=SOCKET_4;
-				test.check_sock_4++;
 		break;
 	}
 	if(w5500_mode.numb_socket == 0)	
