@@ -41,10 +41,10 @@ BYTE tel_parser(void)
 	switch(tel.mode)
 	{
 		case PARS_MENU:
-		pars_menu();
+			pars_menu();
 		break;
 		case PARSE_IP:
-		
+			
 		break;
 		case WRONG_OR_HELP:
 		
@@ -149,5 +149,16 @@ void symbol_analysis_val(BYTE cnt)
 			}
 		}
 		command++;
+	}
+}
+
+void tel_in_usart_proccess(BYTE n_port, BYTE* status, BYTE* timer)
+{
+	if ( (n_port == 5) && (u_port[TEL_SOCK].r_status) && (! (*timer)) )// (5port - read mode on - timeout)
+	{
+		*status = UCMD_TLN;
+		if ( eth_wait > TIMER_LMT)	{*timer = eth_wait - TIMER_LMT;	return;}//check read timeout
+		else						{*timer = eth_wait + TIMER_COEF;	return;}//check read timeout (alternative)
+		return;
 	}
 }

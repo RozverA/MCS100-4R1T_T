@@ -10,30 +10,25 @@ void usart_process (BYTE n_port)
 	switch(var.port_stat[n_port-1])
 	{
 		case UCMD_CH:
+			
+			//ETH message check
 			if ((!var.port_time[n_port-1]) && (u_port[n_port].r_status))//block (0 - True) and check by read staus
 			{
-				var.port_stat[n_port-1] = UCMD_ETH_RS485; //status for switch case
+				var.port_stat[n_port-1] = UCMD_ETH_RS485;
 				if ( eth_wait > TIMER_LMT)	{var.port_time[n_port-1] = eth_wait - TIMER_LMT;	return;}//check read timeout
 				else						
-					{if (PROC_HERZ == PROC_HERZ48)	{var.port_time[n_port-1] = eth_wait + TIMER_COEF_48;return;}
-					else							{var.port_time[n_port-1] = eth_wait + TIMER_COEF_8 ;return;}}//check read timeout (alternative)
+											
+											{if (PROC_HERZ == PROC_HERZ48)	{var.port_time[n_port-1] = eth_wait + TIMER_COEF_48;return;}
+											else							{var.port_time[n_port-1] = eth_wait + TIMER_COEF_8 ;return;}}
 			}
+			//RS485 message check
 			if (port[n_port-1].rx != port[n_port-1].rn)	
 			{
 				var.port_stat[n_port-1] = UCMD_RS485_ETH;
 				return;
 			}//проверка на чтение 
-			
-			
-			if (MODUL_TELNET == OFF){return;}
-			if ( (n_port == 5) && (u_port[TEL_SOCK].r_status) && (!var.port_time[n_port-1]) )// (5port - read mode on - timeout)
-			{
-			 	var.port_stat[n_port-1] = UCMD_TLN;
-			 	if ( eth_wait > TIMER_LMT)	{var.port_time[TEL_SOCK] = eth_wait - TIMER_LMT;	return;}//check read timeout
-			 	else						{var.port_time[TEL_SOCK] = eth_wait + TIMER_COEF;	return;}//check read timeout (alternative)
-			 	return;
-			}
-			
+ 			if (MODUL_TELNET == OFF){return;}
+			tel_in_usart_proccess(n_port, &var.port_stat[TEL_SOCK], &var.port_time[TEL_SOCK]);
 		return;
 		
 		

@@ -200,3 +200,26 @@ void gpio_init (void)
     PORT->Group[0].PINCFG[18].bit.PMUXEN=0;    // Bit  0    - PMUXEN: Peripheral Multiplexer Enable (0: The peripheral multiplexer selection is disabled)*/  
 	PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA18;  
 }
+
+void led_init()
+{
+	LED_TX0_ON();
+	LED_RX0_ON();
+	LED_TX1_ON();
+	LED_RX1_ON();
+	LED_TX2_ON();
+	LED_RX2_ON();
+	LED_TX3_ON();
+	LED_RX3_ON();
+	
+	wait(time_500ms);
+	
+	LED_TX0_OFF();
+	LED_RX0_OFF();
+	LED_TX1_OFF();
+	LED_RX1_OFF();
+	LED_TX2_OFF();
+	LED_RX2_OFF();
+	LED_TX3_OFF();
+	LED_RX3_OFF();
+}

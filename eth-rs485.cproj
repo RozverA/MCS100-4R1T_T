@@ -218,6 +218,9 @@
     <Compile Include="headers\w5500_reg.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="moduls\debug.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="moduls\dma.c">
       <SubType>compile</SubType>
     </Compile>

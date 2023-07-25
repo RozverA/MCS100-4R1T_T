@@ -46,6 +46,7 @@ void de_caps();
 void symbol_analysis_cmd(BYTE cnt);
 void symbol_analysis_val(BYTE cnt);
 void tell_funx(BYTE n_port, BYTE* port_stat);
+void tel_in_usart_proccess(BYTE n_port, BYTE* status, BYTE* timer);
 
 #define MAX_LEN_CMD_TEL 6
 

@@ -29,27 +29,23 @@ void eth_init(void)
 void eth_process(void)
 {
 	static BYTE eth_st=0;
-	WORD rtrn=0;
+	WORD rtrn = 0;
 	
 	switch(eth_st)
 	{
 		case CHECK:				
-			rtrn=check_data_wr_process(eth_cbuf);// copy to port_udp ;rtrn - sock numb;			
-			if(rtrn!=MAX_SOCKETS)								
+			//write check
+			rtrn = check_data_wr_process(eth_cbuf);// copy to port_udp ;rtrn - sock numb;			
+			if(rtrn != MAX_SOCKETS)								
 			{
-				eth_st=WRITE_PROCESS;
-				if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE)
-																			{w5500_mode.mode_op=MODE_OP_WRITE_TCP;}
-				else                                                        
-																			{w5500_mode.mode_op=MODE_OP_WRITE_UDP;}
-				w5500_mode.numb_socket=rtrn;
+				eth_st = WRITE_PROCESS;
+				if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE)	{w5500_mode.mode_op=MODE_OP_WRITE_TCP;}
+				else                                                       		{w5500_mode.mode_op=MODE_OP_WRITE_UDP;}
+				w5500_mode.numb_socket = rtrn;
 				break;
 			}
-			//write-tcp_check
-			if (rtrn == 5)
-				{
-					rtrn = 0;
-				}
+					//if (rtrn == 5)	{rtrn = 0;} //for fix error: select memory area outside struct (cfg.sock_rs485[max = 4(0-3)])
+			//check TCP reload necessity
 			if (cfg.sock_rs485[ch_sock].mode == TCP_MODE)//!
 			{
 				ch_pause++;
@@ -64,13 +60,14 @@ void eth_process(void)
 					return;
 				}
 			}
+			//drop check number
 			else 
 			{
 				ch_sock++;
 				if (ch_sock == 4){ch_sock = 0;}
 			}	
-						
-			check_sockets_process((BYTE*)&w5500_mode);          //select sockets for read
+			 //select sockets for read			
+			check_sockets_process((BYTE*)&w5500_mode);         
 			eth_st=READ_PROCESS;
 		break;
 		case READ_PROCESS:
@@ -85,17 +82,9 @@ void eth_process(void)
 		break;
 		case TCP_SOCK_PROCESS:
 			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
-			if(rtrn)		
-			{
-				eth_st=0;
-// 				if(ch_sock == 4){ch_sock = 1;ch_pause=0;}
-// 				else			{ch_sock++;ch_pause=0;}
-				break;
-			}
-
+			if(rtrn){eth_st=0;break;}
 		break;
 	}
-
 }
 
 
@@ -126,12 +115,12 @@ void check_sockets_process (BYTE *buf)
 				if(cfg.sock_rs485[3].en==FALSE) {index++;return;}
 				w5500_mode.numb_socket=SOCKET_4;
 		break;
-		case 5:
-				if (MODUL_TELNET == ON)	{w5500_mode.numb_socket=SOCKET_5;}
-		break;
+// 		case 5:
+// 				if (MODUL_TELNET == ON)	{w5500_mode.numb_socket=SOCKET_5;}
+// 		break;
 	}
-	if		(w5500_mode.numb_socket == 0)										{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
-	else if (w5500_mode.numb_socket == TEL_SOCK) 						{w5500_mode.mode_op=MODE_OP_READ_TCP;/*modes.mode_op=MODE_OP_READ_TCP;*/}
+	if		(w5500_mode.numb_socket == 0)								{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
+	else if ((w5500_mode.numb_socket == TEL_SOCK) && (MODUL_TELNET))	{w5500_mode.mode_op=MODE_OP_READ_TCP;/*modes.mode_op=MODE_OP_READ_TCP;*/}
 	else if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE)	{w5500_mode.mode_op=MODE_OP_READ_TCP;/*modes.mode_op=MODE_OP_READ_TCP;*/} 
 	else																{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
 	index++;
@@ -150,12 +139,13 @@ void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 		default_mtu=DEFAULT_MTU_UDP;
 		ptr_port_udp=(BYTE*)&u_port[numb_sock];
 	}
-	else if (numb_sock == TEL_SOCK)
-	{
-		default_mtu=DEFAULT_MTU_TCP;
-		ptr_port_udp=(BYTE*)&u_port[numb_sock];
-		ptr_port_udp=ptr_port_udp+8;
-	}
+	
+// 	else if (numb_sock == TEL_SOCK)
+// 	{
+// 		default_mtu=DEFAULT_MTU_TCP;
+// 		ptr_port_udp=(BYTE*)&u_port[numb_sock];
+// 		ptr_port_udp=ptr_port_udp+8;
+// 	}
 	else if (cfg.sock_rs485[numb_sock-1].mode == TCP_MODE)
 	{
 		default_mtu=DEFAULT_MTU_TCP;
@@ -187,8 +177,6 @@ BYTE check_data_wr_process (BYTE *data_buf)
 			if(size>DEFAULT_MTU_TCP){size=DEFAULT_MTU_TCP;}
 			memcpy(data_buf,(BYTE*)&u_port[sock_numb],size);
 			u_port[sock_numb].w_status=0;
-			if (sock_numb == TEL_SOCK)
-			{sock_numb = TEL_SOCK;}
 			return sock_numb;
 		}
 	}

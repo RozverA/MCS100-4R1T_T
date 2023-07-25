@@ -1,5 +1,3 @@
 #include "def.h"
 
-
-
-UDP_HDR u_port[6];
+UDP_HDR u_port[MAX_SOCKETS];
