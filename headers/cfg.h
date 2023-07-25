@@ -73,6 +73,5 @@ extern WORD cfg_save(void);
 
 #define VERSION "0.0.0.01"		//8 b
 #define MODEL	"_MCS100-4R1T"	//12 b
-//#define MODEL	"_MCS100-2R1T"	//12 b
 
 #endif /* CFG_H_ */

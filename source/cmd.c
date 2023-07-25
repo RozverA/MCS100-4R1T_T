@@ -3,8 +3,6 @@
 BYTE cbuf[512];
 BYTE n_port=1;
 
-BYTE mass[10];
-
 #define CM2_WHO_ARE_YOU 0x01
 #define UID_WHO_ARE_YOU 0x8001
 
@@ -20,8 +18,8 @@ void cmd_common_process (void)
 {
 	WORD  size = 0;
 	WORD  addr = 0;
-	WORD  ixo  = 0;//offset send/rsv
-	WORD  cnt  = 0;//count fur send
+	WORD  ixo  = 0;
+	WORD  cnt  = 0;
     WORD  wn   = 0;
 	WORD  cs   = 0;
 	
@@ -144,6 +142,6 @@ void cmd_common_process (void)
 void cmd_usart_process (void)
 {	
 	if(n_port==5){n_port=1;}
-	usart_process(n_port);//выполнить действия для порта n_portn
+	usart_process(n_port);
 	n_port++;
  }

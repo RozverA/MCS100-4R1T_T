@@ -365,31 +365,8 @@ typedef struct
 			BYTE case1;
 			BYTE case2;
 		}R019_Sn_RX_WR_2A_2B;
-		
-		struct
-		{
-			BYTE CON: 1;
-			BYTE DISCON: 1;
-			BYTE RECV: 1;
-			BYTE TIMEOUT: 1;
-			BYTE SEND_OK: 1;
-			BYTE reserv3: 1;
-			BYTE reserv2: 1;
-			BYTE reserv1: 1;
-		}R20_Sn_IMR_2C;
-		
-		struct
-		{
-			BYTE case1;
-			BYTE case2;
-		}R21_Sn_FRAG_2D_2E;
-		
-		struct
-		{
-			BYTE case1;
-		}R22_Sn_KPALVRT_2F;
 
-	}sockReg[8];
+	}sockReg[6];
 }w5500;
 
 extern w5500 chip;

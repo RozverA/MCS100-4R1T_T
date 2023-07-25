@@ -1,6 +1,8 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
+
+//for PROC_HERZ // need change: PROC_HERZ (right click "Go implementation")
 #define TC3_8			50
 #define TC3_48			75
 #define TC3_100mk		TC3_8	

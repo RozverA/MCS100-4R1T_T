@@ -1,11 +1,7 @@
 #include "def.h"
 
-// WORD last_ptr_rx_buf[]  = {0x00,0x00,0x00,0x00,0x00};
-// BYTE port_stat[] = {UCMD_CH,UCMD_CH,UCMD_CH,UCMD_CH,UCMD_CH};
-// WORD port_time[] = {0x0000,0x0000,0x0000,0x0000,0x0000};
-WORD u_size = 0;
-
-VAR var;
+WORD u_size = 0;//for usart_read
+VAR var; //last ptr, command status, timer
 
 void usart_process (BYTE n_port)
 {

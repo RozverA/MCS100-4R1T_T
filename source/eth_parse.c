@@ -123,19 +123,19 @@ void check_sockets_process (BYTE *buf)
 				w5500_mode.numb_socket=SOCKET_3;
 		break;
 		case 4:
-				if(cfg.sock_rs485[3].en==FALSE) {index=0;return;}
+				if(cfg.sock_rs485[3].en==FALSE) {index++;return;}
 				w5500_mode.numb_socket=SOCKET_4;
 		break;
+		case 5:
+				if (MODUL_TELNET == ON)	{w5500_mode.numb_socket=SOCKET_5;}
+		break;
 	}
-	if(w5500_mode.numb_socket == 0)	
-																	{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
-	else if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE)	
-																	{w5500_mode.mode_op=MODE_OP_READ_TCP;/*modes.mode_op=MODE_OP_READ_TCP;*/} 
-	else												
-																	{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
+	if		(w5500_mode.numb_socket == 0)										{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
+	else if (w5500_mode.numb_socket == TEL_SOCK) 						{w5500_mode.mode_op=MODE_OP_READ_TCP;/*modes.mode_op=MODE_OP_READ_TCP;*/}
+	else if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE)	{w5500_mode.mode_op=MODE_OP_READ_TCP;/*modes.mode_op=MODE_OP_READ_TCP;*/} 
+	else																{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
 	index++;
 	if(index==MAX_SOCKETS){index=0;}
-	/*memcpy(buf,(BYTE*)&modes,sizeof(W5500_MODE));*/
 	return;
 }
 
@@ -150,7 +150,13 @@ void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 		default_mtu=DEFAULT_MTU_UDP;
 		ptr_port_udp=(BYTE*)&u_port[numb_sock];
 	}
-	else if (cfg.sock_rs485[numb_sock-1].mode == TCP_MODE)//!
+	else if (numb_sock == TEL_SOCK)
+	{
+		default_mtu=DEFAULT_MTU_TCP;
+		ptr_port_udp=(BYTE*)&u_port[numb_sock];
+		ptr_port_udp=ptr_port_udp+8;
+	}
+	else if (cfg.sock_rs485[numb_sock-1].mode == TCP_MODE)
 	{
 		default_mtu=DEFAULT_MTU_TCP;
 		ptr_port_udp=((BYTE*)&u_port[numb_sock]);
@@ -181,6 +187,8 @@ BYTE check_data_wr_process (BYTE *data_buf)
 			if(size>DEFAULT_MTU_TCP){size=DEFAULT_MTU_TCP;}
 			memcpy(data_buf,(BYTE*)&u_port[sock_numb],size);
 			u_port[sock_numb].w_status=0;
+			if (sock_numb == TEL_SOCK)
+			{sock_numb = TEL_SOCK;}
 			return sock_numb;
 		}
 	}
