@@ -1,6 +1,15 @@
 #ifndef UDP_H_
 #define UDP_H_
 
+#pragma pack(1)
+typedef struct
+//-----------------------------------------------------------------------------
+{
+	DWORD	tx;
+	DWORD	rx;
+	WORD	crc_err;
+}POINT;
+#pragma pack()
 
 #pragma pack(1)
 typedef struct
@@ -17,13 +26,11 @@ typedef struct
 	
 	WORD ptr_rx_buf;				//ptr rd w5500
 	WORD ptr_tx_buf;				//ptr wr w5500
-}UDP_HDR;
+	
+	POINT counters;
+}ETH_HDR;
 #pragma pack()
 
-
-
-
-extern UDP_HDR u_port[MAX_SOCKETS];
-
+extern ETH_HDR eth_sock[MAX_SOCKETS];
 
 #endif /* UDP_H_ */

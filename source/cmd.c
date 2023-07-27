@@ -23,13 +23,13 @@ void cmd_common_process (void)
     WORD  wn   = 0;
 	WORD  cs   = 0;
 	
-	if(u_port[0].r_status==FALSE) {return;}	
-	u_port[0].r_status=FALSE;
+	if(eth_sock[0].r_status==FALSE) {return;}	
+	eth_sock[0].r_status=FALSE;
 	
 	//size=size_data_sock(0);
-	size=((u_port[0].len[0]<<8) | (u_port[0].len[1]));
+	size=((eth_sock[0].len[0]<<8) | (eth_sock[0].len[1]));
 		
-	memcpy(cbuf,(BYTE*)&u_port[0].data,size);
+	memcpy(cbuf,(BYTE*)&eth_sock[0].data,size);
 
 	
 	
@@ -129,13 +129,13 @@ void cmd_common_process (void)
 	cbuf[wn] = (BYTE)((cs & 0xff00) >> 8);  wn++;
 	
 
-	memcpy((BYTE*)&u_port[0].data,cbuf,wn);
+	memcpy((BYTE*)&eth_sock[0].data,cbuf,wn);
 	
 	
 
-	u_port[0].len[0]=((wn & 0xFF00)>>8);
-	u_port[0].len[1]=(wn & 0x00FF);
-	u_port[0].w_status=1;
+	eth_sock[0].len[0]=((wn & 0xFF00)>>8);
+	eth_sock[0].len[1]=(wn & 0x00FF);
+	eth_sock[0].w_status=1;
 
 }
 

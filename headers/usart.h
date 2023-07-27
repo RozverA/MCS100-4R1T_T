@@ -6,7 +6,12 @@
 typedef struct
 //-----------------------------------------------------------------------------
 {
-
+	Sercom* sercom;
+	DWORD gclk_sercom;
+	BYTE irqn_sercom;
+	
+	
+	
 	unsigned char  wbuf[USART_BUF_SIZE];
 	unsigned char  rbuf[USART_BUF_SIZE];
 	
@@ -29,9 +34,8 @@ typedef struct
 extern volatile USART port[4];
 
 
-extern void usart_init(BYTE i);
+extern void usart_init();
 
-extern void usart_init(BYTE num);
 extern WORD usart_write(BYTE num, BYTE* wbuf,WORD wn);
 extern WORD usart_read(BYTE num, BYTE* rbuf,WORD wn);
 

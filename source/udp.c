@@ -1,3 +1,3 @@
 #include "def.h"
 
-UDP_HDR u_port[MAX_SOCKETS];
+ETH_HDR eth_sock[MAX_SOCKETS];
