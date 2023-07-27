@@ -1,11 +1,13 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
+#ifdef PROC_HERZ8
+#define TC3_100mk		50	
+#endif
 
-//for PROC_HERZ // need change: PROC_HERZ (right click "Go implementation")
-#define TC3_8			50
-#define TC3_48			75
-#define TC3_100mk		TC3_8	
+#ifdef PROC_HERZ48
+#define TC3_100mk		75
+#endif
 
 #define TC3_1m			(TC3_100mk * 10)
 #define TC3_10m			(TC3_100mk * 100)

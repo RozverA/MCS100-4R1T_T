@@ -22,7 +22,7 @@ int main(void)
 	gpio_init();
 	TC3_init();
 	spi_init();
-	usart_init();
+	for(BYTE i = 0; i < 4; i++) {usart_init(i);}
 	eth_init();
 	led_init();
 	

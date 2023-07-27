@@ -141,6 +141,8 @@ WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf)
 			len_buf=cnt;
 			cmd=WRITE_DATA;
 			st_cmd_w5500++;
+			
+			if(0<numb<5){counters.soket[numb - 1].rx += 1;}
 		break;	
 		case UDP_BK_START:
 			st_cmd_w5500=0;//סבנמס ןאנאלוענמג
@@ -238,6 +240,7 @@ WORD w5500_write_socket_udp (BYTE numb, BYTE *buf)
 				len_buf=cnt;
 				cmd=WRITE_DATA;
 				st_wr_w5500++;
+				if(0<numb<5){counters.soket[numb - 1].tx += 1;}
 				break;
 			}
 			st_wr_w5500--;
@@ -305,6 +308,7 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			len_buf=cnt;
 			cmd=WRITE_DATA;
 			st_cmd_w5500 = TCP_BK_START;//"next" 
+			if(0<sock_numb<5){counters.soket[sock_numb - 1].rx += 1;}
 		break;
 		case TCP_BK_START:
 			st_cmd_w5500=0;//סבנמס ןאנאלוענמג
@@ -384,6 +388,7 @@ WORD w5500_write_socket_tcp (BYTE numb, BYTE *buf)
 				len_buf=cnt;
 				cmd=WRITE_DATA;
 				st_wr_w5500++;
+				if(0<numb<5){counters.soket[numb - 1].tx += 1;}
 				break;
 			}
 			st_wr_w5500--;

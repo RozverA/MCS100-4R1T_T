@@ -29,22 +29,10 @@ typedef struct
 extern volatile USART port[4];
 
 
-extern void usart_init(void);
+extern void usart_init(BYTE i);
 
-extern void usart_0_init(void);
-extern WORD usart_0_write(BYTE* wbuf,WORD wn);
-extern WORD usart_0_read(BYTE* rbuf,WORD wn);
-
-extern void usart_1_init(void);
-extern WORD usart_1_write(BYTE* wbuf,WORD wn);
-extern WORD usart_1_read(BYTE* rbuf,WORD wn);
-
-extern void usart_2_init(void);
-extern WORD usart_2_write(BYTE* wbuf,WORD wn);
-extern WORD usart_2_read(BYTE* rbuf,WORD wn);
-
-extern void usart_3_init(void);
-extern WORD usart_3_write(BYTE* wbuf,WORD wn);
-extern WORD usart_3_read(BYTE* rbuf,WORD wn);
+extern void usart_init(BYTE num);
+extern WORD usart_write(BYTE num, BYTE* wbuf,WORD wn);
+extern WORD usart_read(BYTE num, BYTE* rbuf,WORD wn);
 
 #endif /* USART_H_ */

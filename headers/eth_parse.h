@@ -12,7 +12,7 @@
 #define MODE_OP_SOCK_TCP_CH		6
 
 #define LEN_HDR					8
-#define MAX_SOCKETS				5 + MODUL_TELNET
+#define MAX_SOCKETS				5
 #define DEFAULT_MTU_UDP			1480 //1472(MTU) + ip + port + data
 #define DEFAULT_MTU_TCP			1460
 

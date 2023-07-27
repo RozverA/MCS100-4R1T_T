@@ -92,7 +92,6 @@ void eth_process(void)
 void check_sockets_process (BYTE *buf)
 {
 	static BYTE index=0;
-	//W5500_MODE modes;
 	
 	switch(index)
 	{			
@@ -115,12 +114,8 @@ void check_sockets_process (BYTE *buf)
 				if(cfg.sock_rs485[3].en==FALSE) {index++;return;}
 				w5500_mode.numb_socket=SOCKET_4;
 		break;
-// 		case 5:
-// 				if (MODUL_TELNET == ON)	{w5500_mode.numb_socket=SOCKET_5;}
-// 		break;
 	}
 	if		(w5500_mode.numb_socket == 0)								{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
-	else if ((w5500_mode.numb_socket == TEL_SOCK) && (MODUL_TELNET))	{w5500_mode.mode_op=MODE_OP_READ_TCP;/*modes.mode_op=MODE_OP_READ_TCP;*/}
 	else if (cfg.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE)	{w5500_mode.mode_op=MODE_OP_READ_TCP;/*modes.mode_op=MODE_OP_READ_TCP;*/} 
 	else																{w5500_mode.mode_op=MODE_OP_READ_UDP;/*modes.mode_op=MODE_OP_READ_UDP;*/}
 	index++;
@@ -139,13 +134,6 @@ void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 		default_mtu=DEFAULT_MTU_UDP;
 		ptr_port_udp=(BYTE*)&u_port[numb_sock];
 	}
-	
-// 	else if (numb_sock == TEL_SOCK)
-// 	{
-// 		default_mtu=DEFAULT_MTU_TCP;
-// 		ptr_port_udp=(BYTE*)&u_port[numb_sock];
-// 		ptr_port_udp=ptr_port_udp+8;
-// 	}
 	else if (cfg.sock_rs485[numb_sock-1].mode == TCP_MODE)
 	{
 		default_mtu=DEFAULT_MTU_TCP;

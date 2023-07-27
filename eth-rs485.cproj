@@ -182,9 +182,6 @@
     <Compile Include="headers\def.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="headers\delay_my.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="headers\eth_parse.h">
       <SubType>compile</SubType>
     </Compile>
@@ -221,6 +218,9 @@
     <Compile Include="moduls\debug.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="moduls\debug.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="moduls\dma.c">
       <SubType>compile</SubType>
     </Compile>
@@ -228,12 +228,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="moduls\moduls.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="moduls\telnet.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="moduls\telnet.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\cmd.c">

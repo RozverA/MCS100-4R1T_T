@@ -23,9 +23,19 @@ typedef unsigned int   DWORD;
 #include <string.h>
 #include <stdlib.h>
 
-#define PROC_HERZ48		48000000
+//#define PROC_HERZ48		48000000
 #define PROC_HERZ8		8000000
-#define PROC_HERZ		PROC_HERZ8 // need change: TC3_100mk (right click "Go implementation")
+
+#ifdef PROC_HERZ8
+	#define TIMER_COEF 0x01F4 //500
+	#define PROC_HERZ  PROC_HERZ8
+#endif
+
+#ifdef PROC_HERZ48
+	#define TIMER_COEF 0x02EE //750
+	#define PROC_HERZ  PROC_HERZ48
+#endif
+
 
 #define ANSWER	0
 #define SPAM	1
@@ -38,7 +48,6 @@ typedef unsigned int   DWORD;
 #include "samr21g18a.h"
 #include "gpio.h"
 #include "usart.h"
-#include "delay_my.h"
 #include "sys_clock.h"
 #include "timer.h"
 #include "flash.h"
@@ -53,7 +62,7 @@ typedef unsigned int   DWORD;
 #include "cycle.h"
 #include "moduls.h"
 #include "dma.h"
-#include "telnet.h"
+#include "debug.h"
 
 extern WORD reset;
 

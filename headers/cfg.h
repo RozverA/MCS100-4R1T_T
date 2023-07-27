@@ -20,8 +20,6 @@ typedef struct
 }COMMON_CFG;
 #pragma pack()
 
-
-
 #pragma pack(1)
 typedef struct
 //-----------------------------------------------------------------------------
@@ -37,7 +35,6 @@ typedef struct
 	BYTE        :8;
 
 	WORD  tout;    
-
 }SOCKET_RS485_CFG;
 #pragma pack()
 
@@ -56,7 +53,6 @@ typedef struct             // size 512 bytes
 
 	COMMON_CFG com_network;
 	SOCKET_RS485_CFG sock_rs485[4];
-	
 	BYTE  reserv[426];    
 	WORD  cs; 					
 }CFG;

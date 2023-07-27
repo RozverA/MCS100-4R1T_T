@@ -203,23 +203,143 @@ void gpio_init (void)
 
 void led_init()
 {
-	LED_TX0_ON();
-	LED_RX0_ON();
-	LED_TX1_ON();
-	LED_RX1_ON();
-	LED_TX2_ON();
-	LED_RX2_ON();
-	LED_TX3_ON();
-	LED_RX3_ON();
+	gpio_ctrl(LED_TX, 0, ON);
+	gpio_ctrl(LED_RX, 0, ON);
+	gpio_ctrl(LED_TX, 1, ON);
+	gpio_ctrl(LED_RX, 1, ON);
+	gpio_ctrl(LED_TX, 2, ON);
+	gpio_ctrl(LED_RX, 2, ON);
+	gpio_ctrl(LED_TX, 3, ON);
+	gpio_ctrl(LED_RX, 3, ON);
 	
 	wait(time_500ms);
 	
-	LED_TX0_OFF();
-	LED_RX0_OFF();
-	LED_TX1_OFF();
-	LED_RX1_OFF();
-	LED_TX2_OFF();
-	LED_RX2_OFF();
-	LED_TX3_OFF();
-	LED_RX3_OFF();
+	gpio_ctrl(LED_TX, 0, OFF);
+	gpio_ctrl(LED_RX, 0, OFF);
+	gpio_ctrl(LED_TX, 1, OFF);
+	gpio_ctrl(LED_RX, 1, OFF);
+	gpio_ctrl(LED_TX, 2, OFF);
+	gpio_ctrl(LED_RX, 2, OFF);
+	gpio_ctrl(LED_TX, 3, OFF);
+	gpio_ctrl(LED_RX, 3, OFF);
+}
+
+void gpio_ctrl(BYTE device, BYTE  numb, BYTE mod)
+{
+	switch(device << 8 | numb << 4 | mod)
+	{
+		//RTS
+		case (RTS << 8| 0 << 4| STAT):
+			return(PORT->Group[0].IN.reg & PORT_PA12);
+		break;
+		case (RTS << 8| 0 << 4| SET):
+			PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA12;
+		break;
+		case (RTS << 8| 0 << 4| CLR):
+			PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA12;
+		break;
+		case (RTS << 8| 1 << 4| STAT):
+			return(PORT->Group[0].IN.reg & PORT_PA13);
+		break;
+		case (RTS << 8| 1 << 4| SET):
+			PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA13;
+		break;
+		case (RTS << 8| 1 << 4| CLR):
+			PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA13;
+		break;
+		case (RTS << 8| 2 << 4| STAT):
+			return(PORT->Group[0].IN.reg & PORT_PA14);
+		break;
+		case (RTS << 8| 2 << 4| SET):
+			PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA14;
+		break;
+		case (RTS << 8| 2 << 4| CLR):
+			PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA14;
+		break;
+		case (RTS << 8| 3 << 4| STAT):
+			return(PORT->Group[0].IN.reg & PORT_PA15);
+		break;
+		case (RTS << 8| 3 << 4| SET):
+			PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA15;
+		break;
+		case (RTS << 8| 3 << 4| CLR):
+			PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA15;
+		break;
+		//LED
+		case (LED_TX << 8| 0 << 4| ON):
+			PORT_IOBUS->Group[1].OUTCLR.reg=PORT_PB03;
+		break;
+		case (LED_TX << 8| 0 << 4| OFF):
+			PORT_IOBUS->Group[1].OUTSET.reg=PORT_PB03;
+		break;
+		case (LED_TX << 8| 0 << 4| TGL):
+			PORT_IOBUS->Group[1].OUTTGL.reg=PORT_PB03;
+		break;
+		case (LED_TX << 8| 1 << 4| ON):
+			PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA07;
+		break;
+		case (LED_TX << 8| 1 << 4| OFF):
+			PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA07;
+		break;
+		case (LED_TX << 8| 1 << 4| TGL):
+			PORT_IOBUS->Group[0].OUTTGL.reg=PORT_PA07;
+		break;
+		case (LED_TX << 8| 2 << 4| ON):
+			PORT_IOBUS->Group[1].OUTCLR.reg=PORT_PB22;
+		break;
+		case (LED_TX << 8| 2 << 4| OFF):
+			PORT_IOBUS->Group[1].OUTSET.reg=PORT_PB22;
+		break;
+		case (LED_TX << 8| 2 << 4| TGL):
+			PORT_IOBUS->Group[1].OUTTGL.reg=PORT_PB22;
+		break;
+		case (LED_TX << 8| 3 << 4| ON):
+			PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA28;
+		break;
+		case (LED_TX << 8| 3 << 4| OFF):
+			PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA28;
+		break;
+		case (LED_TX << 8| 3 << 4| TGL):
+			PORT_IOBUS->Group[0].OUTTGL.reg=PORT_PA28;
+		break;
+		case (LED_RX << 8| 0 << 4| ON):
+			PORT_IOBUS->Group[1].OUTCLR.reg=PORT_PB02;
+		break;
+		case (LED_RX << 8| 0 << 4| OFF):
+			PORT_IOBUS->Group[1].OUTSET.reg=PORT_PB02;
+		break;
+		case (LED_RX << 8| 0 << 4| TGL):
+			PORT_IOBUS->Group[1].OUTTGL.reg=PORT_PB02;
+		break;
+		case (LED_RX << 8| 1 << 4| ON):
+			PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA06;
+		break;
+		case (LED_RX << 8| 1 << 4| OFF):
+			PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA06;
+		break;
+		case (LED_RX << 8| 1 << 4| TGL):
+			PORT_IOBUS->Group[0].OUTTGL.reg=PORT_PA06;
+		break;
+		case (LED_RX << 8| 2 << 4| ON):
+			PORT_IOBUS->Group[1].OUTCLR.reg=PORT_PB23;
+		break;
+		case (LED_RX << 8| 2 << 4| OFF):
+			PORT_IOBUS->Group[1].OUTSET.reg=PORT_PB23;
+		break;
+		case (LED_RX << 8| 2 << 4| TGL):
+			PORT_IOBUS->Group[1].OUTTGL.reg=PORT_PB23;
+		break;
+		case (LED_RX << 8| 3 << 4| ON):
+			PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA27;
+		break;
+		case (LED_RX << 8| 3 << 4| OFF):
+			PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA27;
+		break;
+		case (LED_RX << 8| 3 << 4| TGL):
+			PORT_IOBUS->Group[0].OUTTGL.reg=PORT_PA27;
+		break;
+		
+		
+
+	}
 }
