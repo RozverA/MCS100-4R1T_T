@@ -209,7 +209,7 @@ DWORD pin_ctrl(BYTE device, BYTE  numb, BYTE mod)
 		case (RTS << 8| 3 << 4| STAT):		return(PORT->Group[0].IN.reg & PORT_PA15);
 		case (RTS << 8| 3 << 4| SET):		PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA15;return;
 		case (RTS << 8| 3 << 4| CLR):		PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA15;return;
-		//LED
+		//LED TX
 		case (LED_TX << 8| 0 << 4| ON):		PORT_IOBUS->Group[1].OUTCLR.reg=PORT_PB03;return;
 		case (LED_TX << 8| 0 << 4| OFF):	PORT_IOBUS->Group[1].OUTSET.reg=PORT_PB03;return;
 		case (LED_TX << 8| 0 << 4| TGL):	PORT_IOBUS->Group[1].OUTTGL.reg=PORT_PB03;return;
@@ -222,6 +222,7 @@ DWORD pin_ctrl(BYTE device, BYTE  numb, BYTE mod)
 		case (LED_TX << 8| 3 << 4| ON):		PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA28;return;
 		case (LED_TX << 8| 3 << 4| OFF):	PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA28;return;
 		case (LED_TX << 8| 3 << 4| TGL):	PORT_IOBUS->Group[0].OUTTGL.reg=PORT_PA28;return;
+		//LED RX
 		case (LED_RX << 8| 0 << 4| ON):		PORT_IOBUS->Group[1].OUTCLR.reg=PORT_PB02;return;
 		case (LED_RX << 8| 0 << 4| OFF):	PORT_IOBUS->Group[1].OUTSET.reg=PORT_PB02;return;
 		case (LED_RX << 8| 0 << 4| TGL):	PORT_IOBUS->Group[1].OUTTGL.reg=PORT_PB02;return;
