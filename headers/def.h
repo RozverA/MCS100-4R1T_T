@@ -8,6 +8,8 @@
 #define TRUE  1
 #define FALSE 0
 
+#define SKIPP_HADER 8 //TCP connect reciv without UDP HEADER
+
 typedef enum
 {
 	SUCCESS = 0,  //0

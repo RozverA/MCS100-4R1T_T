@@ -7,6 +7,11 @@ void led_init();
 #define LED_TX	1
 #define RTS		0
 
+#define PORT485_0		0
+#define PORT485_1		1	
+#define PORT485_2		2	
+#define PORT485_3		3
+
 #define ON				1
 #define OFF				0
 #define TGL				2

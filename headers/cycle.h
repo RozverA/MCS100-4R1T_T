@@ -15,6 +15,7 @@ typedef struct
 	BYTE port_stat[5];
 	WORD port_time[5];
 }VAR;
+
 #pragma pack()
 
 extern VAR vars;
