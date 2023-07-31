@@ -4,7 +4,11 @@
 #define CFG_OK  1
 #define CFG_ERR 0
 
-
+#define CHECK 0
+#define READ_PROCESS 1
+#define WRITE_PROCESS 2
+#define TCP_SOCK_PROCESS 3
+#define GIVE_STAT 4
 
 #pragma pack(1)
 typedef struct

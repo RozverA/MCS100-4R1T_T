@@ -1,10 +1,6 @@
 #include "def.h"
 
 volatile USART port[4];
-//Sercom* sercom[] = {SERCOM1, SERCOM0, SERCOM2, SERCOM3};
-//DWORD gclk_sercom[] = {_U(0x15),_U(0x14),_U(0x16),_U(0x17)};
-//BYTE irqn_sercom[] = {10, 9, 11, 12};
-
 
 void usart_init(){for(BYTE i = 0; i < 4; i++) {init(i);}}
 	
@@ -56,9 +52,7 @@ void init(BYTE n_port)
 	//.............................................................................
 
 	port[n_port].sercom->USART.CTRLA.bit.SWRST   =0x01; //Bit0-SWRST: Software Reset (Writing a one to this bit resets all registers in the SERCOM, except DBGCTRL, to their initial state, and the SERCOM will be disabled.)
-	//SERCOM1->USART.CTRLA.bit.SWRST   =0x01; //Bit0-SWRST: Software Reset (Writing a one to this bit resets all registers in the SERCOM, except DBGCTRL, to their initial state, and the SERCOM will be disabled.)
 	while(port[n_port].sercom->USART.SYNCBUSY.bit.SWRST) { ; } // Bit 0 - SWRST: Software Reset Synchronization Busy
-
 
 	port[n_port].sercom->USART.CTRLA.bit.DORD    =0x01;  // Bit  30    - DORD: Data Order (1: LSB is transmitted first.)
 	port[n_port].sercom->USART.CTRLA.bit.CPOL    =0x00;  // Bit  29    - CPOL: Clock Polarity (0: SCK is low when idle. The leading edge of a clock cycle is a rising edge, while the trailing edge is a falling edge)
@@ -147,7 +141,6 @@ void sercom_proc(BYTE n_port)
 		port[n_port].rn   ++;
 		port[n_port].rtime=0;
 		pin_ctrl(LED_RX, n_port, ON);
-		
 		return;
 	}
 

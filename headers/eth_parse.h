@@ -10,6 +10,7 @@
 #define MODE_OP_READ_TCP		4
 #define MODE_OP_WRITE_TCP		5
 #define MODE_OP_SOCK_TCP_CH		6
+#define MODE_OP_GIVE_STAT		7
 
 #define LEN_HDR					8
 #define MAX_SOCKETS				5

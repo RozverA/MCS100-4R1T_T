@@ -78,8 +78,12 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_SOCK_TCP_CH:
-								rtrn = w5500_ch_sock(sock_numb,buf);
+								rtrn = w5500_ch_sock(sock_numb);
 								if(rtrn)	{w5500_st=0;spi_mode=0;return 1;}
+								w5500_st=SPI_PROCESS;
+		break;
+		case MODE_OP_GIVE_STAT:
+								w5500_give_stat(sock_numb);
 								w5500_st=SPI_PROCESS;
 		break;
 	}
@@ -399,7 +403,7 @@ WORD w5500_write_socket_tcp (BYTE numb, BYTE *buf)
 	return 0;
 }
 
-WORD w5500_ch_sock(BYTE sock_numb, BYTE *buf)
+WORD w5500_ch_sock(BYTE sock_numb)
 {
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
@@ -446,4 +450,23 @@ WORD w5500_ch_sock(BYTE sock_numb, BYTE *buf)
 		break;
 	}
 	return 0;
+}
+
+void w5500_give_stat(BYTE sock_numb)
+{
+	static BYTE st_cmd_w5500=0;
+	static WORD size=0;
+	BYTE cnt=0;
+	switch(st_cmd_w5500)
+	{
+		case 0://READ
+		addr_w5500=ADDR_SOC_STATUS;//addr in w5500
+		cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb
+		ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R04_Sn_SR_03.Status;//place for write result
+		len_buf=1;
+		cmd=READ_DATA;//mode
+		st_cmd_w5500 = 1;//"next"
+		size=0;
+		break;
+	}
 }

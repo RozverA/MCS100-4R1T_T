@@ -14,10 +14,7 @@ int main(void)
 	wdt_start();
 		
 	cfg_init  ();
-	if(cfg_read() == CFG_ERR)
-	{
-		cfg_default();
-	}
+	if(cfg_read() == CFG_ERR)		{cfg_default();}
 		
 	gpio_init();
 	TC3_init();
@@ -31,6 +28,7 @@ int main(void)
 	    if(reset == NULL) {wdt_reset();}//wdt-drop timer
 		eth_process();
 		cmd_process();
+		stat_operator();
 		if (MODUL_DEBUG){debug_funx(NO);}
 	}
 }

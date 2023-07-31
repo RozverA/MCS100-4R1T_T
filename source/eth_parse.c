@@ -19,12 +19,6 @@ void eth_init(void)
 	if(cfg.sock_rs485[3].en==TRUE) {socket_init(SOCKET_4,cfg.sock_rs485[3].src_port,cfg.sock_rs485[3].mode);}
 }
 
-
-#define CHECK 0
-#define READ_PROCESS 1
-#define WRITE_PROCESS 2
-#define TCP_SOCK_PROCESS 3
-
 void eth_process(void)
 {
 	static BYTE eth_st=0;
@@ -34,7 +28,7 @@ void eth_process(void)
 	{
 		case CHECK:				
 			//write check
-			rtrn = check_data_wr_process(eth_cbuf);// copy to port_udp ;rtrn - sock numb;			
+			rtrn = check_data_wr_process(eth_cbuf);// copy to u_port ;rtrn - sock numb;			
 			if(rtrn != MAX_SOCKETS)								
 			{
 				eth_st = WRITE_PROCESS;
@@ -44,25 +38,11 @@ void eth_process(void)
 				break;
 			}
 			//check TCP reload necessity
-			if ((ch_pause < eth_wait) && (cfg.sock_rs485[ch_sock].mode == TCP_MODE))
+			if (ch_pause < eth_wait) 
 			{
-				if ( eth_wait > TIMER_LMT)	{ch_pause = eth_wait - TIMER_LMT;	return;}//check read timeout
-				else						{ch_pause = eth_wait + TIMER_COEF;	return;}
-				eth_st = TCP_SOCK_PROCESS;					//check set
-				w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;	//check status tcp port
-				w5500_mode.numb_socket = ch_sock;			//set port fur set
-				ch_sock++;
-				if (ch_sock == 4){ch_sock = 0;}
-				return;
+				low_prioriti_cmd(&eth_st);
 			}
-			//drop check number
-			else 
-			{
-				ch_sock++;
-				if (ch_sock == 4){ch_sock = 0;}
-			}	
-			 //select sockets for read			
-			check_sockets_process((BYTE*)&w5500_mode);         
+			check_sockets_process((BYTE*)&w5500_mode);//select sockets for read			
 			eth_st=READ_PROCESS;
 		break;
 		case READ_PROCESS:
@@ -79,9 +59,45 @@ void eth_process(void)
 			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
 			if(rtrn){eth_st=0;break;}
 		break;
+		case GIVE_STAT:
+			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
+		break;
+
 	}
 }
 
+void low_prioriti_cmd(BYTE* eth_st)
+{
+	timer_set(&ch_pause);
+	if (ch_sock < 4)	{tcp_check(ch_sock, eth_st);}
+	else				{w5500_give_status(ch_sock - 4);}	
+	ch_sock++;
+	if (ch_sock == 8)	{ch_sock = 0;}
+}
+
+void tcp_check(BYTE ch_sock, BYTE* eth_st)
+{
+	if (cfg.sock_rs485[ch_sock].mode != TCP_MODE) {return;}
+		
+	*eth_st = TCP_SOCK_PROCESS;					//check set mode
+	w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;	//w5500 mode - check TCP connect
+	w5500_mode.numb_socket = ch_sock;			//set port fur set
+	
+	return;
+}
+
+void timer_set (BYTE timer)
+{
+	if ( eth_wait > TIMER_LMT)	{timer = eth_wait - TIMER_LMT;	return;}//check read timeout
+	else						{timer = eth_wait + TIMER_COEF;	return;}
+}
+				
+void w5500_give_status(BYTE sock_numb)
+{
+	if (cfg.sock_rs485[ch_sock].mode != UDP_MODE) {return;}
+	w5500_mode.mode_op = GIVE_STAT;			//collect status port
+	w5500_mode.numb_socket = sock_numb;		//set port fur set
+}
 
 
 void check_sockets_process (BYTE *buf)
