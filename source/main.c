@@ -7,7 +7,7 @@ int main(void)
 {
 	SCB->VTOR=0x00004000;
 	
-	if (PROC_HERZ == PROC_HERZ8)	{sys_clock_init_USE_OSC8M();}   //8MHz
+	if (PROC_HERZ == 8000000)		{sys_clock_init_USE_OSC8M();}   //8MHz
 	else							{sys_clock_init_USE_DFLL48M();}	//48MHz
 		
 	__enable_irq();

@@ -17,8 +17,8 @@ void led_init();
 #define TGL				2
 
 #define STAT			0
-#define SET				1
-#define CLR				2
+#define SET				1 //Request to send (запрос на отправку) - низкий уровень на этом выходе сигнализирует о готовности USART принимать данные.
+#define CLR				2 //Clear To Send (очистить для отправки)- высокий уровень на входе приостанавливает передачу данных после завершения текущей посылки.
 
 extern void gpio_init (void);
 extern DWORD pin_ctrl(BYTE device, BYTE  numb, BYTE mod);

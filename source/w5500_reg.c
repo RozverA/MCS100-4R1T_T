@@ -158,17 +158,17 @@ WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf)
 
 WORD w5500_write_socket_udp (BYTE numb, BYTE *buf)
 {
-	static BYTE st_wr_w5500=0;
-	static BYTE numb_static=0;
-	WORD cnt=0;
-	WORD size=0;
+	static BYTE st_wr_w5500 = 0;
+	static BYTE numb_static = 0;
+	WORD cnt = 0;
+	WORD size = 0;
 	
-	if(numb_static!=numb){numb_static=numb;st_wr_w5500=0;}
-	if(st_wr_w5500==0)
+	if(numb_static != numb) {numb_static = numb; st_wr_w5500 = 0;}
+	if(st_wr_w5500 == 0)
 	{
-		memcpy((BYTE*)&eth_sock[numb],buf,8);
+		memcpy( (BYTE*) & eth_sock[numb], buf, 8 );
 		size=(eth_sock[numb].len[0] << 8) | (eth_sock[numb].len[1]);
-		memcpy((BYTE*)&eth_sock[numb].data,&buf[8],size);
+		memcpy( (BYTE*) & eth_sock[numb].data, &buf[8], size);
 	}
 	switch(st_wr_w5500)
 	{

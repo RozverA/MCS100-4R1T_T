@@ -99,7 +99,6 @@ void w5500_give_status(BYTE sock_numb)
 	w5500_mode.numb_socket = sock_numb;		//set port fur set
 }
 
-
 void check_sockets_process (BYTE *buf)
 {
 	static BYTE index=MAX_SOCKETS;
@@ -134,11 +133,11 @@ void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 		default_mtu=DEFAULT_MTU_UDP;
 		ptr_port_udp=(BYTE*)&eth_sock[numb_sock];
 	}
-	else if (cfg.sock_rs485[numb_sock-1].mode == TCP_MODE)
+	else if (cfg.sock_rs485[numb_sock - 1].mode == TCP_MODE)
 	{
 		default_mtu=DEFAULT_MTU_TCP;
-		ptr_port_udp=((BYTE*)&eth_sock[numb_sock]);
-		ptr_port_udp=ptr_port_udp+SKIPP_HADER;
+		ptr_port_udp=((BYTE*) & eth_sock[numb_sock]);
+		ptr_port_udp=ptr_port_udp + SKIPP_HADER;
 	}
 	else
 	{
@@ -147,7 +146,7 @@ void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
 	}
 	if(size>default_mtu){size=default_mtu;}
 	memcpy(ptr_port_udp,buf,size);
-	eth_sock[numb_sock].r_status=1;
+	eth_sock[numb_sock].r_status = 1;
 }
 
 BYTE check_data_wr_process (BYTE *data_buf)
@@ -155,14 +154,14 @@ BYTE check_data_wr_process (BYTE *data_buf)
 	BYTE sock_numb=0;
 	WORD size=0;		
 
-	for(sock_numb=0;sock_numb<MAX_SOCKETS;sock_numb++)
+	for( sock_numb = 0; sock_numb < MAX_SOCKETS; sock_numb++ )
 	{
-		if(eth_sock[sock_numb].w_status==1)
+		if( eth_sock[sock_numb].w_status == 1 )
 		{
-			size=((eth_sock[sock_numb].len[0]<<8) | (eth_sock[sock_numb].len[1]))+LEN_HDR;
-			if(size>DEFAULT_MTU_TCP){size=DEFAULT_MTU_TCP;}
-			memcpy(data_buf,(BYTE*)&eth_sock[sock_numb],size);
-			eth_sock[sock_numb].w_status=0;
+			size=( ( eth_sock[sock_numb].len[0] << 8 ) | ( eth_sock[sock_numb].len[1] ) ) + LEN_HDR;
+			if( size > DEFAULT_MTU_TCP ) { size = DEFAULT_MTU_TCP; }
+			memcpy( data_buf, (BYTE*) & eth_sock[sock_numb], size );
+			eth_sock[sock_numb].w_status = 0;
 			return sock_numb;
 		}
 	}
