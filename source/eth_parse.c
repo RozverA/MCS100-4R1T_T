@@ -69,10 +69,11 @@ void eth_process(void)
 void low_prioriti_cmd(BYTE* eth_st)
 {
 	timer_set(&ch_pause);
-	if (ch_sock < 4)	{tcp_check(ch_sock, eth_st);}
-	else				{w5500_give_status(ch_sock - 4);}	
+	if (ch_sock < 4)		{tcp_check(ch_sock, eth_st);}
+	else if (ch_sock < 4)	{w5500_give_status(ch_sock - 4);}
+	else					{chip_stat();}
 	ch_sock++;
-	if (ch_sock == 8)	{ch_sock = 0;}
+	if (ch_sock == 9)	{ch_sock = 0;}
 }
 
 void tcp_check(BYTE ch_sock, BYTE* eth_st)

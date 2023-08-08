@@ -1,5 +1,7 @@
 #include "def.h"
 
+ERR er_list;
+
 WORD low_timer = 0;
 
 void stat_operator()
@@ -31,4 +33,24 @@ void debug_funx(BYTE mode)
 			if (MODUL_DMA == ON)	{dma_init();}
 		break;
 	}
+}
+
+void chip_stat()
+{
+	BYTE i = 0;
+	while (i < 4)
+	{
+		if (port[i].sercom->USART.STATUS.bit.COLL)		{er_list.usart[i].collision++;	port[i].sercom->USART.STATUS.bit.COLL = 1;}
+		if (port[i].sercom->USART.STATUS.bit.ISF)		{er_list.usart[i].synchr++;		port[i].sercom->USART.STATUS.bit.ISF = 1;}
+		if (port[i].sercom->USART.STATUS.bit.CTS)		{er_list.usart[i].CTS++;		/*port[i].sercom->USART.STATUS.bit.CTS = 1;*/}
+		if (port[i].sercom->USART.STATUS.bit.BUFOVF)	{er_list.usart[i].buf_ovf++;	port[i].sercom->USART.STATUS.bit.BUFOVF = 1;}
+		if (port[i].sercom->USART.STATUS.bit.FERR)		{er_list.usart[i].st_bit++;		port[i].sercom->USART.STATUS.bit.FERR = 1;}
+		if (port[i].sercom->USART.STATUS.bit.PERR)		{er_list.usart[i].prty++;		port[i].sercom->USART.STATUS.bit.PERR = 1;}
+		i++;
+	}
+	if (NVMCTRL->STATUS.bit.NVME)		{er_list.nvwc.NVWC_err++;	NVMCTRL->STATUS.bit.NVME = 1;}
+	if (NVMCTRL->STATUS.bit.LOCKE)		{er_list.nvwc.lock_area++;	NVMCTRL->STATUS.bit.LOCKE = 1;}
+	if (NVMCTRL->STATUS.bit.PROGE)		{er_list.nvwc.prog_err++;	NVMCTRL->STATUS.bit.PROGE = 1;}
+	if (NVMCTRL->STATUS.bit.LOAD)		{er_list.nvwc.load_buf++;	/*NVMCTRL.STATUS.bit.LOAD = 1;*/}
+	if (NVMCTRL->STATUS.bit.PRM)		{er_list.nvwc.PRM++;		/*NVMCTRL.STATUS.bit.PRM = 1;*/}
 }
