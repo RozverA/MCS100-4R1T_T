@@ -118,6 +118,19 @@ void cmd_common_process (void)
 										reset=1;
 		break;
 		//......................................................................
+		case 0:						if(size  !=  5) { return; } 
+				
+										if(crc16_ccit((BYTE*)&cfg_tmp,sizeof(CFG)) != 0)
+										{
+											break;
+										}
+		
+										memcpy(&cfg,&cfg_tmp,sizeof(CFG));
+										wn =+cfg_save();			
+										reset=1;
+		break;
+		//......................................................................
+		
 		default :	   return;
 	}
 	
