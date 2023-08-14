@@ -3,7 +3,7 @@
 
 extern func_st socket_init (BYTE numb, WORD src_port, BYTE mode);
 
-#define TCP_MODE 1
-#define UDP_MODE 2
+#define TCP_MODE 2
+#define UDP_MODE 1
 
 #endif

@@ -8,11 +8,10 @@
 #pragma pack(1)
 typedef struct
 {
-	WORD last_ptr_rx_buf[5];
-	BYTE stage[5];
-	WORD time[5];
+	WORD last_ptr_rx_buf[4];
+	BYTE stage[4];
+	WORD time[4];
 }VAR;
-
 #pragma pack()
 
 extern VAR vars;

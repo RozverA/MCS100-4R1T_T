@@ -7,13 +7,14 @@ void usart_process (BYTE n_port)
 {
 	WORD size;
 	DWORD timer_lim = (0xFFFF - (cfg.sock_rs485[n_port-1].tout * 1.2));
+	
 	if ( var.time[n_port-1] < eth_wait )	{var.time[n_port-1] = 0;};//check end block port
 	switch(var.stage[n_port-1])
 	{
 		case UCMD_CH:
 			
 			//ETH message check
-			if ((!var.time[n_port-1]) && (eth_sock[n_port].r_status))//block (0 - True) and check by read staus
+			if ((!var.time[n_port-1]) && (eth_sock[n_port].r_status))//block (0 - True) and check by read status
 			{
 				var.stage[n_port-1] = UCMD_ETH_RS485;
 				if ( eth_wait > timer_lim)	{var.time[n_port-1] = eth_wait - timer_lim;	return;}//check read timeout
