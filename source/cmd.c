@@ -52,7 +52,7 @@ void cmd_common_process (void)
 	switch(cbuf[2])
 	{
 		case 0x01:                
-									//if(cbuf[wn]==0x01)
+									if(cbuf[wn]==0x01)
 										{
 										   
 										cbuf[wn]  = CM2_WHO_ARE_YOU;									wn += sizeof(BYTE);
@@ -65,22 +65,19 @@ void cmd_common_process (void)
 		break;	
 		//......................................................................
 		case 0x02:                
-									if(cbuf[wn]==0x0A)
-									{
-										   
-										cbuf[wn]  = CM2_STATUS_PACK;									wn += sizeof(BYTE);
-										cbuf[wn]  = (BYTE)UID_STATUS_PACK;								wn += sizeof(BYTE);
-										cbuf[wn]  = (BYTE)(UID_STATUS_PACK>>8);							wn += sizeof(BYTE);
-										
-										while(i<4)
+										if(cbuf[wn]==0x0A)
 										{
-											memcpy(&cbuf[wn],eth_sock[1].counters.rx,4);					wn += sizeof(DWORD);
-											memcpy(&cbuf[wn],eth_sock[1].counters.tx,4);					wn += sizeof(DWORD);
-											memcpy(&cbuf[wn],port[1].counters.rx,4);						wn += sizeof(DWORD);
-											memcpy(&cbuf[wn],port[1].counters.tx,4);						wn += sizeof(DWORD);
+											cbuf[wn]  = CM2_STATUS_PACK;									wn += sizeof(BYTE);
+											cbuf[wn]  = (BYTE)UID_STATUS_PACK;								wn += sizeof(BYTE);
+											cbuf[wn]  = (BYTE)(UID_STATUS_PACK>>8);							wn += sizeof(BYTE);
+											for (i = 0; i < 4; i++)
+											{
+												memcpy(&cbuf[wn],(BYTE*)&eth_sock[i+1].counters.rx,4);		wn += sizeof(DWORD);
+												memcpy(&cbuf[wn],(BYTE*)&eth_sock[i+1].counters.tx,4);		wn += sizeof(DWORD);
+												memcpy(&cbuf[wn],(BYTE*)&port[i].counters.rx,4);			wn += sizeof(DWORD);
+												memcpy(&cbuf[wn],(BYTE*)&port[i].counters.tx,4);			wn += sizeof(DWORD);
+											}
 										}
-
-									}
 		break;											
 		//......................................................................
 		case 0x07:  				

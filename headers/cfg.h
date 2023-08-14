@@ -70,6 +70,7 @@ extern WORD cfg_read(void);
 extern void cfg_default(void);
 extern WORD cfg_save(void);
 #define cfg_drop() {cfg_default();cfg_save();}
+void cfg_check();
 
 #define VERSION "0.0.0.01"		//8 b
 #define MODEL	"_MCS100-4R1T"	//12 b

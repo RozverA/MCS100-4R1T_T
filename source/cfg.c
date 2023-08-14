@@ -89,7 +89,17 @@ void cfg_default(void)
 	//..............................................................................
 }
 
-
+void cfg_check()
+{
+	BYTE n_port = 0;
+	BYTE i = 0;
+	while (i < 4)
+	{
+		if (50 < cfg.sock_rs485[n_port].tout < 1000) 
+		{cfg.sock_rs485[n_port].tout = 100;}
+		i++; n_port++;
+	}
+}
 
 
 WORD cfg_save(void)
