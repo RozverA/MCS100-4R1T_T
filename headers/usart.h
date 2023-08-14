@@ -10,6 +10,16 @@
 #define FRAME_NO_PARITY 0
 #define FRAME_WITH_PARITY 1
 
+#pragma pack(1)
+typedef struct
+//-----------------------------------------------------------------------------
+{
+	DWORD	tx;
+	DWORD	rx;
+	WORD	crc_err;
+}POIN;
+#pragma pack()
+
 typedef struct
 //-----------------------------------------------------------------------------
 {
@@ -36,6 +46,8 @@ typedef struct
 	unsigned short dre;
 	unsigned short rxc;
 	unsigned short txc;
+	
+	POIN counters;
 }USART;
 
 extern volatile USART port[4];

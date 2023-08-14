@@ -34,6 +34,7 @@ void usart_process (BYTE n_port)
 				eth_sock[n_port].w_status = 1;
 			}
 			var.port_stat[n_port-1] = UCMD_CH;
+			eth_sock[n_port].counters.tx++;
 		return;
 		
 		
@@ -45,6 +46,7 @@ void usart_process (BYTE n_port)
 			var.last_ptr_rx_buf[n_port-1] = eth_sock[n_port].ptr_rx_buf;//write last position pointer for compare 
 			eth_sock[n_port].r_status = 0;// read_status off for correct work usart_proc
 			var.port_stat[n_port-1] = UCMD_CH;
+			eth_sock[n_port].counters.rx++;
 		return;
 	}
 }

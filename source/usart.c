@@ -129,6 +129,7 @@ WORD usart_write(BYTE n_port, BYTE* wbuf,WORD wn)
 	port[n_port].sercom->USART.DATA.reg=port[n_port].wbuf[0];
 	port[n_port].sercom->USART.INTENCLR.bit.RXC = 1;
 	port[n_port].sercom->USART.INTENSET.bit.DRE = 1;
+	port[n_port].counters.tx++;
 	return(wn);
 }
 
@@ -147,7 +148,7 @@ WORD usart_read (BYTE n_port, BYTE* rbuf,WORD rn)
 	port[n_port].rn = 0;
 	port[n_port].rx = 0;
 	pin_ctrl(LED_RX, n_port, OFF);
-	eth_sock[n_port + 1].counters.rx++;
+	port[n_port].counters.rx++;
 	return(size);
 }
 
