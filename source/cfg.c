@@ -71,16 +71,17 @@ void cfg_default(void)
 	//...........................................................................
 	for(i=0;i<4;++i)
 	{
-		cfg.sock_rs485[i].mode	   = UDP_MODE;
+		cfg.sock_rs485[i].mode		= UDP_MODE;
 		//cfg.sock_rs485[i].mode	   = TCP_MODE;
-		cfg.sock_rs485[i].en	   = TRUE;
+		cfg.sock_rs485[i].en		= TRUE;
 		
-		cfg.sock_rs485[i].src_port =5001+i;
+		cfg.sock_rs485[i].src_port	=5001+i;
 		
-		cfg.sock_rs485[i].baud     =38400;
-		cfg.sock_rs485[i].bsize    =8;
-		cfg.sock_rs485[i].parity   =0;
-		cfg.sock_rs485[i].stop     =0;
+		cfg.sock_rs485[i].baud		=38400;
+		cfg.sock_rs485[i].bsize		=8;
+		cfg.sock_rs485[i].parity	=0;
+		cfg.sock_rs485[i].stop		=0;
+		cfg.sock_rs485[i].tout		=100;
 
 	}
 

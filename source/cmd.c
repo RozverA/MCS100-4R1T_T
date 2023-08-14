@@ -6,6 +6,10 @@ BYTE n_port=1;
 #define CM2_WHO_ARE_YOU 0x01
 #define UID_WHO_ARE_YOU 0x8001
 
+
+#define CM2_STATUS_PACK 0x02
+#define UID_STATUS_PACK 0x800A
+
 void cmd_process(void)
 {
 cmd_common_process ();
@@ -29,6 +33,7 @@ void cmd_common_process (void)
 	//size=size_data_sock(0);
 	size=((eth_sock[0].len[0]<<8) | (eth_sock[0].len[1]));
 		
+	if (size > MAX_SIZE_BUF_SPI){size = MAX_SIZE_BUF_SPI;}
 	memcpy(cbuf,(BYTE*)&eth_sock[0].data,size);
 
 	
@@ -56,7 +61,23 @@ void cmd_common_process (void)
 										memcpy(&cbuf[wn],((BYTE*)&cfg.com_network.mac_addr),6);			wn+=6;
 										memcpy(&cbuf[wn],VERSION,strlen(VERSION));						wn+=strlen(VERSION);
 										}
-		break;										
+		break;	
+		case 0x02:                
+									if(cbuf[wn]==0x0A)
+										{
+										   
+										cbuf[wn]  = CM2_STATUS_PACK;									wn += sizeof(BYTE);
+										cbuf[wn]  = (BYTE)UID_STATUS_PACK;								wn += sizeof(BYTE);
+										cbuf[wn]  = (BYTE)(UID_STATUS_PACK>>8);							wn += sizeof(BYTE);
+										memcpy(&cbuf[wn],eth_sock[1].counters.rx,4);					wn += sizeof(DWORD);
+										memcpy(&cbuf[wn],eth_sock[1].counters.tx,4);					wn += sizeof(DWORD);
+										
+										memcpy(&cbuf[wn],eth_sock[1].counters.rx,4);					wn += sizeof(DWORD);
+										memcpy(&cbuf[wn],eth_sock[1].counters.rx,4);					wn += sizeof(DWORD);
+										
+										
+										}
+		break;											
 		//......................................................................
 		case 0x07:  				
 										if(size != 7) { return; }             // CMD=0x07 Read CFG
@@ -107,18 +128,6 @@ void cmd_common_process (void)
 		break;
 		//......................................................................
 		case 0x27:						if(size  !=  5) { return; } 
-				
-										if(crc16_ccit((BYTE*)&cfg_tmp,sizeof(CFG)) != 0)
-										{
-											break;
-										}
-		
-										memcpy(&cfg,&cfg_tmp,sizeof(CFG));
-										wn =+cfg_save();			
-										reset=1;
-		break;
-		//......................................................................
-		case 0:						if(size  !=  5) { return; } 
 				
 										if(crc16_ccit((BYTE*)&cfg_tmp,sizeof(CFG)) != 0)
 										{

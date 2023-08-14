@@ -12,11 +12,11 @@ void usart_process (BYTE n_port)
 		case UCMD_CH:
 			
 			//ETH message check
-			if ((!var.port_time[n_port-1]) && (eth_sock[n_port].r_status))//block (0 - True) and check by read staus
+			if ((!var.port_time[n_port-1]) && (eth_sock[n_port].r_status))//block (0 - True) and check by read status
 			{
 				var.port_stat[n_port-1] = UCMD_ETH_RS485;
-				if ( eth_wait > TIMER_LMT)	{var.port_time[n_port-1] = eth_wait - TIMER_LMT;	return;}//check read timeout
-				else						{var.port_time[n_port-1] = eth_wait + TIMER_COEF;	return;}
+				if ( eth_wait > var.port_time[n_port-1])	{var.port_time[n_port-1] = eth_wait - (0xFFFF - ((cfg.sock_rs485[n_port-1].tout * 10) * 1.2));	return;}//check read timeout cfg.sock_rs485[n_port-1].tout
+				else										{var.port_time[n_port-1] = eth_wait + (cfg.sock_rs485[n_port-1].tout * 10);	return;}
 			}
 			//RS485 message check
 			if (port[n_port-1].rx != port[n_port-1].rn)	{var.port_stat[n_port-1] = UCMD_RS485_ETH;}
@@ -28,6 +28,7 @@ void usart_process (BYTE n_port)
 			u_size = usart_read(n_port - 1, port[n_port-1].rbuf, (port[n_port-1].rn - port[n_port-1].rx) );   //give mess size
 			if (u_size != 0)
 			{
+				if (u_size > DEFAULT_MTU_TCP){u_size = DEFAULT_MTU_TCP;}
 				memcpy(eth_sock[n_port].data, port[n_port-1].rbuf, u_size);//copy in buffer
 				eth_sock[n_port].len[0] = (u_size & 0xFF00) >> 8;	eth_sock[n_port].len[1] = u_size & 0x00FF; //write mess size in port_udp
 				eth_sock[n_port].w_status = 1;

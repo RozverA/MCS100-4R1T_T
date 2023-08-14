@@ -8,6 +8,7 @@ void init(BYTE n_port)
 {
 	double tout = 0;
 	double bsize = 0;
+	DWORD val = 0;
 	bsize = 9;
 
 	switch(n_port)
@@ -57,7 +58,6 @@ void init(BYTE n_port)
 	port[n_port].sercom->USART.CTRLA.bit.DORD    =0x01;									// Bit  30    - DORD: Data Order (1: LSB is transmitted first.)
 	port[n_port].sercom->USART.CTRLA.bit.CPOL    =0x00;									// Bit  29    - CPOL: Clock Polarity (0: SCK is low when idle. The leading edge of a clock cycle is a rising edge, while the trailing edge is a falling edge)
 	port[n_port].sercom->USART.CTRLA.bit.CMODE   =0x00;									// Bit  28    - CMODE: Communication Mode (0: Asynchronous communication.)
-	port[n_port].sercom->USART.CTRLA.bit.FORM    =0x00;									// Bits 27:24 - FORM: Frame Format (0: USART frame NO PARITY)
 	port[n_port].sercom->USART.CTRLA.bit.SAMPA   =0x00;									// Bits 23:22 - SAMPA[1:0]: Sample Adjustment (0: 3-4-5)
 	port[n_port].sercom->USART.CTRLA.bit.SAMPR   =0x02;									// Bits 15:13 - SAMPR[2:0]: Sample Rate (2: 8x over-sampling using arithmetic baud rate generation.)
 	port[n_port].sercom->USART.CTRLA.bit.IBON    =0x00;									// Bit  8     - IBON: Immediate Buffer Overflow Notification (0: STATUS.BUFOVF is asserted when it occurs in the data stream)
@@ -65,14 +65,33 @@ void init(BYTE n_port)
 	port[n_port].sercom->USART.CTRLA.bit.MODE    =0x01;									// Bits 4:2   - MODE: Operating Mode (1: USART with internal clock.)
 	port[n_port].sercom->USART.CTRLA.bit.TXPO    =0x02;									// Bits 17:16 - TXPO: Transmit Data Pinout (2: TX->PAD[0], RTS->PAD[2])
 	port[n_port].sercom->USART.CTRLA.bit.RXPO    =0x01;									// Bits 21:20 - RXPO: Receive Data Pinout (1: RX->PAD[1])
-	port[n_port].sercom->USART.CTRLB.bit.PMODE   =cfg.sock_rs485[n_port].parity;		// Bit  13    - PMODE: Parity Mode (0: Even parity)
 	port[n_port].sercom->USART.CTRLB.bit.ENC     =0x00;									// Bit  10    - ENC: Encoding Format (0: Data is not encoded.)
 	port[n_port].sercom->USART.CTRLB.bit.SFDE    =0x01;									// Bit  9     - SFDE: Start of Frame Detection Enable (1: Start-of-frame detection enabled.)
 	port[n_port].sercom->USART.CTRLB.bit.COLDEN  =0x00;									// Bit  8     - COLDEN: Collision Detection Enable (0: Collision detection is not enabled.)
-	port[n_port].sercom->USART.CTRLB.bit.SBMODE  =cfg.sock_rs485[n_port].stop;			// Bit  6     - SBMODE: Stop Bit Mode (0: One stop bit.)
-	port[n_port].sercom->USART.CTRLB.bit.CHSIZE  = (cfg.sock_rs485[n_port].bsize - 8);	// Bits 2:0   - CHSIZE: Character Size (0: 8 bits)
+	
 
-	port[n_port].sercom->USART.BAUD.bit.BAUD=65536.0f*(1.0f-(8.0*(float)(cfg.sock_rs485[n_port].baud))/(float)(PROC_HERZ));
+	//cfg settings
+	//frame
+	if (cfg.sock_rs485[n_port].parity == PARITY_NONE) {val = FRAME_NO_PARITY;}	else {val = FRAME_WITH_PARITY;}					// Bits 27:24 - FORM: Frame Format (0: USART frame NO PARITY)
+	port[n_port].sercom->USART.CTRLA.bit.FORM    = val;
+	//parity
+	if( 2 < cfg.sock_rs485[n_port].parity < 1) { val = cfg.sock_rs485[n_port].parity;} else { val = 0;}							// Bit  13    - PMODE: Parity Mode (0: Even parity)
+	port[n_port].sercom->USART.CTRLB.bit.PMODE = val;
+	//stop bit
+	if( 0 <= cfg.sock_rs485[n_port].stop <= 1)	{port[n_port].sercom->USART.CTRLB.bit.SBMODE  = cfg.sock_rs485[n_port].stop;}	// Bit  6     - SBMODE: Stop Bit Mode (0: One stop bit.)
+	//char size
+	switch (cfg.sock_rs485[n_port].bsize)
+	{
+		case 8:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x0; break;
+		case 7:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x7; break;
+		default:port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x0; break;
+	}
+	//baud
+	val = cfg.sock_rs485[n_port].baud;
+	if ( !((val == 0x2580) || (val == 0x9600) || (val == 0x1C200)) ) {val = 0x9600;}
+	port[n_port].sercom->USART.BAUD.bit.BAUD = 65536.0f*(1.0f-(8.0*(float)(val))/(float)(PROC_HERZ)); 
+
+
 
 	port[n_port].sercom->USART.INTENSET.bit.RXC  =0x01; // Bit 2 RXC: Receive Complete Interrupt Enable
 
@@ -122,7 +141,8 @@ WORD usart_read (BYTE n_port, BYTE* rbuf,WORD rn)
 	size = port[n_port].rn;
 
 	if(rn < size) { size = rn;}
-
+	
+	if(size > USART_BUF_SIZE) { size = USART_BUF_SIZE; }
 	memcpy(rbuf,port[n_port].rbuf,size);
 	port[n_port].rn = 0;
 	port[n_port].rx = 0;
@@ -133,7 +153,13 @@ WORD usart_read (BYTE n_port, BYTE* rbuf,WORD rn)
 
 void sercom_proc(BYTE n_port)
 {
-	if(port[n_port].sercom->USART.INTFLAG.bit.RXC)
+	if (port[n_port].sercom->USART.STATUS.bit.COLL)		{er_list.usart[n_port].collision++;	port[n_port].sercom->USART.STATUS.bit.COLL = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.ISF)		{er_list.usart[n_port].synchr++;		port[n_port].sercom->USART.STATUS.bit.ISF = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.CTS)		{er_list.usart[n_port].CTS++;		/*port[i].sercom->USART.STATUS.bit.CTS = 1;*/}
+	if (port[n_port].sercom->USART.STATUS.bit.BUFOVF)	{er_list.usart[n_port].buf_ovf++;	port[n_port].sercom->USART.STATUS.bit.BUFOVF = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.FERR)		{er_list.usart[n_port].st_bit++;		port[n_port].sercom->USART.STATUS.bit.FERR = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.PERR)		{er_list.usart[n_port].prty++;		port[n_port].sercom->USART.STATUS.bit.PERR = 1;}
+	if (port[n_port].sercom->USART.INTFLAG.bit.RXC)
 	{
 		port[n_port].rxc++;
 		if(port[n_port].rn >= USART_BUF_SIZE){port[n_port].rn = 0;}

@@ -68,14 +68,15 @@ void eth_process(void)
 
 void low_prioriti_cmd(BYTE* eth_st)
 {
-	timer_set(&ch_pause);
+	timer_upd(&ch_pause);
 	if (ch_sock < 4)		{tcp_check(ch_sock, eth_st);}
-	else if (ch_sock < 4)	{w5500_give_status(ch_sock - 4);}
+	else if (ch_sock < 4)	{w5500_st_upd(ch_sock - 4);}
 	else					{chip_stat();}
 	ch_sock++;
 	if (ch_sock == 9)	{ch_sock = 0;}
 }
 
+// check disconnection tcp 
 void tcp_check(BYTE ch_sock, BYTE* eth_st)
 {
 	if (cfg.sock_rs485[ch_sock].mode != TCP_MODE) {return;}
@@ -87,13 +88,14 @@ void tcp_check(BYTE ch_sock, BYTE* eth_st)
 	return;
 }
 
-void timer_set (BYTE timer)
+// set time for low priority cmd
+void timer_upd (BYTE timer)
 {
 	if ( eth_wait > TIMER_LMT)	{timer = eth_wait - TIMER_LMT;	return;}//check read timeout
-	else						{timer = eth_wait + TIMER_COEF;	return;}
+	else						{timer = eth_wait + 500;	return;}
 }
 				
-void w5500_give_status(BYTE sock_numb)
+void w5500_st_upd(BYTE sock_numb)
 {
 	if (cfg.sock_rs485[ch_sock].mode != UDP_MODE) {return;}
 	w5500_mode.mode_op = GIVE_STAT;			//collect status port

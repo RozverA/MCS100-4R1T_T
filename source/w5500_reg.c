@@ -83,7 +83,7 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_GIVE_STAT:
-								w5500_give_stat(sock_numb);
+								w5500_stat_upd(sock_numb);
 								w5500_st=SPI_PROCESS;
 		break;
 	}
@@ -452,7 +452,7 @@ WORD w5500_ch_sock(BYTE sock_numb)
 	return 0;
 }
 
-void w5500_give_stat(BYTE sock_numb)
+void w5500_stat_upd(BYTE sock_numb)
 {
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;

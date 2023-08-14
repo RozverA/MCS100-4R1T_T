@@ -6,7 +6,7 @@
 #define UCMD_ETH_RS485 2
 
 
-#define TIMER_LMT (0xFFFF - (TIMER_COEF * 1.2))// лимит - считается как предел wordа - (размер коэф * множитель для малой вероятности)
+#define TIMER_LMT (0xFFFF - (500 * 1.2))// лимит - считается как: <<предел wordа - (размер коэф * множитель для малой вероятности)>>
 
 #pragma pack(1)
 typedef struct

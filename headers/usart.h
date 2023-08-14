@@ -3,6 +3,13 @@
 
 #define USART_BUF_SIZE 256
 
+#define PARITY_NONE 0
+#define PARITY_EVEN 1
+#define PARITY_ODD  2
+
+#define FRAME_NO_PARITY 0
+#define FRAME_WITH_PARITY 1
+
 typedef struct
 //-----------------------------------------------------------------------------
 {

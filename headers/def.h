@@ -29,12 +29,10 @@ typedef unsigned int   DWORD;
 #define PROC_HERZ8		8000000
 
 #ifdef PROC_HERZ8
-	#define TIMER_COEF 0x01F4 //500
 	#define PROC_HERZ  PROC_HERZ8
 #endif
 
 #ifdef PROC_HERZ48
-	#define TIMER_COEF 0x02EE //750
 	#define PROC_HERZ  PROC_HERZ48
 #endif
 

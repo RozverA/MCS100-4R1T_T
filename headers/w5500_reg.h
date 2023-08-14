@@ -385,7 +385,7 @@ extern WORD w5500_write_socket_udp (BYTE numb, BYTE *buf);
 extern WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf);
 extern WORD w5500_write_socket_tcp (BYTE numb, BYTE *buf);
 extern WORD w5500_ch_sock (BYTE sock_numb);
-extern void w5500_give_stat (BYTE sock_numb);
+extern void w5500_stat_upd (BYTE sock_numb);
 
 extern WORD spi_mode;
 

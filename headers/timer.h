@@ -9,6 +9,8 @@
 #define TC3_100mk		75
 #endif
 
+//#define TIMER_COEF 750
+
 #define TC3_1m			(TC3_100mk * 10)
 #define TC3_10m			(TC3_100mk * 100)
 #define TC3_100m		(TC3_100mk * 1000)

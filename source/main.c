@@ -28,7 +28,6 @@ int main(void)
 	    if(reset == NULL) {wdt_reset();}//wdt-drop timer
 		eth_process();
 		cmd_process();
-		//stat_operator();
-		if (MODUL_DEBUG){debug_funx(NO);}
+		//if (MODUL_DEBUG){debug_funx(NO);}
 	}
 }
