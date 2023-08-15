@@ -105,7 +105,7 @@ void cfg_check()
 WORD cfg_save(void)
 //--------------------------------------------------------------------------
 {
-	if(!flash_empty(CFG_ADDR,1024))
+	if(!flash_empty(CFG_ADDR,512))
 	{
 		flash_erase_page(CFG_ADDR);
 		flash_erase_page(CFG_ADDR+256);

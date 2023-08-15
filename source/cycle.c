@@ -7,6 +7,7 @@ void usart_process (BYTE n_port)
 {
 	WORD size;
 	DWORD timer_lim = (0xFFFF - (cfg.sock_rs485[n_port-1].tout * 1.2));
+	DWORD timout = cfg.sock_rs485[n_port-1].tout;
 	
 	if ( var.time[n_port-1] < eth_wait )	{var.time[n_port-1] = 0;};//check end block port
 	switch(var.stage[n_port-1])
@@ -18,7 +19,7 @@ void usart_process (BYTE n_port)
 			{
 				var.stage[n_port-1] = UCMD_ETH_RS485;
 				if ( eth_wait > timer_lim)	{var.time[n_port-1] = eth_wait - timer_lim;	return;}//check read timeout
-				else						{var.time[n_port-1] = eth_wait + TIMER_COEF;	return;}
+				else						{var.time[n_port-1] = eth_wait + timout;	return;}
 			}
 			//RS485 message check
 			if (port[n_port-1].rx != port[n_port-1].rn)	{var.stage[n_port-1] = UCMD_RS485_ETH;}

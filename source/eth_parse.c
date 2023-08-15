@@ -109,11 +109,12 @@ void check_sockets_process (BYTE *buf)
 	index++;
 	if(index>MAX_SOCKETS){index=0;}
 		
-	if(!index)	{
-				w5500_mode.numb_socket	=SOCKET_0; 
-				w5500_mode.mode_op		=MODE_OP_READ_UDP; 
-				return;
-				}
+	if(!index)	
+	{
+		w5500_mode.numb_socket	=SOCKET_0; 
+		w5500_mode.mode_op		=MODE_OP_READ_UDP; 
+		return;
+	}
 			
 	if(cfg.sock_rs485[index - 1].en==FALSE) {return;} 
 	w5500_mode.numb_socket = index;

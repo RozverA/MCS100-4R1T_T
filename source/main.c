@@ -14,8 +14,9 @@ int main(void)
 	wdt_start();
 		
 	cfg_init  ();
-	if(cfg_read() == CFG_ERR)		{cfg_default();}
-	//cfg_check();
+	if(cfg_read() == CFG_ERR)		
+	{cfg_default();}
+	cfg_check();
 		
 	gpio_init();
 	TC3_init();
