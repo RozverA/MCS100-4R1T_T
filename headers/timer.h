@@ -33,6 +33,8 @@ extern void wait(DWORD time_100mk);
 extern volatile DWORD time_wait;
 extern volatile WORD  spi_wait;
 extern volatile WORD  cmd_spi_wait;
-extern volatile WORD  eth_wait;
+extern volatile DWORD  time_eth_wait;
+
+extern volatile DWORD  TTL;
 
 #endif /* TIMER_H_ */

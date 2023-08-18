@@ -9,14 +9,13 @@ typedef struct
 {
 	WORD	collision;
 	WORD	synchr;
-	BYTE	CTS;
 	WORD	buf_ovf;
 	WORD	st_bit;
 	WORD	prty;
 }USART_STAT;
 #pragma pack()
 
-#pragma pack(1)
+/*#pragma pack(1)
 typedef struct
 //-----------------------------------------------------------------------------
 {
@@ -27,14 +26,14 @@ typedef struct
 	BYTE	load_buf;
 	BYTE	PRM; //POWER REDUCTION MODE
 }NVWC_STAT;
-#pragma pack()
+#pragma pack()*/
 
 #pragma pack(1)
 typedef struct
 //-----------------------------------------------------------------------------
 {
 	USART_STAT	usart[4];
-	NVWC_STAT	nvwc;
+	//NVWC_STAT	nvwc;
 }ERR;
 #pragma pack()
 

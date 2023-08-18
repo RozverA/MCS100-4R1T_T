@@ -3,15 +3,17 @@
 volatile DWORD  time_wait;
 volatile WORD	spi_wait;
 volatile WORD	cmd_spi_wait;
-volatile WORD   eth_wait;
+volatile DWORD  time_eth_wait=0;
 
+volatile DWORD  time_100mk=0;
+volatile DWORD  TTL=0;
 
 void TC3_Handler(void)
 //-----------------------------------------------------------------------------
 {
 	TC3->COUNT16.INTFLAG.reg|=0xFFFF;
 	
-	eth_wait ++;
+	time_eth_wait ++;
 	time_wait++;
 	port[0].rtime++;
 	port[1].rtime++;
@@ -21,6 +23,9 @@ void TC3_Handler(void)
 	
 	if(spi_wait--);
 	if(cmd_spi_wait--);
+	
+	time_100mk++;
+	if(time_100mk>=10000){time_100mk=0;TTL++;}
 }
 
 void TC3_init(void)
@@ -56,8 +61,6 @@ void TC3_init(void)
 	NVIC_SetPriority(TC3_IRQn, 1);			// Set the interrupt priority to lowest value
 	NVIC_EnableIRQ(TC3_IRQn);						// Enable the interrupt
 	
-	
-	eth_wait = 0;
 	TC3_start(TC3_100mk);
 }
 

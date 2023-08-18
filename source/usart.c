@@ -2,7 +2,7 @@
 
 volatile USART port[4];
 
-void usart_init(){for(BYTE i = 0; i < 4; i++) {init(i);}}
+void usart_init(void){for(BYTE i = 0; i < 4; i++) {init(i);}}
 	
 void init(BYTE n_port)
 {
@@ -14,28 +14,28 @@ void init(BYTE n_port)
 	switch(n_port)
 	{
 		case 0:
-			PM->APBCMASK.bit.SERCOM1_ = 1; // Bit  2    - SERCOM0: SERCOM0 APB Clock Enable (1 - enabled)
-			port[n_port].sercom = SERCOM1;
-			port[n_port].gclk_sercom = GCLK_CLKCTRL_ID_SERCOM1_CORE;
-			port[n_port].irqn_sercom = SERCOM1_IRQn;
+			PM->APBCMASK.bit.SERCOM3_ = 1; // Bit  2    - SERCOM0: SERCOM0 APB Clock Enable (1 - enabled)
+			port[n_port].sercom = SERCOM3;
+			port[n_port].gclk_sercom = GCLK_CLKCTRL_ID_SERCOM3_CORE;
+			port[n_port].irqn_sercom = SERCOM3_IRQn;
 		break;
 		case 1:
-			PM->APBCMASK.bit.SERCOM0_ = 1; // Bit  2    - SERCOM0: SERCOM0 APB Clock Enable (1 - enabled)
-			port[n_port].sercom = SERCOM0;
-			port[n_port].gclk_sercom = GCLK_CLKCTRL_ID_SERCOM0_CORE;
-			port[n_port].irqn_sercom = SERCOM0_IRQn;
-		break;
-		case 2:
 			PM->APBCMASK.bit.SERCOM2_ = 1; // Bit  2    - SERCOM0: SERCOM0 APB Clock Enable (1 - enabled)
 			port[n_port].sercom = SERCOM2;
 			port[n_port].gclk_sercom = GCLK_CLKCTRL_ID_SERCOM2_CORE;
 			port[n_port].irqn_sercom = SERCOM2_IRQn;
 		break;
+		case 2:
+			PM->APBCMASK.bit.SERCOM0_ = 1; // Bit  2    - SERCOM0: SERCOM0 APB Clock Enable (1 - enabled)
+			port[n_port].sercom = SERCOM0;
+			port[n_port].gclk_sercom = GCLK_CLKCTRL_ID_SERCOM0_CORE;
+			port[n_port].irqn_sercom = SERCOM0_IRQn;
+		break;
 		case 3:
-			PM->APBCMASK.bit.SERCOM3_ = 1; // Bit  2    - SERCOM0: SERCOM0 APB Clock Enable (1 - enabled)
-			port[n_port].sercom = SERCOM3;
-			port[n_port].gclk_sercom = GCLK_CLKCTRL_ID_SERCOM3_CORE;
-			port[n_port].irqn_sercom = SERCOM3_IRQn;
+			PM->APBCMASK.bit.SERCOM1_ = 1; // Bit  2    - SERCOM0: SERCOM0 APB Clock Enable (1 - enabled)
+			port[n_port].sercom = SERCOM1;
+			port[n_port].gclk_sercom = GCLK_CLKCTRL_ID_SERCOM1_CORE;
+			port[n_port].irqn_sercom = SERCOM1_IRQn;
 		break;
 	}
 	
@@ -82,9 +82,9 @@ void init(BYTE n_port)
 	//char size
 	switch (cfg.sock_rs485[n_port].bsize)
 	{
-		case 8:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x0; break;
-		case 7:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x7; break;
-		default:port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x0; break;
+		case 8:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x00; break;
+		case 7:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x07; break;
+		default:port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x00; break;
 	}
 	//baud
 	val = cfg.sock_rs485[n_port].baud;
@@ -120,7 +120,6 @@ WORD usart_write(BYTE n_port, BYTE* wbuf,WORD wn)
 {
 	if(wn == 0) { return(0); }
 	pin_ctrl(RTS, n_port, SET);
-	pin_ctrl(LED_TX, n_port, ON);
 	
 	if(wn > USART_BUF_SIZE) { wn = USART_BUF_SIZE; }
 	memcpy(port[n_port].wbuf,wbuf,wn);
@@ -147,19 +146,18 @@ WORD usart_read (BYTE n_port, BYTE* rbuf,WORD rn)
 	memcpy(rbuf,port[n_port].rbuf,size);
 	port[n_port].rn = 0;
 	port[n_port].rx = 0;
-	pin_ctrl(LED_RX, n_port, OFF);
 	port[n_port].counters.rx++;
 	return(size);
 }
 
 void sercom_proc(BYTE n_port)
 {
-	if (port[n_port].sercom->USART.STATUS.bit.COLL)		{er_list.usart[n_port].collision++;	port[n_port].sercom->USART.STATUS.bit.COLL = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.ISF)		{er_list.usart[n_port].synchr++;		port[n_port].sercom->USART.STATUS.bit.ISF = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.CTS)		{er_list.usart[n_port].CTS++;		/*port[i].sercom->USART.STATUS.bit.CTS = 1;*/}
-	if (port[n_port].sercom->USART.STATUS.bit.BUFOVF)	{er_list.usart[n_port].buf_ovf++;	port[n_port].sercom->USART.STATUS.bit.BUFOVF = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.FERR)		{er_list.usart[n_port].st_bit++;		port[n_port].sercom->USART.STATUS.bit.FERR = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.PERR)		{er_list.usart[n_port].prty++;		port[n_port].sercom->USART.STATUS.bit.PERR = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.COLL)		{er_list.usart[n_port].collision++;		port[n_port].sercom->USART.STATUS.bit.COLL   = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.ISF)		{er_list.usart[n_port].synchr++;		port[n_port].sercom->USART.STATUS.bit.ISF    = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.BUFOVF)	{er_list.usart[n_port].buf_ovf++;		port[n_port].sercom->USART.STATUS.bit.BUFOVF = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.FERR)		{er_list.usart[n_port].st_bit++;		port[n_port].sercom->USART.STATUS.bit.FERR   = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.PERR)		{er_list.usart[n_port].prty++;			port[n_port].sercom->USART.STATUS.bit.PERR   = 1;}
+		
 	if (port[n_port].sercom->USART.INTFLAG.bit.RXC)
 	{
 		port[n_port].rxc++;
@@ -167,7 +165,6 @@ void sercom_proc(BYTE n_port)
 		port[n_port].rbuf[port[n_port].rn] = port[n_port].sercom->USART.DATA.reg;
 		port[n_port].rn++;
 		port[n_port].rtime = 0;
-		pin_ctrl(LED_RX, n_port, ON);
 		return;
 	}
 
@@ -175,7 +172,6 @@ void sercom_proc(BYTE n_port)
 	{
 		port[n_port].txc++;
 		port[n_port].sercom->USART.INTFLAG.bit.TXC = 1;
-		pin_ctrl(LED_TX, n_port, OFF);
 		pin_ctrl(RTS, n_port, CLR);
 		port[n_port].sercom->USART.INTENCLR.bit.TXC = 1;
 		port[n_port].sercom->USART.INTENSET.bit.RXC = 1;
@@ -197,22 +193,26 @@ void sercom_proc(BYTE n_port)
 	}
 };
 
-void SERCOM1_Handler(void)
+void SERCOM3_Handler(void)
 {
 	sercom_proc(0);
 }
 
-void SERCOM0_Handler(void)
+
+void SERCOM2_Handler(void)
 {
 	sercom_proc(1);
 }
 
-void SERCOM2_Handler(void)
+void SERCOM0_Handler(void)
 {
 	sercom_proc(2);
 }
 
-void SERCOM3_Handler(void)
+void SERCOM1_Handler(void)
 {
 	sercom_proc(3);
 }
+
+
+

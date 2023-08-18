@@ -8,7 +8,7 @@
 #define TRUE  1
 #define FALSE 0
 
-#define SKIPP_HADER 8 //TCP connect reciv without UDP HEADER
+#define SKIP_HDR 8 //TCP connect reciv without UDP HEADER
 
 typedef enum
 {
@@ -47,6 +47,7 @@ typedef unsigned int   DWORD;
 #define BIP		2
 #define SPI_DOLBIT 4
 #define DMA_TEST	5
+#define SIZE_HISTORY 6
 
 #include "samr21g18a.h"
 #include "gpio.h"

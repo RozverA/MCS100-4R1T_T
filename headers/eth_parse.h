@@ -20,10 +20,11 @@
 
 extern void eth_init(void);
 extern void eth_process(void);
-extern void check_sockets_process (BYTE *buf);
+extern BYTE check_sockets_process (BYTE *buf);
 extern BYTE check_data_wr_process (BYTE *data_buf);
 extern void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size);
 extern BYTE* eth_cbuf_ptr();
+extern BYTE ch_process (void);
 
 /////socket_read_udp
 #define UDP_GIVE_LEN		0

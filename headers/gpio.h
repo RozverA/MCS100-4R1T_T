@@ -3,9 +3,11 @@
 
 void led_init();
 
-#define LED_RX	2
-#define LED_TX	1
-#define RTS		0
+#define LED				1
+#define RTS				0
+#define W55				2
+
+#define PWR			0
 
 #define PORT485_0		0
 #define PORT485_1		1	

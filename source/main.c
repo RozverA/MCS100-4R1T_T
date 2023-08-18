@@ -14,22 +14,23 @@ int main(void)
 	wdt_start();
 		
 	cfg_init  ();
-	if(cfg_read() == CFG_ERR)		
-	{cfg_default();}
+	if(cfg_read() == CFG_ERR)	{cfg_default();}
+
+
 	cfg_check();
-		
+
 	gpio_init();
+	pin_ctrl(LED,PWR,ON);
 	TC3_init();
 	spi_init();
 	usart_init();
 	eth_init();
-	led_init();
+	//led_init();
 	
 	while (1)
 	{
 	    if(reset == NULL) {wdt_reset();}//wdt-drop timer
 		eth_process();
 		cmd_process();
-		//if (MODUL_DEBUG){debug_funx(NO);}
 	}
 }

@@ -5,11 +5,14 @@ CFG cfg;
 CFG cfg_tmp;
 
 
+
 void cfg_init(void)
+//--------------------------------------------------------------------------
 {
 	memset(&cfg    ,0x00,sizeof(CFG));
 	memset(&cfg_tmp,0x00,sizeof(CFG));
 }
+
 WORD cfg_read(void)
 //--------------------------------------------------------------------------
 {
@@ -24,9 +27,8 @@ WORD cfg_read(void)
 	return(CFG_OK);
 }
 
-
-
 void cfg_default(void)
+//--------------------------------------------------------------------------
 {
 	WORD  i=0;
 
@@ -72,7 +74,6 @@ void cfg_default(void)
 	for(i=0;i<4;++i)
 	{
 		cfg.sock_rs485[i].mode		= UDP_MODE;
-		//cfg.sock_rs485[i].mode	   = TCP_MODE;
 		cfg.sock_rs485[i].en		= TRUE;
 		
 		cfg.sock_rs485[i].src_port	=5001+i;
@@ -90,17 +91,17 @@ void cfg_default(void)
 }
 
 void cfg_check()
+//--------------------------------------------------------------------------
 {
-	BYTE n_port = 0;
 	BYTE i = 0;
-	while (i < 4)
+	
+	for(i=0;i<4;i++)
 	{
-		if (50 < cfg.sock_rs485[n_port].tout < 1000) 
-		{cfg.sock_rs485[n_port].tout = 100;}
-		i++; n_port++;
+		if ((cfg.sock_rs485[i].tout < 50) || (cfg.sock_rs485[i].tout > 1000))  {port[i].tout_port= 100;}
 	}
+	
+	return;
 }
-
 
 WORD cfg_save(void)
 //--------------------------------------------------------------------------

@@ -27,25 +27,26 @@ typedef struct
 	DWORD gclk_sercom;
 	BYTE irqn_sercom;
 	
+	BYTE  wbuf[USART_BUF_SIZE];
+	BYTE  rbuf[USART_BUF_SIZE];
+	
+	WORD wn;
+	WORD wx;
+	WORD rn;
+	WORD rx;
 	
 	
-	unsigned char  wbuf[USART_BUF_SIZE];
-	unsigned char  rbuf[USART_BUF_SIZE];
+	WORD rtout;
+	WORD wtout;
+	WORD rtime;
+	WORD wtime;
 	
-	unsigned short wn;
-	unsigned short wx;
-	unsigned short rn;
-	unsigned short rx;
+	WORD tout_port;
+	WORD dt;
 	
-	
-	unsigned short rtout;
-	unsigned short wtout;
-	unsigned short rtime;
-	unsigned short wtime;
-	
-	unsigned short dre;
-	unsigned short rxc;
-	unsigned short txc;
+	WORD dre;
+	WORD rxc;
+	WORD txc;
 	
 	POIN counters;
 }USART;
@@ -53,7 +54,7 @@ typedef struct
 extern volatile USART port[4];
 
 
-extern void usart_init();
+extern void usart_init(void);
 
 extern WORD usart_write(BYTE num, BYTE* wbuf,WORD wn);
 extern WORD usart_read(BYTE num, BYTE* rbuf,WORD wn);

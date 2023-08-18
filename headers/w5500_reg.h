@@ -4,7 +4,8 @@
 #define EMPTY 0
 #define BUSY 1
 
-
+#define w5500_reset( ) {pin_ctrl(W55,PWR,CLR); wait(1000);	pin_ctrl(W55,PWR,SET);	wait(1000);}
+	
 #define READ_DATA 1
 #define WRITE_DATA 2
 

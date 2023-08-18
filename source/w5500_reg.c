@@ -15,11 +15,13 @@ volatile WORD sizert=0;
 
 func_st w5500_init_reg(void)
 {
+	w5500_reset();
+
 	if(ip_init()	)	{return ERROR;}
 	if(mask_init()	)	{return ERROR;}
 	if(gw_init()	)	{return ERROR;}		
 	if(mac_init()	)	{return ERROR;}
-	
+		
 	return SUCCESS;
 }
 

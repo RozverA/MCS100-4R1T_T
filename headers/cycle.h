@@ -1,9 +1,9 @@
 #ifndef CYCLE_H_
 #define CYCLE_H_
 
-#define UCMD_CH 0
-#define UCMD_RS485_ETH 1
-#define UCMD_ETH_RS485 2
+#define RS485_CHECK 0
+#define RS485_READ 1
+#define RS485_WRITE 2
 
 #pragma pack(1)
 typedef struct
