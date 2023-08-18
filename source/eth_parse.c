@@ -1,7 +1,6 @@
 #include "def.h"
 
 BYTE eth_cbuf[MAX_SIZE_BUF_SPI];
-WORD time_ch_pause = 0;
 
 
 void eth_init(void)
@@ -16,6 +15,7 @@ void eth_init(void)
 	if(cfg.sock_rs485[1].en==TRUE) {socket_init(SOCKET_2,cfg.sock_rs485[1].src_port,cfg.sock_rs485[1].mode);}
 	if(cfg.sock_rs485[2].en==TRUE) {socket_init(SOCKET_3,cfg.sock_rs485[2].src_port,cfg.sock_rs485[2].mode);}
 	if(cfg.sock_rs485[3].en==TRUE) {socket_init(SOCKET_4,cfg.sock_rs485[3].src_port,cfg.sock_rs485[3].mode);}
+
 }
 
 void eth_process(void)
@@ -37,9 +37,7 @@ void eth_process(void)
 				w5500_mode.numb_socket = rtrn;
 				break;
 			}
-			//check TCP reload necessity
-			 
-			if(eth_st==ch_process()){break;}
+
 			check_sockets_process((BYTE*)&w5500_mode);//select sockets for read			
 			eth_st=READ_PROCESS;
 		break;
@@ -47,73 +45,39 @@ void eth_process(void)
 			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
 			if(rtrn==ERROR){eth_st=0;break;}
 			if(rtrn)
-			{eth_udp_parse(w5500_mode.numb_socket,eth_cbuf,rtrn); eth_st=0;}
+			{eth_parse(w5500_mode.numb_socket,eth_cbuf,rtrn); eth_st=0;}
 		break;
 		case WRITE_PROCESS:
 			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
 			if(rtrn){eth_st=0;}
 		break;
-		case TCP_SOCK_PROCESS:
-			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
-			if(rtrn){eth_st=0;break;}
-		break;
-		case GIVE_STAT:
-			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
+		default:
+			eth_st = CHECK;
 		break;
 
 	}
 }
 
-BYTE ch_process (void)
-{
-	static BYTE ch_sock = 0;
-	BYTE eth_st;
-	
-	if (time_ch_pause > time_eth_wait){return;}
-		
-	time_ch_pause = time_eth_wait + 1000;
-	
-	timer_eth_wait_upd();
-	tcp_check(ch_sock, &eth_st);
-	w5500_st_upd(ch_sock);
-	chip_stat();
-	
-	ch_sock++;
-	if (ch_sock == 4)	{ch_sock = 0;}
-	return eth_st;
-}
+
 
 
 void timer_eth_wait_upd(void)
 {
-	if(time_eth_wait<0x00000F00){return;}
+	if(time_eth_wait<0xFFFFFC00){return;}
 		
 	time_eth_wait=0;
-	time_ch_pause=0;
 	vars.time[0]=0;
 	vars.time[1]=0;
 	vars.time[2]=0;	
-	vars.time[3]=0;			
-}
-// check disconnection tcp 
-void tcp_check(BYTE ch_sock, BYTE* eth_st)
-{
-	if (cfg.sock_rs485[ch_sock].mode != TCP_MODE) {return;}
+	vars.time[3]=0;	
+	eth_sock[0].time_wait_SEND_OK = 0;
+	eth_sock[1].time_wait_SEND_OK = 0;
+	eth_sock[2].time_wait_SEND_OK = 0;
+	eth_sock[3].time_wait_SEND_OK = 0;
+	eth_sock[4].time_wait_SEND_OK = 0;
 		
-	*eth_st = TCP_SOCK_PROCESS;					//check set mode
-	w5500_mode.mode_op = MODE_OP_SOCK_TCP_CH;	//w5500 mode - check TCP connect
-	w5500_mode.numb_socket = ch_sock;			//set port fur set
-	
-	return;
 }
 
-				
-void w5500_st_upd(BYTE sock_numb)
-{
-	if (cfg.sock_rs485[sock_numb].mode != UDP_MODE) {return;}
-	w5500_mode.mode_op = GIVE_STAT;			//collect status port
-	w5500_mode.numb_socket = sock_numb;		//set port fur set
-}
 
 BYTE check_sockets_process (BYTE *buf)
 {
@@ -135,30 +99,21 @@ BYTE check_sockets_process (BYTE *buf)
 	return;
 }
 
-void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size)
+void eth_parse (BYTE numb_sock,BYTE *buf,WORD size)
 {	
 	WORD default_mtu;
-	BYTE* ptr_port_udp;
+	BYTE ptr_port=0;
 	
-	if(size < LEN_HDR)		{return;} //size_ip+size_port
-	if (numb_sock == 0)
-	{	
-		default_mtu=DEFAULT_MTU_UDP;
-		ptr_port_udp=(BYTE*)&eth_sock[numb_sock];
-	}
-	else if (cfg.sock_rs485[numb_sock - 1].mode == TCP_MODE)
+	default_mtu=DEFAULT_MTU_UDP;
+	
+	if ((cfg.sock_rs485[numb_sock - 1].mode == TCP_MODE) && (numb_sock))
 	{
 		default_mtu=DEFAULT_MTU_TCP;
-		ptr_port_udp=((BYTE*) & eth_sock[numb_sock]);
-		ptr_port_udp=ptr_port_udp + SKIP_HDR;
+		ptr_port=SKIP_HDR;
 	}
-	else
-	{
-		default_mtu=DEFAULT_MTU_UDP;
-		ptr_port_udp=(BYTE*)&eth_sock[numb_sock];
-	}
+
 	if(size>default_mtu){size=default_mtu;}
-	memcpy(ptr_port_udp,buf,size);
+	memcpy((BYTE*)&eth_sock[numb_sock]+ptr_port,buf,size);
 	eth_sock[numb_sock].r_status = 1;
 	eth_sock[numb_sock].counters.rx++;
 }

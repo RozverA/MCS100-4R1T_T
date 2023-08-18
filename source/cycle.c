@@ -48,5 +48,8 @@ void usart_process (BYTE n_port)
 					port[n_port-1].dt 	 = 0;
 				}
 			return;
+		default:
+			vars.stage[n_port-1] = RS485_CHECK;
+		break;			
 	}
 }

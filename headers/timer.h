@@ -28,7 +28,8 @@ extern void wait(DWORD time_100mk);
 
 
 #define time_500ms 5000
-#define time_50ms 100
+#define time_50ms 500
+#define time_10ms 100
 
 extern volatile DWORD time_wait;
 extern volatile WORD  spi_wait;

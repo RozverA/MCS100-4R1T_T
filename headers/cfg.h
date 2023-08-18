@@ -8,7 +8,7 @@
 #define READ_PROCESS 1
 #define WRITE_PROCESS 2
 #define TCP_SOCK_PROCESS 3
-#define GIVE_STAT 4
+
 
 #pragma pack(1)
 typedef struct

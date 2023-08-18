@@ -9,7 +9,7 @@
 #define MODE_OP_WRITE_UDP		3
 #define MODE_OP_READ_TCP		4
 #define MODE_OP_WRITE_TCP		5
-#define MODE_OP_SOCK_TCP_CH		6
+
 #define MODE_OP_GIVE_STAT		7
 
 #define LEN_HDR					8
@@ -22,9 +22,10 @@ extern void eth_init(void);
 extern void eth_process(void);
 extern BYTE check_sockets_process (BYTE *buf);
 extern BYTE check_data_wr_process (BYTE *data_buf);
-extern void eth_udp_parse (BYTE numb_sock,BYTE *buf,WORD size);
+extern void eth_parse (BYTE numb_sock,BYTE *buf,WORD size);
 extern BYTE* eth_cbuf_ptr();
-extern BYTE ch_process (void);
+
+
 
 /////socket_read_udp
 #define UDP_GIVE_LEN		0
@@ -38,6 +39,8 @@ extern BYTE ch_process (void);
 #define TCP_RSV_CMD			2
 #define TCP_DROP_PTR		3
 #define TCP_BK_START		4
+#define TCP_STATUS_RD		5
+#define TCP_FORK			6
 /////socket_write_tcp
 #define TCP_GIVE_LEN		0
 #define TCP_PART_WR			1

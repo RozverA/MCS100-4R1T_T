@@ -15,7 +15,7 @@ int main(void)
 		
 	cfg_init  ();
 	if(cfg_read() == CFG_ERR)	{cfg_default();}
-
+	//cfg_drop();
 
 	cfg_check();
 
@@ -27,10 +27,13 @@ int main(void)
 	eth_init();
 	//led_init();
 	
+	
+	
 	while (1)
 	{
 	    if(reset == NULL) {wdt_reset();}//wdt-drop timer
 		eth_process();
 		cmd_process();
+		timer_eth_wait_upd();
 	}
 }

@@ -4,7 +4,7 @@
 #define EMPTY 0
 #define BUSY 1
 
-#define w5500_reset( ) {pin_ctrl(W55,PWR,CLR); wait(1000);	pin_ctrl(W55,PWR,SET);	wait(1000);}
+#define w5500_reset( ) {pin_ctrl(W55,PWR,CLR); wait(2000);	pin_ctrl(W55,PWR,SET);	wait(2000);}
 	
 #define READ_DATA 1
 #define WRITE_DATA 2
@@ -385,8 +385,7 @@ extern WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf);
 extern WORD w5500_write_socket_udp (BYTE numb, BYTE *buf);
 extern WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf);
 extern WORD w5500_write_socket_tcp (BYTE numb, BYTE *buf);
-extern WORD w5500_ch_sock (BYTE sock_numb);
-extern void w5500_stat_upd (BYTE sock_numb);
+
 
 extern WORD spi_mode;
 

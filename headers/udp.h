@@ -28,6 +28,9 @@ typedef struct
 	WORD ptr_tx_buf;				//ptr wr w5500
 	
 	POINT counters;
+	
+	WORD check_connect_cnt;
+	WORD time_wait_SEND_OK;
 }ETH_HDR;
 #pragma pack()
 
