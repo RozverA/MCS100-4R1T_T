@@ -61,22 +61,7 @@ void eth_process(void)
 
 
 
-void timer_eth_wait_upd(void)
-{
-	if(time_eth_wait<0xFFFFFC00){return;}
-		
-	time_eth_wait=0;
-	vars.time[0]=0;
-	vars.time[1]=0;
-	vars.time[2]=0;	
-	vars.time[3]=0;	
-	eth_sock[0].time_wait_SEND_OK = 0;
-	eth_sock[1].time_wait_SEND_OK = 0;
-	eth_sock[2].time_wait_SEND_OK = 0;
-	eth_sock[3].time_wait_SEND_OK = 0;
-	eth_sock[4].time_wait_SEND_OK = 0;
-		
-}
+
 
 
 BYTE check_sockets_process (BYTE *buf)
@@ -113,9 +98,14 @@ void eth_parse (BYTE numb_sock,BYTE *buf,WORD size)
 	}
 
 	if(size>default_mtu){size=default_mtu;}
+		
+	eth_sock[numb_sock].counters.rx++;
+	
+	if(eth_sock[numb_sock].r_status == 1){ return;}
+	
 	memcpy((BYTE*)&eth_sock[numb_sock]+ptr_port,buf,size);
 	eth_sock[numb_sock].r_status = 1;
-	eth_sock[numb_sock].counters.rx++;
+	
 }
 
 BYTE check_data_wr_process (BYTE *data_buf)

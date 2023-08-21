@@ -34,6 +34,6 @@ int main(void)
 	    if(reset == NULL) {wdt_reset();}//wdt-drop timer
 		eth_process();
 		cmd_process();
-		timer_eth_wait_upd();
+		tc3_process();
 	}
 }

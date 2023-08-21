@@ -97,7 +97,8 @@ void cfg_check()
 	
 	for(i=0;i<4;i++)
 	{
-		if ((cfg.sock_rs485[i].tout < 50) || (cfg.sock_rs485[i].tout > 1000))  {port[i].tout_port= 100;}
+		port[i].tout_port=cfg.sock_rs485[i].tout;
+		if ((port[i].tout_port < 50) || (port[i].tout_port > 1000))  {port[i].tout_port= 100;}
 	}
 	
 	return;

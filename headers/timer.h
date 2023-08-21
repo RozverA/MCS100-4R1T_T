@@ -25,16 +25,17 @@ static inline WORD TC3_mc0(void) { return(TC3->COUNT16.INTFLAG.bit.MC0); }
 
 extern void TC3_init(void);
 extern void wait(DWORD time_100mk);
+extern void tc3_process(void);
 
 
 #define time_500ms 5000
 #define time_50ms 500
-#define time_10ms 100
+#define time_20ms 200
 
 extern volatile DWORD time_wait;
 extern volatile WORD  spi_wait;
 extern volatile WORD  cmd_spi_wait;
-extern volatile DWORD  time_eth_wait;
+extern volatile DWORD  tc3_cnt;
 
 extern volatile DWORD  TTL;
 

@@ -3,7 +3,7 @@
 volatile DWORD  time_wait;
 volatile WORD	spi_wait;
 volatile WORD	cmd_spi_wait;
-volatile DWORD  time_eth_wait=0;
+volatile DWORD  tc3_cnt=0;
 
 volatile DWORD  time_100mk=0;
 volatile DWORD  TTL=0;
@@ -13,7 +13,7 @@ void TC3_Handler(void)
 {
 	TC3->COUNT16.INTFLAG.reg|=0xFFFF;
 	
-	time_eth_wait ++;
+	tc3_cnt++;
 	time_wait++;
 	port[0].rtime++;
 	port[1].rtime++;
@@ -23,9 +23,6 @@ void TC3_Handler(void)
 	
 	if(spi_wait--);
 	if(cmd_spi_wait--);
-	
-	time_100mk++;
-	if(time_100mk>=10000){time_100mk=0;TTL++;}
 }
 
 void TC3_init(void)
@@ -69,4 +66,30 @@ void TC3_init(void)
 	{
 	time_wait=0;
 	while(1){if(reset   == NULL) {wdt_reset();}if(time_wait>time_100mk){break;}}
+	}
+	
+	
+	
+	void tc3_process(void)
+	//-----------------------------------------------------------------------------
+	{
+		if(!tc3_cnt) {return;}
+			
+		if(vars.time[0]){vars.time[0]--;}
+		if(vars.time[1]){vars.time[1]--;}
+		if(vars.time[2]){vars.time[2]--;}
+		if(vars.time[3]){vars.time[3]--;}
+			
+			
+		if(eth_sock[0].time_wait_SEND_OK){eth_sock[0].time_wait_SEND_OK--;}
+		if(eth_sock[1].time_wait_SEND_OK){eth_sock[1].time_wait_SEND_OK--;}
+		if(eth_sock[2].time_wait_SEND_OK){eth_sock[2].time_wait_SEND_OK--;}
+		if(eth_sock[3].time_wait_SEND_OK){eth_sock[3].time_wait_SEND_OK--;}
+		if(eth_sock[4].time_wait_SEND_OK){eth_sock[4].time_wait_SEND_OK--;}	
+		
+		time_100mk=time_100mk+tc3_cnt;	
+		if(time_100mk>=10000){time_100mk=0;TTL++;}
+			
+		tc3_cnt=0;		
+		
 	}

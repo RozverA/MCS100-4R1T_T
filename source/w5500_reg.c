@@ -230,7 +230,7 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			len_buf=cnt;
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
-			eth_sock[sock_numb].time_wait_SEND_OK=time_eth_wait;
+			eth_sock[sock_numb].time_wait_SEND_OK=time_20ms;
 		break;
 		case 6:																//read status_SEND_OK
 			addr_w5500=ADDR_SOC_INT;
@@ -253,7 +253,11 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 				break;
 			}
 			st_wr_w5500--;
-			if(time_eth_wait>(eth_sock[sock_numb].time_wait_SEND_OK+time_10ms)){st_wr_w5500=0; return 2;}
+			if(!eth_sock[sock_numb].time_wait_SEND_OK)
+			{
+				st_wr_w5500=0; 
+				return 2;
+			}
 		break;
 		case 8:
 			st_wr_w5500=0;
@@ -425,7 +429,7 @@ WORD w5500_write_socket_tcp (BYTE sock_numb, BYTE *buf)
 			len_buf=cnt;
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
-			eth_sock[sock_numb].time_wait_SEND_OK=time_eth_wait;
+			eth_sock[sock_numb].time_wait_SEND_OK=time_20ms;
 		break;
 		case 6:																//read status_SEND_OK
 			addr_w5500=ADDR_SOC_INT;
@@ -449,7 +453,10 @@ WORD w5500_write_socket_tcp (BYTE sock_numb, BYTE *buf)
 				break;
 			}
 			st_wr_w5500--;
-			if(time_eth_wait>(eth_sock[sock_numb].time_wait_SEND_OK+time_10ms)){st_wr_w5500=0; return 2;}
+			if(!eth_sock[sock_numb].time_wait_SEND_OK)
+			{
+				st_wr_w5500=0; return 2;
+			}
 		break;
 		case 8:
 			st_wr_w5500=0;

@@ -116,38 +116,37 @@ void init(BYTE n_port)
 	pin_ctrl(RTS, n_port, CLR);
 }
 
-WORD usart_write(BYTE n_port, BYTE* wbuf,WORD wn)
+WORD usart_write(BYTE n_port, BYTE* wbuf,WORD size)
 {
-	if(wn == 0) { return(0); }
+	if(size == 0) { return(0); }
 	pin_ctrl(RTS, n_port, SET);
 	
-	if(wn > USART_BUF_SIZE) { wn = USART_BUF_SIZE; }
-	memcpy(port[n_port].wbuf,wbuf,wn);
-	port[n_port].wn = wn;
+	if(size > USART_BUF_SIZE) { size = USART_BUF_SIZE; }
+	memcpy(port[n_port].wbuf,wbuf,size);
+	port[n_port].wn = size;
 	port[n_port].wx = 1;
 	port[n_port].sercom->USART.DATA.reg=port[n_port].wbuf[0];
 	port[n_port].sercom->USART.INTENCLR.bit.RXC = 1;
 	port[n_port].sercom->USART.INTENSET.bit.DRE = 1;
 	port[n_port].counters.tx++;
-	return(wn);
+	return(size);
 }
 
-WORD usart_read (BYTE n_port, BYTE* rbuf,WORD rn)
+WORD usart_read (BYTE n_port, BYTE* rbuf,WORD size)
 {
-	WORD size = 0;
+	WORD size_1 = 0;
+	
 	if(port[n_port].rn     ==       0x00)			{ port[n_port].rtime=0; return(0); }
 	if(port[n_port].rtout  >  port[n_port].rtime)	{ return(0); }
+		
+	size_1 = port[n_port].rn; 
 
-	size = port[n_port].rn;
-
-	if(rn < size) { size = rn;}
+	if(size_1 > size) {size_1 = size;}
 	
-	if(size > USART_BUF_SIZE) { size = USART_BUF_SIZE; }
-	memcpy(rbuf,port[n_port].rbuf,size);
+	memcpy(rbuf,port[n_port].rbuf,size_1);
 	port[n_port].rn = 0;
-	port[n_port].rx = 0;
 	port[n_port].counters.rx++;
-	return(size);
+	return(size_1);
 }
 
 void sercom_proc(BYTE n_port)

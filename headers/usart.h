@@ -32,9 +32,7 @@ typedef struct
 	
 	WORD wn;
 	WORD wx;
-	WORD rn;
-	WORD rx;
-	
+	WORD rn;	
 	
 	WORD rtout;
 	WORD wtout;
@@ -56,7 +54,7 @@ extern volatile USART port[4];
 
 extern void usart_init(void);
 
-extern WORD usart_write(BYTE num, BYTE* wbuf,WORD wn);
-extern WORD usart_read(BYTE num, BYTE* rbuf,WORD wn);
+extern WORD usart_write(BYTE n_port, BYTE* wbuf,WORD size);
+extern WORD usart_read (BYTE n_port, BYTE* rbuf,WORD size);
 
 #endif /* USART_H_ */
