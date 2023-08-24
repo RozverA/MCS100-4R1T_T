@@ -24,6 +24,8 @@ void usart_process (BYTE n_port)
 			vars.last_ptr_rx_buf[n_port-1] = eth_sock[n_port].ptr_rx_buf;//write last position pointer for compare 
 			w_cnt++;
 			vars.stage[n_port-1] = RS485_READ;
+			port[n_port-1].rn = 0;
+
 		return;
 		case RS485_READ://UP
 			u_size = usart_read(n_port - 1, port[n_port-1].rbuf, USART_BUF_SIZE);   //give mess size

@@ -1,6 +1,6 @@
 #ifndef DEF_H_
 #define DEF_H_
-#define wdt_start() { WDT->CONFIG.bit.PER=0x0B;/*500 ms*/ WDT->EWCTRL.bit.EWOFFSET=0x0A;/*250 ms*/ WDT->INTENSET.bit.EW=0x01;/*Early Warning Interrupt Enable*/ WDT->CTRL.bit.ENABLE=0x01; }
+#define wdt_start() {if(!WDT->CONFIG.bit.PER==0x0B){WDT->CONFIG.bit.PER=0x0B;}	if(!WDT->EWCTRL.bit.EWOFFSET==0x0A){WDT->EWCTRL.bit.EWOFFSET=0x0A;}		if(!WDT->INTENSET.bit.EW==0x01){WDT->INTENSET.bit.EW=0x01;}	if(!WDT->CTRL.bit.ENABLE==0x01){WDT->CTRL.bit.ENABLE=0x01; }}
 #define wdt_reset() { if(WDT->INTFLAG.bit.EW==1){WDT->INTFLAG.bit.EW=0x01;  WDT->CLEAR.bit.CLEAR=0xA5;} }
 #define wdt_stop()  { WDT->CTRL.bit.ENABLE=0x00; WDT->INTENCLR.bit.EW=0x01; } 		
 	

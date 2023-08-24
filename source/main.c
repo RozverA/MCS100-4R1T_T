@@ -11,6 +11,7 @@ int main(void)
 	else							{sys_clock_init_USE_DFLL48M();}	//48MHz
 		
 	__enable_irq();
+	wdt_reset();
 	wdt_start();
 		
 	cfg_init  ();
@@ -25,9 +26,6 @@ int main(void)
 	spi_init();
 	usart_init();
 	eth_init();
-	//led_init();
-	
-	
 	
 	while (1)
 	{

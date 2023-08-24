@@ -1,15 +1,22 @@
 #ifndef IAP_H_
 #define IAP_H_
 
-#define IAP_ADDR  (DWORD)0x00004000
-#define IAP_COPY  (DWORD)0x00020000
-#define IAP_SIZE  (DWORD)0x0001C000
-#define IAP_KEY   (DWORD)0x0003C400
-#define IAP_VAL   (DWORD)0x43FF56AC
+// #define IAP_ADDR  (DWORD)0x00004000
+// #define IAP_COPY  (DWORD)0x00020000
+// #define IAP_SIZE  (DWORD)0x0001C000
+// #define IAP_KEY   (DWORD)0x0003C400
+// #define IAP_VAL   (DWORD)0x43FF56AC
 
+#define IAP_ADDR  (DWORD)0x00004000
+#define IAP_COPY  (DWORD)0x00018000
+#define IAP_SIZE  (DWORD)0x00014000  //80 KB
+#define IAP_KEY   (DWORD)0x0003F300	 	
+#define IAP_VAL   (DWORD)0x43FF56AC
 
 #define CFG_ADDR  (DWORD)0x0003C000
 
+#define CFG_1_ADDR  (DWORD)0x0003F000
+#define CFG_2_ADDR  (DWORD)0x0003F200
 
 
 extern WORD iap_process(BYTE *iap_buf, WORD size);
