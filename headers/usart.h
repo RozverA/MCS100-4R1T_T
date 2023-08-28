@@ -10,6 +10,9 @@
 #define FRAME_NO_PARITY 0
 #define FRAME_WITH_PARITY 1
 
+#define RS485_WRITE 0
+#define RS485_READ  1
+
 #pragma pack(1)
 typedef struct
 //-----------------------------------------------------------------------------
@@ -41,6 +44,9 @@ typedef struct
 	
 	WORD tout_port;
 	WORD dt;
+	
+	BYTE	stage;
+	DWORD	time_port;
 	
 	WORD dre;
 	WORD rxc;

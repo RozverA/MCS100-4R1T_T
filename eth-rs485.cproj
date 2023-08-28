@@ -173,12 +173,6 @@
     <Compile Include="headers\cmd.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="headers\crc.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="headers\cycle.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="headers\def.h">
       <SubType>compile</SubType>
     </Compile>
@@ -204,9 +198,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="headers\timer.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="headers\udp.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="headers\usart.h">
@@ -236,9 +227,6 @@
     <Compile Include="source\crc.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="source\cycle.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="source\eth_parse.c">
       <SubType>compile</SubType>
     </Compile>
@@ -264,9 +252,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\timer.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\udp.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\usart.c">

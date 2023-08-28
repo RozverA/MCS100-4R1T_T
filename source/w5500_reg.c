@@ -15,7 +15,8 @@ volatile WORD sizert=0;
 
 func_st w5500_init_reg(void)
 {
-	w5500_reset();
+	pin_ctrl(W55,PWR,SET);
+	//w5500_reset();
 
 	if(ip_init()	)	{return ERROR;}
 	if(mask_init()	)	{return ERROR;}
@@ -27,22 +28,22 @@ func_st w5500_init_reg(void)
 
 func_st mac_init(void)
 {
-	spi_write_timeout(ADDR_COM_MAC_ADDR_0,COMMON_REGISTER,cfg.com_network.mac_addr,sizeof(cfg.com_network.mac_addr),10);
+	spi_write_timeout(ADDR_COM_MAC_ADDR_0,COMMON_REGISTER,cfg_2.mac_addr,sizeof(cfg_2.mac_addr),10);
 	return SUCCESS;
 }
 func_st gw_init(void)
 {
-	spi_write_timeout(ADDR_COM_GATEWAY_ADDR_0,COMMON_REGISTER,cfg.com_network.ip_gate,sizeof(cfg.com_network.ip_gate),10);
+	spi_write_timeout(ADDR_COM_GATEWAY_ADDR_0,COMMON_REGISTER,cfg_1.com_network.ip_gate,sizeof(cfg_1.com_network.ip_gate),10);
 	return SUCCESS;
 }
 func_st mask_init(void)
 {
-	spi_write_timeout(ADDR_COM_MASK_ADDR_0,COMMON_REGISTER,cfg.com_network.ip_mask,sizeof(cfg.com_network.ip_mask),10);
+	spi_write_timeout(ADDR_COM_MASK_ADDR_0,COMMON_REGISTER,cfg_1.com_network.ip_mask,sizeof(cfg_1.com_network.ip_mask),10);
 	return SUCCESS;
 }
 func_st ip_init(void)
 {
-	spi_write_timeout(ADDR_COM_SRC_IP_ADR_0,COMMON_REGISTER,cfg.com_network.ip_addr,sizeof(cfg.com_network.ip_addr),10);
+	spi_write_timeout(ADDR_COM_SRC_IP_ADR_0,COMMON_REGISTER,cfg_1.com_network.ip_addr,sizeof(cfg_1.com_network.ip_addr),10);
 	return SUCCESS;
 }
 

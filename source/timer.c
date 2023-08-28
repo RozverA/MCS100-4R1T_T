@@ -75,10 +75,10 @@ void TC3_init(void)
 	{
 		if(!tc3_cnt) {return;}
 			
-		if(vars.time[0]){vars.time[0]--;}
-		if(vars.time[1]){vars.time[1]--;}
-		if(vars.time[2]){vars.time[2]--;}
-		if(vars.time[3]){vars.time[3]--;}
+		if(port[0].time_port){port[0].time_port--;}
+		if(port[1].time_port){port[1].time_port--;}
+		if(port[2].time_port){port[2].time_port--;}
+		if(port[3].time_port){port[3].time_port--;}
 			
 			
 		if(eth_sock[0].time_wait_SEND_OK){eth_sock[0].time_wait_SEND_OK--;}

@@ -15,7 +15,8 @@ int main(void)
 	wdt_start();
 		
 	cfg_init  ();
-	if(cfg_read() == CFG_ERR)	{cfg_default();}
+	if(cfg_2_read() == CFG_ERR) {cfg_2_err=CFG_ERR;}
+	if(cfg_read()   == CFG_ERR)	{cfg_default();}
 	//cfg_drop();
 
 	cfg_check();

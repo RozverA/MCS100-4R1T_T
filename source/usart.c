@@ -72,22 +72,22 @@ void init(BYTE n_port)
 
 	//cfg settings
 	//frame
-	if (cfg.sock_rs485[n_port].parity == PARITY_NONE) {val = FRAME_NO_PARITY;}	else {val = FRAME_WITH_PARITY;}					// Bits 27:24 - FORM: Frame Format (0: USART frame NO PARITY)
+	if (cfg_1.sock_rs485[n_port].parity == PARITY_NONE) {val = FRAME_NO_PARITY;}	else {val = FRAME_WITH_PARITY;}					// Bits 27:24 - FORM: Frame Format (0: USART frame NO PARITY)
 	port[n_port].sercom->USART.CTRLA.bit.FORM    = val;
 	//parity
-	if( 2 < cfg.sock_rs485[n_port].parity < 1) { val = cfg.sock_rs485[n_port].parity;} else { val = 0;}							// Bit  13    - PMODE: Parity Mode (0: Even parity)
+	if( 2 < cfg_1.sock_rs485[n_port].parity < 1) { val = cfg_1.sock_rs485[n_port].parity;} else { val = 0;}							// Bit  13    - PMODE: Parity Mode (0: Even parity)
 	port[n_port].sercom->USART.CTRLB.bit.PMODE = val;
 	//stop bit
-	if( 0 <= cfg.sock_rs485[n_port].stop <= 1)	{port[n_port].sercom->USART.CTRLB.bit.SBMODE  = cfg.sock_rs485[n_port].stop;}	// Bit  6     - SBMODE: Stop Bit Mode (0: One stop bit.)
+	if( 0 <= cfg_1.sock_rs485[n_port].stop <= 1)	{port[n_port].sercom->USART.CTRLB.bit.SBMODE  = cfg_1.sock_rs485[n_port].stop;}	// Bit  6     - SBMODE: Stop Bit Mode (0: One stop bit.)
 	//char size
-	switch (cfg.sock_rs485[n_port].bsize)
+	switch (cfg_1.sock_rs485[n_port].bsize)
 	{
 		case 8:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x00; break;
 		case 7:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x07; break;
 		default:port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x00; break;
 	}
 	//baud
-	val = cfg.sock_rs485[n_port].baud;
+	val = cfg_1.sock_rs485[n_port].baud;
 	if ( !((val == 0x2580) || (val == 0x9600) || (val == 0x1C200)) ) {val = 0x9600;}
 	port[n_port].sercom->USART.BAUD.bit.BAUD = 65536.0f*(1.0f-(8.0*(float)(val))/(float)(PROC_HERZ)); 
 

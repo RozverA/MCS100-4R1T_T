@@ -1,7 +1,10 @@
 #include "def.h"
 
+
 BYTE cbuf[600];
 BYTE n_port=1;
+WORD u_size = 0;	//for usart_read
+MBAP_HDR hdr_struct;
 
 #define CM2_WHO_ARE_YOU 0x01
 #define UID_WHO_ARE_YOU 0x8001
@@ -54,7 +57,7 @@ void cmd_common_process (void)
 						cbuf[wn]  = (BYTE)UID_WHO_ARE_YOU;								wn += sizeof(BYTE);
 						cbuf[wn]  = (BYTE)(UID_WHO_ARE_YOU>>8);							wn += sizeof(BYTE);
 						memcpy(&cbuf[wn],MODEL,strlen(MODEL));							wn+=strlen(MODEL);
-						memcpy(&cbuf[wn],((BYTE*)&cfg.com_network.mac_addr),6);			wn+=6;
+						//memcpy(&cbuf[wn],((BYTE*)&cfg.com_network.mac_addr),6);			wn+=6;
 						memcpy(&cbuf[wn],VERSION,strlen(VERSION));						wn+=strlen(VERSION);
 					}
 		
@@ -77,8 +80,8 @@ void cmd_common_process (void)
 		//......................................................................
 		case 0x07:	if(size != 5) { return; }             // CMD=0x07 Read CFG
 		
-					cnt= sizeof(CFG);
-					memcpy(&cbuf[wn],((BYTE*)&cfg),cnt);						wn+=cnt;
+					cnt= sizeof(CFG_1);
+					memcpy(&cbuf[wn],((BYTE*)&cfg_1),cnt);						wn+=cnt;
 		break;
 
 		//......................................................................
@@ -89,19 +92,19 @@ void cmd_common_process (void)
 		//......................................................................
 		case 0x17:	if(size  <  5) { return; }
 		
-					memcpy(((BYTE*)&cfg_tmp),cbuf+wn                  ,sizeof(CFG));
-					memcpy(cbuf+wn                  ,((BYTE*)&cfg_tmp),sizeof(CFG));
-					wn+=sizeof(CFG);
+					memcpy(((BYTE*)&cfg_1_tmp),cbuf+wn                  ,sizeof(CFG_1));
+					memcpy(cbuf+wn                  ,((BYTE*)&cfg_1_tmp),sizeof(CFG_1));
+					wn+=sizeof(CFG_1);
 		break;
 		//......................................................................
 		case 0x27:	if(size  !=  5) { return; }
 		
-					if(crc16_ccit((BYTE*)&cfg_tmp,sizeof(CFG)) != 0)
+					if(crc16_ccit((BYTE*)&cfg_1_tmp,sizeof(CFG_1)) != 0)
 					{
 						break;
 					}
 		
-					memcpy(&cfg,&cfg_tmp,sizeof(CFG));
+					memcpy(&cfg_1,&cfg_1_tmp,sizeof(CFG_1));
 					wn |=+cfg_save();
 					reset=1;
 		break;
@@ -130,4 +133,104 @@ void cmd_usart_process (void)
 	if(n_port==5){n_port=1;}
 	usart_process(n_port);
 	n_port++;
+}
+
+WORD prs(BYTE* messege,WORD lenin)
+{
+	if (lenin < 11)//убрать ленина
+	{return 0;}
+	hdr_struct.transaction_n = *(messege) << 8; messege++;
+	hdr_struct.transaction_n += *(messege); messege++;
+	hdr_struct.protocol = *(messege) << 8; messege++;
+	hdr_struct.protocol += *(messege); messege++;
+	hdr_struct.len = *(messege) << 8; messege++;
+	hdr_struct.len += *(messege); messege++;
+	
+	if(!hdr_struct.protocol)	{return hdr_struct.len;}
+	else						{return 0;}
+}
+
+WORD add_hdr(BYTE* buf, WORD mess_size)
+{
+	*buf = hdr_struct.transaction_n >> 8; buf++;
+	*buf = hdr_struct.transaction_n; buf++;
+	*buf = hdr_struct.protocol >> 8; buf++;
+	*buf = hdr_struct.protocol; buf++;
+	*buf = mess_size >> 8; buf++;
+	*buf = mess_size; buf++;
+}
+
+
+void usart_process (BYTE n_port)
+{
+	WORD size=0;
+	static WORD r_cnt=0;
+	static WORD w_cnt=0;
+	static BYTE udp_mode=0;
+	BYTE* ptr;
+	BYTE buff[30];
+	WORD crc;
+	
+	if(cfg_1.sock_rs485[n_port-1].en==FALSE) {return;}
+	
+	switch(port[n_port-1].stage)
+	{
+		case RS485_WRITE:
+		//ETH message check
+		if (!eth_sock[n_port].r_status){return;}									//check read stat
+		port[n_port-1].time_port = port[n_port-1].tout_port*10;						//
+		
+		size = eth_sock[n_port].len[0] << 8 | eth_sock[n_port].len[1];				//give size
+		if (cfg_1.sock_rs485[n_port-1].mode == TCP_MODE)	{size += SKIP_HDR;}		//cut header (for TCP)
+	//HC block
+	
+		if( prs(eth_sock[n_port].data,size) ) 
+		{
+			size -= MBAP_HDR_LEN;
+			ptr = &eth_sock[n_port].data[6];
+			memcpy(&buff[0], ptr, size);
+			crc = crc16_mbus(buff, size);
+			buff[size] = crc; buff[size + 1] = crc >> 8;
+			size += 2;
+			usart_write(n_port - 1, &buff, size);
+			udp_mode = 1;
+		}
+		else {usart_write(n_port - 1, eth_sock[n_port].data, size); udp_mode = 0;}
+					
+	//HC block	
+		w_cnt++;
+		port[n_port-1].stage = RS485_READ;
+		port[n_port-1].rn = 0;
+
+		return;
+		case RS485_READ://UP
+		u_size = usart_read(n_port - 1, port[n_port-1].rbuf, USART_BUF_SIZE);   //give mess size
+		if (u_size != 0)
+		{
+			if(udp_mode == 1)
+			{
+				add_hdr(&eth_sock[n_port].data[0], u_size - 1);
+				memcpy(&eth_sock[n_port].data[6], port[n_port-1].rbuf, u_size + MBAP_HDR_LEN);//copy in buffer
+			} else {memcpy(eth_sock[n_port].data, port[n_port-1].rbuf, u_size); }//copy in buffer
+			
+			eth_sock[n_port].len[0]		= (u_size & 0xFF00) >> 8;
+			eth_sock[n_port].len[1]		=  u_size & 0x00FF; //write mess size in port_udp
+			eth_sock[n_port].w_status	= 1;
+			port[n_port-1].dt			= (port[n_port-1].tout_port*10)-port[n_port-1].time_port;
+			port[n_port-1].stage		= RS485_WRITE;
+			eth_sock[n_port].r_status = 0;
+			r_cnt++;
+			return;
+		}
+		if (port[n_port-1].time_port==0)
+		{
+			port[n_port-1].stage = RS485_WRITE;
+			port[n_port-1].dt 	 = 0;
+			eth_sock[n_port].r_status = 0;
+		}
+		return;
+		default:
+		port[n_port-1].stage = RS485_WRITE;
+		break;
+	}
 }
