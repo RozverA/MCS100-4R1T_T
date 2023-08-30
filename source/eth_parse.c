@@ -8,7 +8,7 @@ void eth_init(void)
 	w5500_init_reg();
 	
 	//common socket for settings
-	socket_init(SOCKET_0,cfg_1.com_network.src_port,UDP_MODE);
+	socket_init(SOCKET_0,cfg_1.com_network.src_port,UDP_GATE);
 
 	//port socket
 	if(cfg_1.sock_rs485[0].en==TRUE) {socket_init(SOCKET_1,cfg_1.sock_rs485[0].src_port,cfg_1.sock_rs485[0].mode);}
@@ -33,7 +33,7 @@ void eth_process(void)
 				eth_st = WRITE_PROCESS;
 				w5500_mode.mode_op=MODE_OP_WRITE_UDP;
 				
-				if ((cfg_1.sock_rs485[w5500_mode.numb_socket].mode == TCP_MODE) && (rtrn))	{w5500_mode.mode_op=MODE_OP_WRITE_TCP;}
+				if ((cfg_1.sock_rs485[w5500_mode.numb_socket].mode == TCP_GATE) && (rtrn))	{w5500_mode.mode_op=MODE_OP_WRITE_TCP;}
 				w5500_mode.numb_socket = rtrn;
 				break;
 			}
@@ -79,7 +79,7 @@ BYTE check_sockets_process (BYTE *buf)
 	}
 	
 	w5500_mode.numb_socket = index;
-	if (cfg_1.sock_rs485[index-1].mode == TCP_MODE)	{w5500_mode.mode_op=MODE_OP_READ_TCP;} 
+	if (cfg_1.sock_rs485[index-1].mode == TCP_GATE)	{w5500_mode.mode_op=MODE_OP_READ_TCP;} 
 	else											{w5500_mode.mode_op=MODE_OP_READ_UDP;}
 	return;
 }
@@ -91,7 +91,7 @@ void eth_parse (BYTE numb_sock,BYTE *buf,WORD size)
 	
 	default_mtu=DEFAULT_MTU_UDP;
 	
-	if ((cfg_1.sock_rs485[numb_sock - 1].mode == TCP_MODE) && (numb_sock))
+	if ((cfg_1.sock_rs485[numb_sock - 1].mode == TCP_GATE) && (numb_sock))
 	{
 		default_mtu=DEFAULT_MTU_TCP;
 		ptr_port=SKIP_HDR;

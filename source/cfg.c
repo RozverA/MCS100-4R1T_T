@@ -55,7 +55,7 @@ void cfg_default(void)
 	
 	//............................................................................
 
-	cfg_1.com_network.src_port    = 5000;
+	cfg_1.com_network.src_port    = 4000;
 	
 	//ip 192.168.1.102 /SIPR
 	cfg_1.com_network.ip_addr[0]=0xC0;//192
@@ -80,10 +80,10 @@ void cfg_default(void)
 	//...........................................................................
 	for(i=0;i<4;++i)
 	{
-		cfg_1.sock_rs485[i].mode		= UDP_MODE;
+		cfg_1.sock_rs485[i].mode		= UDP_IP;
 		cfg_1.sock_rs485[i].en			= TRUE;
 		
-		cfg_1.sock_rs485[i].src_port	=5001+i;
+		cfg_1.sock_rs485[i].src_port	=4001+i;
 		
 		cfg_1.sock_rs485[i].baud		=38400;
 		cfg_1.sock_rs485[i].bsize		=8;

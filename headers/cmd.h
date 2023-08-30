@@ -11,7 +11,7 @@ typedef struct{
 }MBAP_HDR;
 
 extern MBAP_HDR hdr_struct;
-extern WORD prs(BYTE* mess,WORD size);
+extern WORD prs(BYTE* mess);
 extern WORD add_hdr(BYTE* buf, WORD mess_size);
 
 extern void cmd_process(void);

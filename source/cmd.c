@@ -135,10 +135,8 @@ void cmd_usart_process (void)
 	n_port++;
 }
 
-WORD prs(BYTE* messege,WORD lenin)
+WORD cut_hdr(BYTE* messege)
 {
-	if (lenin < 11)//убрать ленина
-	{return 0;}
 	hdr_struct.transaction_n = *(messege) << 8; messege++;
 	hdr_struct.transaction_n += *(messege); messege++;
 	hdr_struct.protocol = *(messege) << 8; messege++;
@@ -167,8 +165,7 @@ void usart_process (BYTE n_port)
 	static WORD r_cnt=0;
 	static WORD w_cnt=0;
 	static BYTE udp_mode=0;
-	BYTE* ptr;
-	BYTE buff[30];
+	BYTE buff[USART_BUF_SIZE];
 	WORD crc;
 	
 	if(cfg_1.sock_rs485[n_port-1].en==FALSE) {return;}
@@ -181,23 +178,23 @@ void usart_process (BYTE n_port)
 		port[n_port-1].time_port = port[n_port-1].tout_port*10;						//
 		
 		size = eth_sock[n_port].len[0] << 8 | eth_sock[n_port].len[1];				//give size
-		if (cfg_1.sock_rs485[n_port-1].mode == TCP_MODE)	{size += SKIP_HDR;}		//cut header (for TCP)
-	//HC block
-	
-		if( prs(eth_sock[n_port].data,size) ) 
-		{
-			size -= MBAP_HDR_LEN;
-			ptr = &eth_sock[n_port].data[6];
-			memcpy(&buff[0], ptr, size);
-			crc = crc16_mbus(buff, size);
-			buff[size] = crc; buff[size + 1] = crc >> 8;
-			size += 2;
-			usart_write(n_port - 1, &buff, size);
-			udp_mode = 1;
+		if (cfg_1.sock_rs485[n_port-1].mode == TCP_GATE)	{size += SKIP_HDR;}		//cut header (for TCP)
+		if (cfg_1.sock_rs485[n_port-1].mode == TCP_IP)		{size += SKIP_HDR;}		//cut header (for TCP)
+			
+//HC block
+		if (cfg_1.sock_rs485[n_port - 1].mode < 1)
+		{		
+			cut_hdr(eth_sock[n_port].data);
+			size -= MBAP_HDR_LEN;								//
+			memcpy(&buff[0], &eth_sock[n_port].data[6], size);	//copy data without header in buffer
+			crc = crc16_mbus(buff, size);						//calculate crc
+			buff[size] = crc; buff[size + 1] = crc >> 8;		//add crc on buffer
+			usart_write(n_port - 1, &buff, size + 2);			//write data on 
+			udp_mode = 1;										//need delete after add cfg udp_ip
 		}
 		else {usart_write(n_port - 1, eth_sock[n_port].data, size); udp_mode = 0;}
-					
-	//HC block	
+//HC block	
+
 		w_cnt++;
 		port[n_port-1].stage = RS485_READ;
 		port[n_port-1].rn = 0;
@@ -207,11 +204,13 @@ void usart_process (BYTE n_port)
 		u_size = usart_read(n_port - 1, port[n_port-1].rbuf, USART_BUF_SIZE);   //give mess size
 		if (u_size != 0)
 		{
+			//if (cfg_1.sock_rs485[n_port - 1].mode < 1){		}
 			if(udp_mode == 1)
 			{
-				add_hdr(&eth_sock[n_port].data[0], u_size - 1);
-				memcpy(&eth_sock[n_port].data[6], port[n_port-1].rbuf, u_size + MBAP_HDR_LEN);//copy in buffer
-			} else {memcpy(eth_sock[n_port].data, port[n_port-1].rbuf, u_size); }//copy in buffer
+				add_hdr(&eth_sock[n_port].data[0], u_size - 1);													//write header and minus size check sum
+				u_size	+= MBAP_HDR_LEN;																		//if replase in memcpy, all breaking
+				memcpy(&eth_sock[n_port].data[6], port[n_port-1].rbuf, u_size);									//copy data in eth data
+			} else {memcpy(eth_sock[n_port].data, port[n_port-1].rbuf, u_size); }								//gate mode
 			
 			eth_sock[n_port].len[0]		= (u_size & 0xFF00) >> 8;
 			eth_sock[n_port].len[1]		=  u_size & 0x00FF; //write mess size in port_udp

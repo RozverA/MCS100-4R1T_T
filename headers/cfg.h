@@ -28,7 +28,7 @@ typedef struct
 //-----------------------------------------------------------------------------
 {
 	BYTE  en;			//1 //on/off
-	BYTE  mode;			//2	//TCP/UDP
+	BYTE  mode;			//2	//TCP_GATE/UDP_GATE/TCP_IP/UDP_IP
 	
 	WORD  src_port;		//4	//my port
 	DWORD baud;			//8	
