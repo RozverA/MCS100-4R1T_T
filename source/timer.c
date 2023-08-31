@@ -79,8 +79,7 @@ void TC3_init(void)
 		if(port[1].time_port){port[1].time_port--;}
 		if(port[2].time_port){port[2].time_port--;}
 		if(port[3].time_port){port[3].time_port--;}
-			
-			
+				
 		if(eth_sock[0].time_wait_SEND_OK){eth_sock[0].time_wait_SEND_OK--;}
 		if(eth_sock[1].time_wait_SEND_OK){eth_sock[1].time_wait_SEND_OK--;}
 		if(eth_sock[2].time_wait_SEND_OK){eth_sock[2].time_wait_SEND_OK--;}

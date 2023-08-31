@@ -16,7 +16,6 @@ volatile WORD sizert=0;
 func_st w5500_init_reg(void)
 {
 	pin_ctrl(W55,PWR,SET);
-	//w5500_reset();
 
 	if(ip_init()	)	{return ERROR;}
 	if(mask_init()	)	{return ERROR;}

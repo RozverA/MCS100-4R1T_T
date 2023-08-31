@@ -72,13 +72,18 @@ void init(BYTE n_port)
 
 	//cfg settings
 	//frame
-	if (cfg_1.sock_rs485[n_port].parity == PARITY_NONE) {val = FRAME_NO_PARITY;}	else {val = FRAME_WITH_PARITY;}					// Bits 27:24 - FORM: Frame Format (0: USART frame NO PARITY)
-	port[n_port].sercom->USART.CTRLA.bit.FORM    = val;
-	//parity
-	if( 2 < cfg_1.sock_rs485[n_port].parity < 1) { val = cfg_1.sock_rs485[n_port].parity;} else { val = 0;}							// Bit  13    - PMODE: Parity Mode (0: Even parity)
-	port[n_port].sercom->USART.CTRLB.bit.PMODE = val;
+	switch (cfg_1.sock_rs485[n_port].parity) 
+	{
+		case  PARITY_NONE:	port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_NO_PARITY; break;
+		case  PARITY_EVEN:	port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_WITH_PARITY; port[n_port].sercom->USART.CTRLB.bit.PMODE = EVEN; break;
+		case  PARITY_ODD:	port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_WITH_PARITY; port[n_port].sercom->USART.CTRLB.bit.PMODE = ODD; break;
+	}
 	//stop bit
-	if( 0 <= cfg_1.sock_rs485[n_port].stop <= 1)	{port[n_port].sercom->USART.CTRLB.bit.SBMODE  = cfg_1.sock_rs485[n_port].stop;}	// Bit  6     - SBMODE: Stop Bit Mode (0: One stop bit.)
+	switch(cfg_1.sock_rs485[n_port].stop)	
+	{
+		case 1: port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 0; break;
+		case 2: port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 1; break;
+	}
 	//char size
 	switch (cfg_1.sock_rs485[n_port].bsize)
 	{
@@ -88,7 +93,7 @@ void init(BYTE n_port)
 	}
 	//baud
 	val = cfg_1.sock_rs485[n_port].baud;
-	if ( !((val == 0x2580) || (val == 0x9600) || (val == 0x1C200)) ) {val = 0x9600;}
+	if ( !((val == 1200) || (val == 2400) || (val == 4800) || (val == 9600) || (val == 19200) || (val == 38400) || (val == 57600) || (val == 115200) || (val == 128000) || (val == 256000)) ) {val = 38400;}
 	port[n_port].sercom->USART.BAUD.bit.BAUD = 65536.0f*(1.0f-(8.0*(float)(val))/(float)(PROC_HERZ)); 
 
 
@@ -104,7 +109,7 @@ void init(BYTE n_port)
 	while(port[n_port].sercom->USART.SYNCBUSY.reg & 0x07) { ; }
 	port[n_port].sercom->USART.CTRLA.bit.ENABLE=0x01;   // Bit 1 - ENABLE: Enable (1: The peripheral is enabled or being enabled.)
 
-	tout = (double)1000000 / (double)38400;
+	tout = (double)1000000 / (double)cfg_1.sock_rs485[n_port].baud;
 	tout = tout * bsize;
 	tout = tout * 4;
 	tout = tout / 100;

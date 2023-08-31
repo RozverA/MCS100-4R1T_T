@@ -28,7 +28,8 @@ typedef struct
 //-----------------------------------------------------------------------------
 {
 	BYTE  en;			//1 //on/off
-	BYTE  mode;			//2	//TCP_GATE/UDP_GATE/TCP_IP/UDP_IP
+	BYTE  mode;			//2	//TCP/UDP
+	BYTE  pl;			//2	//GATE/MBUS
 	
 	WORD  src_port;		//4	//my port
 	DWORD baud;			//8	
@@ -48,26 +49,32 @@ typedef struct             // size 256 bytes
 //-----------------------------------------------------------------------------
 {
 	DWORD				guid;			//4       		  
-	DWORD				time;			//8
+	char				name[32];
 	COMMON_CFG			com_network;	//16+8 24
 	SOCKET_RS485_CFG	sock_rs485[4];	//12*4	48+24 72	
 	WORD				in_numb;		//74						//<<HOZ>> number
-	BYTE				reserv[180];				//256-76 180
+	BYTE				reserv[148];				//256-76 180
 	WORD				cs; 			//76	
 }CFG_1;
 #pragma pack()
+
+typedef struct
+{
+	char data_day[2];
+	char data_mount[2];
+	char data_year[4];
+}SERVICE_DATE;
 
 #pragma pack(1)
 typedef struct             // size 256 bytes
 //-----------------------------------------------------------------------------
 {
-	BYTE   mac_addr[6];			//6
-	WORD   len_serial;			//8
-	BYTE   serial[16];			//24
-	BYTE   date_of_creat[4];	//28
-	WORD   len_info;			//30
-	char   info[224];						//256-32  224
-	WORD  cs;					//32
+	BYTE	mac_addr[6];
+	char	serial[32];
+	char	date_of_creat[8];
+	char	version_boot[32];
+	char	info[176];
+	WORD	cs;
 }CFG_2;
 #pragma pack()
 

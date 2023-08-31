@@ -7,6 +7,9 @@
 #define PARITY_EVEN 1
 #define PARITY_ODD  2
 
+#define EVEN	0
+#define ODD		1
+
 #define FRAME_NO_PARITY 0
 #define FRAME_WITH_PARITY 1
 

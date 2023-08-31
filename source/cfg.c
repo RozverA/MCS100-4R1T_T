@@ -74,13 +74,26 @@ void cfg_default(void)
 	cfg_1.com_network.ip_gate[1]=0xA8;
 	cfg_1.com_network.ip_gate[2]=0x01;
 	cfg_1.com_network.ip_gate[3]=0x01;
-
+	
+	cfg_1.name[0] = 'M';//MCS100-4R1T
+	cfg_1.name[1] = 'C';
+	cfg_1.name[2] = 'S';
+	cfg_1.name[3] = '1';
+	cfg_1.name[4] = '0';
+	cfg_1.name[5] = '0';
+	cfg_1.name[6] = '-';
+	cfg_1.name[7] = '4';
+	cfg_1.name[8] = 'R';
+	cfg_1.name[9] = '1';
+	cfg_1.name[10] = 'T';
+	cfg_1.name[11] = 0x00;
 	
 
 	//...........................................................................
 	for(i=0;i<4;++i)
 	{
-		cfg_1.sock_rs485[i].mode		= UDP_IP;
+		cfg_1.sock_rs485[i].mode		= UDP;
+		cfg_1.sock_rs485[i].pl			= GATE;
 		cfg_1.sock_rs485[i].en			= TRUE;
 		
 		cfg_1.sock_rs485[i].src_port	=4001+i;
@@ -92,7 +105,6 @@ void cfg_default(void)
 		cfg_1.sock_rs485[i].tout		=100;
 
 	}
-
 	cfg_1.cs=crc16_ccit(((BYTE *)&cfg_1),sizeof(CFG_1)-2);
 	//..............................................................................
 }

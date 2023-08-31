@@ -8,8 +8,8 @@ func_st socket_init (BYTE numb, WORD src_port, BYTE mode)
 	BYTE buf[2];
 	
 	//mode
-	if(mode==UDP_GATE){buf[0]=SR_00_P2;}
-	if(mode==TCP_GATE){buf[0]=SR_00_P1;}	
+	if(mode==UDP){buf[0]=SR_00_P2;}
+	if(mode==TCP){buf[0]=SR_00_P1;}	
 		
 	spi_write_timeout(ADDR_SOC_MODE,(SOCKET_REGISTER | SOCKET(numb)),buf,1,10);
 	
@@ -23,7 +23,7 @@ func_st socket_init (BYTE numb, WORD src_port, BYTE mode)
 	buf[0]=CMD_OPEN;
 	spi_write_timeout(ADDR_SOC_COMMAND,(SOCKET_REGISTER | SOCKET(numb)),buf,1,10);
 	
-	if (mode == TCP_GATE)
+	if (mode == TCP)
 		{
 			//socket_set_RTR
 			buf[0]=0x0F;
