@@ -27,6 +27,8 @@ void cmd_common_process (void)
 	WORD  wn   = 0;
 	WORD  cs   = 0;
 	BYTE  i		= 0;
+	WORD  ixo  = 0;
+
 	
 	if(eth_sock[0].r_status==FALSE) {return;}
 	eth_sock[0].r_status=FALSE;
@@ -77,17 +79,31 @@ void cmd_common_process (void)
 				}
 		break;
 		//......................................................................
-		case 0x07:	if(size != 5) { return; }             // CMD=0x07 Read CFG 1
+		//......................................................................
+		case 0x07:	if(size != 7)			{ return; }										// CMD=0x07 Read CFG_1	
 		
-					cnt= sizeof(CFG_1);
-					memcpy(&cbuf[wn],((BYTE*)&cfg_1),cnt);						wn+=cnt;
+					ixo=cbuf[3] | (cbuf[4]<<8);							wn+=sizeof(WORD);
+					cnt= sizeof(CFG_1) - ixo;
+					if(ixo > sizeof(CFG_1)	) { break;  }
+					if(cnt > 256			) { cnt=256;  }
+					cbuf[wn]=(cnt & 0x00FF);							wn+=sizeof(BYTE);
+					cbuf[wn]=(cnt & 0xFF00)>>8;							wn+=sizeof(BYTE);
+
+					memcpy(&cbuf[wn],((BYTE*)&cfg_1)+ixo,cnt);				wn+=cnt;
 		break;
 
 		//......................................................................
-		case 0x08:	if(size != 5) { return; }             // CMD=0x07 Read CFG 2
+		case 0x08:	if(size != 7) { return; }												// CMD=0x08 Read CFG 2
 		
-					cnt= sizeof(CFG_2);
-					memcpy(&cbuf[wn],((BYTE*)&cfg_2),cnt);						wn+=cnt;
+					ixo=cbuf[3] | (cbuf[4]<<8);							wn+=sizeof(WORD);
+					cnt= sizeof(CFG_2) - ixo;
+					if(ixo > sizeof(CFG_2)	) { break;  }
+					if(cnt > 256			) { cnt=256;  }
+					cbuf[wn]=(cnt & 0x00FF);							wn+=sizeof(BYTE);
+					cbuf[wn]=(cnt & 0xFF00)>>8;							wn+=sizeof(BYTE);
+
+					
+					memcpy(&cbuf[wn],((BYTE*)&cfg_2)+ixo,cnt);				wn+=cnt;
 		break;
 
 		//......................................................................
@@ -97,11 +113,20 @@ void cmd_common_process (void)
 		break;
 
 		//......................................................................
-		case 0x17:	if(size  <  5) { return; }
+		case 0x17:	if(size  <  7) { return; }
 		
-					memcpy(((BYTE*)&cfg_1_tmp),cbuf+wn                  ,sizeof(CFG_1));
-					memcpy(cbuf+wn                  ,((BYTE*)&cfg_1_tmp),sizeof(CFG_1));
-					wn+=sizeof(CFG_1);
+					ixo = cbuf[3] | (cbuf[4]<<8);							wn+=sizeof(WORD);
+					cnt = cbuf[5] | (cbuf[6]<<8);							wn+=sizeof(WORD);
+					
+					if(cnt  ==  0) { break; }
+					if(ixo  ==  0) {memset(&cfg_1_tmp,0x00,sizeof(CFG_1));}
+					
+					if(ixo       >= sizeof(CFG_1)) { break; }
+					if((cnt+ixo) >  sizeof(CFG_1)) { break; }
+					
+					memcpy(((BYTE*)&cfg_1_tmp)+ixo,cbuf+wn                  ,cnt);
+					memcpy(cbuf+wn                  ,((BYTE*)&cfg_1_tmp)+ixo,cnt);
+					wn+=cnt;
 		break;
 		//......................................................................
 		case 0x27:	if(size  !=  5) { return; }
@@ -114,6 +139,11 @@ void cmd_common_process (void)
 					memcpy(&cfg_1,&cfg_1_tmp,sizeof(CFG_1));
 					wn |=+cfg_save();
 					reset=1;
+		break;
+		
+		case 0x29:	if(size  !=  5) { return; }
+		
+					reset=1; wn++;
 		break;
 		//......................................................................
 		
@@ -145,8 +175,6 @@ void cmd_usart_process (void)
 void usart_process (BYTE n_port)
 {
 	WORD size=0;
-	static WORD r_cnt=0;
-	static WORD w_cnt=0;
 	WORD crc;
 	
 	if(cfg_1.sock_rs485[n_port-1].en==FALSE) {return;}
@@ -159,7 +187,6 @@ void usart_process (BYTE n_port)
 		port[n_port-1].time_port = port[n_port-1].tout_port*10;						//
 		
 		size = eth_sock[n_port].len[0] << 8 | eth_sock[n_port].len[1];				//give size
-		if (cfg_1.sock_rs485[n_port-1].mode == TCP)	{size += SKIP_HDR;}				//cut header (for TCP)
 					
 		switch(cfg_1.sock_rs485[n_port - 1].pl)
 		{
@@ -176,8 +203,6 @@ void usart_process (BYTE n_port)
 				usart_write(n_port - 1, eth_sock[n_port].data, size);
 			break;
 		}
-		
-		w_cnt++;
 		port[n_port-1].stage = RS485_READ;
 		port[n_port-1].rn = 0;
 
@@ -206,7 +231,6 @@ void usart_process (BYTE n_port)
 			port[n_port-1].dt			= (port[n_port-1].tout_port*10)-port[n_port-1].time_port;
 			port[n_port-1].stage		= RS485_WRITE;
 			eth_sock[n_port].r_status = 0;
-			r_cnt++;
 			return;
 		}
 		if (port[n_port-1].time_port==0)
@@ -217,7 +241,7 @@ void usart_process (BYTE n_port)
 		}
 		return;
 		default:
-		port[n_port-1].stage = RS485_WRITE;
+			port[n_port-1].stage = RS485_WRITE;
 		break;
 	}
 }

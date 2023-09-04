@@ -43,7 +43,7 @@ void eth_process(void)
 		break;
 		case READ_PROCESS:
 			rtrn=w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket,eth_cbuf);
-			if(rtrn==ERROR){eth_st=0;break;}
+			if(rtrn==2){eth_st=0;break;}
 			if(rtrn)
 			{eth_parse(w5500_mode.numb_socket,eth_cbuf,rtrn); eth_st=0;}
 		break;
@@ -63,7 +63,7 @@ BYTE check_sockets_process (BYTE *buf)
 	static BYTE index = MAX_SOCKETS;
 	
 	index++;
-	if(index > MAX_SOCKETS){index=0;}
+	if(index >= MAX_SOCKETS){index=0;}
 	
 	if(!index)	
 	{

@@ -188,9 +188,6 @@
     <Compile Include="headers\iap.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="headers\socket.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="headers\spi.h">
       <SubType>compile</SubType>
     </Compile>

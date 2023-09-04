@@ -34,10 +34,11 @@ ATSAMR21x19A - RAM-32k FLASH-256k + 512k
 rom_boot        (rx)  : ORIGIN = 0x00000000, LENGTH = 0x00004000  //boot			16k
 rom_main		(rx)  : ORIGIN = 0x00004000, LENGTH = 0x0001C000  //main			112k
 rom_copy_main   (rx)  : ORIGIN = 0x00020000, LENGTH = 0x0001C000  //copy main		112k
-cfg			    (rx)  : ORIGIN = 0x0003C000, LENGTH = 0x00000200  //config			512k
-cfg_2			(rx)  : ORIGIN = 0x0003C200, LENGTH = 0x00000200  //config_2		512k
-key				(rx)  : ORIGIN = 0x0003C400, LENGTH = 0x00000100  //key				256b		
-res			    (rx)  : ORIGIN = 0x0003C500, LENGTH = 0x00003B00  //reserv			14k	
+res			    (rx)  : ORIGIN = 0x0003C000, LENGTH = 0x00003000  //reserv			12k	
+cfg			    (rx)  : ORIGIN = 0x0003F000, LENGTH = 0x00000100  //config			256b
+cfg_2			(rx)  : ORIGIN = 0x0003F100, LENGTH = 0x00000100  //config_2		256b
+key				(rx)  : ORIGIN = 0x0003F200, LENGTH = 0x00000100  //key				256b		
+res			    (rx)  : ORIGIN = 0x0003F300, LENGTH = 0x00000D00  //reserv			3k	
 
 ram_main		(rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000
 ram_boot        (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000

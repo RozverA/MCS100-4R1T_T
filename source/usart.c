@@ -37,6 +37,7 @@ void init(BYTE n_port)
 			port[n_port].gclk_sercom = GCLK_CLKCTRL_ID_SERCOM1_CORE;
 			port[n_port].irqn_sercom = SERCOM1_IRQn;
 		break;
+		default: /*error*/ return;
 	}
 	
 	PM->APBCSEL.bit.APBCDIV   = 0x00;
@@ -74,29 +75,27 @@ void init(BYTE n_port)
 	//frame
 	switch (cfg_1.sock_rs485[n_port].parity) 
 	{
-		case  PARITY_NONE:	port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_NO_PARITY; break;
 		case  PARITY_EVEN:	port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_WITH_PARITY; port[n_port].sercom->USART.CTRLB.bit.PMODE = EVEN; break;
 		case  PARITY_ODD:	port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_WITH_PARITY; port[n_port].sercom->USART.CTRLB.bit.PMODE = ODD; break;
+		default:			port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_NO_PARITY; break;
 	}
 	//stop bit
 	switch(cfg_1.sock_rs485[n_port].stop)	
 	{
-		case 1: port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 0; break;
-		case 2: port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 1; break;
+		case 2:		port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 1; break;
+		default:	port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 0; break;
 	}
 	//char size
 	switch (cfg_1.sock_rs485[n_port].bsize)
 	{
-		case 8:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x00; break;
 		case 7:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x07; break;
 		default:port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x00; break;
 	}
 	//baud
 	val = cfg_1.sock_rs485[n_port].baud;
-	if ( !((val == 1200) || (val == 2400) || (val == 4800) || (val == 9600) || (val == 19200) || (val == 38400) || (val == 57600) || (val == 115200) || (val == 128000) || (val == 256000)) ) {val = 38400;}
+	if ( !((val == 600) || (val == 1200) || (val == 2400) || (val == 4800) || (val == 9600) || (val == 19200) || (val == 38400) || (val == 57600) || (val == 115200) || (val == 128000) || (val == 256000)) ) {val = 38400;}
 	port[n_port].sercom->USART.BAUD.bit.BAUD = 65536.0f*(1.0f-(8.0*(float)(val))/(float)(PROC_HERZ)); 
-
-
+	//cfg settings end
 
 	port[n_port].sercom->USART.INTENSET.bit.RXC  =0x01; // Bit 2 RXC: Receive Complete Interrupt Enable
 

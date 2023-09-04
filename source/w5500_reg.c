@@ -57,35 +57,35 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
 	{
 		case NULLS:
 			w5500_st=spi_mode;
-			cmd_spi_wait=time_50ms;
-			return 0;
+			cmd_spi_wait=time_20ms;
+			return PROC_WAIT;
 		break;
 		case SPI_PROCESS:
 								if(spi_process(addr_w5500,cb_w5500,ptr_buf,len_buf,cmd)){w5500_st=spi_mode;cmd=0;}
 		break;
 		case MODE_OP_READ_UDP:
 								rtrn=w5500_cmd_read_socket_udp(sock_numb,buf);
-								if(rtrn)	{w5500_st=0;spi_mode=0;return (rtrn);}
+								if(rtrn)	{w5500_st=NULLS;spi_mode=0;return (rtrn);}
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_WRITE_UDP:
-								if(w5500_write_socket_udp(sock_numb,buf))	{w5500_st=0;spi_mode=0;return 1;}
+								if(w5500_write_socket_udp(sock_numb,buf))	{w5500_st=NULLS;spi_mode=0;return PROC_OK;}
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_READ_TCP:
 								rtrn=w5500_cmd_read_socket_tcp(sock_numb,buf);
-								if(rtrn)	{w5500_st=0;spi_mode=0;return (rtrn);}
+								if(rtrn)	{w5500_st=NULLS;spi_mode=0;return (rtrn);}
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_WRITE_TCP:
-								if(w5500_write_socket_tcp(sock_numb,buf))	{w5500_st=0;spi_mode=0;return 1;}
+								if(w5500_write_socket_tcp(sock_numb,buf))	{w5500_st=NULLS;spi_mode=0;return PROC_OK;}
 								w5500_st=SPI_PROCESS;
 		break;
 		default:
-				w5500_st=0; return 2;
+				w5500_st=0; return PROC_ER;
 		break;
 	}
-	return 0;
+	return PROC_WAIT;
 }
 
 WORD w5500_cmd_read_socket_udp (BYTE sock_numb, BYTE *buf)
@@ -94,6 +94,7 @@ WORD w5500_cmd_read_socket_udp (BYTE sock_numb, BYTE *buf)
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
 	BYTE cnt=0;
+	
 	if(numb_static_r!=sock_numb){numb_static_r=sock_numb;st_cmd_w5500=0;}
 	
 	switch(st_cmd_w5500)
@@ -115,7 +116,7 @@ WORD w5500_cmd_read_socket_udp (BYTE sock_numb, BYTE *buf)
 				addr_w5500=eth_sock[sock_numb].ptr_rx_buf;
 				cb_w5500=SOCKET_RX_BUFFER | SOCKET(sock_numb);
 				ptr_buf=buf;
-				len_buf=(*(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27.case1<<8 | *(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27.case2);
+				len_buf=sizert;
 				eth_sock[sock_numb].ptr_rx_buf=eth_sock[sock_numb].ptr_rx_buf+len_buf;
 				if(len_buf>DEFAULT_MTU_UDP){size=2;/*min value '8'*/}else{size=len_buf;}							
 				cmd=READ_DATA;
@@ -123,7 +124,7 @@ WORD w5500_cmd_read_socket_udp (BYTE sock_numb, BYTE *buf)
 				break;
 			}
 			st_cmd_w5500--;
-			return 2;
+			return PROC_ER;
 		break;
 		case UDP_PTR_MOVE:
 			wbuf_w55[cnt]=(eth_sock[sock_numb].ptr_rx_buf>>8);			cnt++;//move to next part messege data 1
@@ -143,19 +144,17 @@ WORD w5500_cmd_read_socket_udp (BYTE sock_numb, BYTE *buf)
 			len_buf=cnt;
 			cmd=WRITE_DATA;
 			st_cmd_w5500++;
-			
-			//if(0<numb<5){/*counters.soket[numb - 1].rx += 1;*/}
 		break;	
 		case UDP_BK_START:
 			st_cmd_w5500=0;//сброс параметров
-			if((size > USART_BUF_SIZE) && (sock_numb))	 {return 2;}
+			if((size > USART_BUF_SIZE) && (sock_numb))	 {return PROC_ER;}
 			return (size);
 		break;
 		default:
 				st_cmd_w5500=0; return 2;
 		break;
 	}
-	return 0;
+	return PROC_WAIT;
 }
 
 WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
@@ -164,9 +163,6 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 	static BYTE numb_static = 0;
 	WORD cnt = 0;
 	WORD size = 0;
-	
-	
-	
 	
 	if(numb_static != sock_numb) {numb_static = sock_numb; st_wr_w5500 = 0;}
 	if(st_wr_w5500 == 0)
@@ -177,7 +173,7 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 	}
 	switch(st_wr_w5500)
 	{
-		case 0:																	//read reg tx status
+		case UDP_RD_TX_STAT:																	//read reg tx status
 			addr_w5500=ADDR_SOC_TX_FREE_SIZE_0;						
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
 			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R014_Sn_TX_FSR_20_21;
@@ -185,7 +181,7 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			cmd=READ_DATA;
 			st_wr_w5500++;
 		break;
-		case 1:																	//write ip
+		case UDP_WR_IP:																	//write ip
 			addr_w5500=ADDR_SOC_D_IP_ADDR0;
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
 			ptr_buf=(BYTE*)&eth_sock[sock_numb].ip_addr;
@@ -193,7 +189,7 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
 		break;
-		case 2:																	//write port
+		case UDP_WR_PORT:																	//write port
 			addr_w5500=ADDR_SOC_D_PORT0;
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
 			ptr_buf=(BYTE*)&eth_sock[sock_numb].port;
@@ -201,7 +197,7 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
 		break;
-		case 3:																	//write data
+		case UDP_WR_DATA:																	//write data
 			addr_w5500=eth_sock[sock_numb].ptr_tx_buf;
 			cb_w5500=SOCKET_TX_BUFFER | SOCKET(sock_numb);
 			ptr_buf=(BYTE*)&eth_sock[sock_numb].data;
@@ -210,7 +206,7 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
 		break;
-		case 4:																	//write ptr
+		case UDP_WR_PTR:																	//write ptr
 			wbuf_w55[cnt]=(eth_sock[sock_numb].ptr_tx_buf>>8);		cnt++;
 			wbuf_w55[cnt]=(BYTE)eth_sock[sock_numb].ptr_tx_buf;		cnt++;
 						
@@ -221,7 +217,7 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
 		break;
-		case 5:																	//write cmd SEND
+		case UDP_SEND_CMD:																	//write cmd SEND
 			wbuf_w55[cnt]=CMD_SEND;				cnt++;
 						
 			addr_w5500=ADDR_SOC_COMMAND;
@@ -230,9 +226,9 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			len_buf=cnt;
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
-			eth_sock[sock_numb].time_wait_SEND_OK=time_20ms;
+			eth_sock[sock_numb].time_wait_SEND_OK=time_50ms;
 		break;
-		case 6:																//read status_SEND_OK
+		case UDP_STAT_RD:																//read status_SEND_OK
 			addr_w5500=ADDR_SOC_INT;
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
 			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R03_Sn_IR_02;
@@ -240,7 +236,7 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			cmd=READ_DATA;
 			st_wr_w5500++;
 		break;
-		case 7:																//clear status SEND_OK
+		case UDP_STATUS_CLR:															//clear status SEND_OK
 			if(chip.sockReg[sock_numb].R03_Sn_IR_02.SEND_OK==1)
 			{
 				wbuf_w55[cnt]=SR_2C_SEND_OK;			cnt++;
@@ -256,30 +252,27 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			if(!eth_sock[sock_numb].time_wait_SEND_OK)
 			{
 				st_wr_w5500=0; 
-				return 2;
+				return PROC_ER;
 			}
 		break;
 		case 8:
 			st_wr_w5500=0;
-			return 1;
+			return PROC_OK;
 		break;
 		default:
-				st_wr_w5500=0; return 2;
+				st_wr_w5500=0; return PROC_ER;
 		break;
 	}
-	return 0;
+	return PROC_WAIT;
 }
 
 WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 {
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
-	static WORD ptrWR = 0;
-	static WORD ptrRD = 0;
-	static BYTE status_ded=0xFF;
+	static BYTE status_ded[MAX_SOCKETS];
 	BYTE cnt=0;
 
-	
 	switch(st_cmd_w5500)
 	{
 		case TCP_GIVE_LEN:
@@ -291,9 +284,8 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			st_cmd_w5500 = TCP_PART_RD; //"next"
 			size=0; 
 			
-			
 			eth_sock[sock_numb].check_connect_cnt++;
-			if(eth_sock[sock_numb].check_connect_cnt>100){st_cmd_w5500 = TCP_STATUS_RD;eth_sock[sock_numb].check_connect_cnt=0;}
+			if(eth_sock[sock_numb].check_connect_cnt > 20) {st_cmd_w5500 = TCP_STATUS_RD; eth_sock[sock_numb].check_connect_cnt=0;}
 		break;	
 		case TCP_STATUS_RD:
 			addr_w5500=ADDR_SOC_STATUS;//addr in w5500 
@@ -304,8 +296,8 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			st_cmd_w5500 = TCP_FORK;//"next" 
 		break;
 		case TCP_FORK:
-			if(status_ded==chip.sockReg[sock_numb].R04_Sn_SR_03.Status){st_cmd_w5500 = TCP_PART_RD; return 0;}
-			status_ded=chip.sockReg[sock_numb].R04_Sn_SR_03.Status;
+			if(status_ded[sock_numb]==chip.sockReg[sock_numb].R04_Sn_SR_03.Status){st_cmd_w5500 = TCP_PART_RD; return PROC_WAIT;}
+			status_ded[sock_numb]=chip.sockReg[sock_numb].R04_Sn_SR_03.Status;
 			switch(chip.sockReg[sock_numb].R04_Sn_SR_03.Status)
 			{
 				case ST_CLOSE:
@@ -319,7 +311,7 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 				break;
 				default:
 					st_cmd_w5500=TCP_PART_RD;
-				return 0;
+				return PROC_WAIT;
 			}
 			addr_w5500=ADDR_SOC_COMMAND;
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
@@ -329,26 +321,28 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			st_cmd_w5500=TCP_STATUS_RD;
 		break;
 		case TCP_PART_RD:	
-			ptrWR = (*(BYTE*)&chip.sockReg[sock_numb].R019_Sn_RX_WR_2A_2B.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R019_Sn_RX_WR_2A_2B.case2);//получить WR
-			ptrRD = (*(BYTE*)&chip.sockReg[sock_numb].R018_Sn_RX_RD_28_29.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R018_Sn_RX_RD_28_29.case2);//получить RD
-			if(ptrWR != ptrRD)//back & return
+			sizert=(*(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27.case2);//check len
+			if(sizert!=0x0000)//back & return		
 			{
 				addr_w5500=eth_sock[sock_numb].ptr_rx_buf;//addr start messege
 				cb_w5500=SOCKET_RX_BUFFER | SOCKET(sock_numb);//bsb sock RX
 				ptr_buf=buf;
-				len_buf = ptrWR - ptrRD;
+				len_buf = sizert;
 				eth_sock[sock_numb].ptr_rx_buf=eth_sock[sock_numb].ptr_rx_buf+len_buf;
-				if(len_buf>DEFAULT_MTU_TCP){size=2;/*min value '8'*/}else{size=len_buf;}							
+				
+				if(len_buf>DEFAULT_MTU_TCP){size=2;/*min value '8'*/}else{size=len_buf;}
+				eth_sock[sock_numb].len[0]=	(size & 0xFF00)>>8;
+				eth_sock[sock_numb].len[1]=	(size & 0x00FF);							
 				cmd=READ_DATA;
 				st_cmd_w5500 = TCP_DROP_PTR;
 				break;
 			}
 			st_cmd_w5500=TCP_GIVE_LEN;
-			return 2;
+			return PROC_ER;
 		break;
 		case TCP_DROP_PTR:
-			wbuf_w55[0]=(ptrWR>>8);
-			wbuf_w55[1]=(ptrWR);
+			wbuf_w55[cnt]=(eth_sock[sock_numb].ptr_rx_buf>>8);			cnt++;//move to next part messege data 1
+			wbuf_w55[cnt]=(BYTE)eth_sock[sock_numb].ptr_rx_buf;			cnt++;//2d byte data 2
 			addr_w5500=ADDR_SOC_RX_READ_PTR_0;
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
 			ptr_buf=wbuf_w55;
@@ -367,15 +361,15 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 		break;
 		case TCP_BK_START:
 			st_cmd_w5500=TCP_GIVE_LEN;//сброс параметров
-			if(!size)					 {return 2;}
-			if(size > USART_BUF_SIZE)	 {return 2;}
+			if(!size)					 {return PROC_ER;}
+			if(size > USART_BUF_SIZE)	 {return PROC_ER;}
 			return (size);
 		break;
 		default:
-				st_cmd_w5500=0; return 2;
+				st_cmd_w5500=0; return PROC_ER;
 		break;
 	}
-	return 0;
+	return PROC_WAIT;
 }
 
 WORD w5500_write_socket_tcp (BYTE sock_numb, BYTE *buf)
@@ -394,15 +388,19 @@ WORD w5500_write_socket_tcp (BYTE sock_numb, BYTE *buf)
 	}
 	switch(st_wr_w5500)
 	{
-		case 0:																	//read reg tx status FSR
+		case TCP_RD_FSR:																	//read reg tx status FSR
 			addr_w5500=ADDR_SOC_TX_FREE_SIZE_0;
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
 			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R014_Sn_TX_FSR_20_21;
 			len_buf=6;
 			cmd=READ_DATA;
-			st_wr_w5500 = 3;
+			st_wr_w5500++;
 		break;
-		case 3:																	//write data
+		case TCP_WR_DATA:	
+			sizert=	(*(BYTE*)&chip.sockReg[sock_numb].R016_Sn_TX_WR_24_25.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R016_Sn_TX_WR_24_25.case2);				
+			
+			if(sizert!=eth_sock[sock_numb].ptr_tx_buf){ eth_sock[sock_numb].ptr_tx_buf=sizert; }
+																			
 			addr_w5500=eth_sock[sock_numb].ptr_tx_buf;
 			cb_w5500=SOCKET_TX_BUFFER | SOCKET(sock_numb);
 			ptr_buf=(BYTE*)&eth_sock[sock_numb].data;
@@ -411,7 +409,7 @@ WORD w5500_write_socket_tcp (BYTE sock_numb, BYTE *buf)
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
 		break;
-		case 4:																	//write ptr
+		case TCP_PTR_WR:																	//write ptr
 			wbuf_w55[cnt]=(eth_sock[sock_numb].ptr_tx_buf>>8);		cnt++;
 			wbuf_w55[cnt]=(BYTE)eth_sock[sock_numb].ptr_tx_buf;		cnt++;
 			addr_w5500=ADDR_SOC_TX_WRITE_PTR_0;
@@ -421,7 +419,7 @@ WORD w5500_write_socket_tcp (BYTE sock_numb, BYTE *buf)
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
 		break;
-		case 5:																	//write cmd SEND
+		case TCP_SEND_CMD:																	//write cmd SEND
 			wbuf_w55[cnt]=CMD_SEND;				cnt++;
 			addr_w5500=ADDR_SOC_COMMAND;
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
@@ -429,9 +427,9 @@ WORD w5500_write_socket_tcp (BYTE sock_numb, BYTE *buf)
 			len_buf=cnt;
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
-			eth_sock[sock_numb].time_wait_SEND_OK=time_20ms;
+			eth_sock[sock_numb].time_wait_SEND_OK=time_10ms;
 		break;
-		case 6:																//read status_SEND_OK
+		case TCP_STAT_RD:																//read status_SEND_OK
 			addr_w5500=ADDR_SOC_INT;
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);
 			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R03_Sn_IR_02;
@@ -439,7 +437,7 @@ WORD w5500_write_socket_tcp (BYTE sock_numb, BYTE *buf)
 			cmd=READ_DATA;
 			st_wr_w5500++;
 		break;
-		case 7:																//clear status SEND_OK
+		case TCP_STATUS_CLR:																//clear status SEND_OK
 			if(chip.sockReg[sock_numb].R03_Sn_IR_02.SEND_OK==1)
 			{
 				wbuf_w55[cnt]=SR_2C_SEND_OK;			cnt++;
@@ -449,22 +447,22 @@ WORD w5500_write_socket_tcp (BYTE sock_numb, BYTE *buf)
 				len_buf=cnt;
 				cmd=WRITE_DATA;
 				st_wr_w5500++;
-				//if(0<numb<5){counters.soket[numb - 1].tx += 1;}
 				break;
 			}
 			st_wr_w5500--;
 			if(!eth_sock[sock_numb].time_wait_SEND_OK)
 			{
-				st_wr_w5500=0; return 2;
+				st_wr_w5500=TCP_RD_FSR; 
+				return PROC_ER;
 			}
 		break;
-		case 8:
-			st_wr_w5500=0;
-			return 1;
+		case TCP_BK_TO_START:
+			st_wr_w5500=TCP_RD_FSR;
+			return PROC_OK;
 		break;
 		default:
-			st_wr_w5500=0; return 2;
+			st_wr_w5500=TCP_RD_FSR; return PROC_ER;
 		break;
 	}
-	return 0;
+	return PROC_WAIT;
 }

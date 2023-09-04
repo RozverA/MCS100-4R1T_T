@@ -7,7 +7,7 @@ void led_init();
 #define RTS				0
 #define W55				2
 
-#define PWR			0
+#define PWR				0
 
 #define PORT485_0		0
 #define PORT485_1		1	

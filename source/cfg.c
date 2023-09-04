@@ -94,7 +94,7 @@ void cfg_default(void)
 	{
 		cfg_1.sock_rs485[i].mode		= UDP;
 		cfg_1.sock_rs485[i].pl			= GATE;
-		cfg_1.sock_rs485[i].en			= TRUE;
+		cfg_1.sock_rs485[i].en			= FALSE;
 		
 		cfg_1.sock_rs485[i].src_port	=4001+i;
 		

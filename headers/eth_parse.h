@@ -25,7 +25,13 @@ extern BYTE check_data_wr_process (BYTE *data_buf);
 extern void eth_parse (BYTE numb_sock,BYTE *buf,WORD size);
 extern BYTE* eth_cbuf_ptr();
 
+extern func_st socket_init (BYTE numb, WORD src_port, BYTE mode);
 
+#define UDP		1
+#define TCP		2
+
+#define MBUS	2
+#define GATE	1
 
 /////socket_read_udp
 #define UDP_GIVE_LEN		0
@@ -38,17 +44,27 @@ extern BYTE* eth_cbuf_ptr();
 #define TCP_PART_RD			1
 #define TCP_RSV_CMD			2
 #define TCP_DROP_PTR		3
-#define TCP_BK_START		4
-#define TCP_STATUS_RD		5
+#define TCP_BK_START		4//
+#define TCP_STATUS_RD		5//
 #define TCP_FORK			6
 /////socket_write_tcp
-#define TCP_GIVE_LEN		0
-#define TCP_PART_WR			1
+#define TCP_RD_FSR			0
+#define TCP_WR_DATA			1
 #define TCP_PTR_WR			2
 #define TCP_SEND_CMD		3
-#define TCP_INTRPT_RD		4
-#define TCP_SEND_CH			5
+#define TCP_STAT_RD			4
+#define TCP_STATUS_CLR		5
 #define TCP_BK_TO_START		6
+/////socket_write_udp
+#define UDP_RD_TX_STAT		0
+#define UDP_WR_IP			1
+#define UDP_WR_PORT			2
+#define UDP_WR_DATA			3
+#define UDP_WR_PTR			4
+#define UDP_SEND_CMD		5
+#define UDP_STAT_RD			6
+#define UDP_STATUS_CLR		7
+#define UDP_BK_TO_START		8
 
 
 /////socket_status_tcp

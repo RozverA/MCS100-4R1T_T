@@ -18,6 +18,11 @@ typedef enum
 } func_st;
 
 
+#define PROC_WAIT	0
+#define PROC_OK		1
+#define PROC_ER		2
+
+
 typedef unsigned char  BYTE;
 typedef unsigned short WORD;
 typedef unsigned int   DWORD;
@@ -60,7 +65,6 @@ typedef unsigned int   DWORD;
 #include "spi.h"
 #include "w5500_reg.h"
 #include "eth_parse.h"
-#include "socket.h"
 #include "moduls.h"
 #include "dma.h"
 #include "debug.h"

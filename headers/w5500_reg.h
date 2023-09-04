@@ -197,6 +197,8 @@
 #define CMD_SEND_KKEP	0x22
 #define CMD_RECV		0x40
 
+#define MAX_SOCKETS 5
+
 typedef struct
 {	
 BYTE mode_op;
@@ -367,7 +369,7 @@ typedef struct
 			BYTE case2;
 		}R019_Sn_RX_WR_2A_2B;
 
-	}sockReg[6];
+	}sockReg[MAX_SOCKETS];
 }w5500;
 
 extern w5500 chip;
