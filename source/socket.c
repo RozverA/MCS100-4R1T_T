@@ -3,7 +3,7 @@
 
 
 
-func_st socket_init (BYTE numb, WORD src_port, BYTE mode)
+BYTE socket_init (BYTE numb, WORD src_port, BYTE mode)
 {
 	BYTE buf[2];
 	

@@ -8,14 +8,14 @@ void eth_init(void)
 	w5500_init_reg();
 	
 	//common socket for settings
-	socket_init(SOCKET_0,cfg_1.com_network.src_port,UDP);
+	if(socket_init(SOCKET_0,cfg_1.com_network.src_port,UDP)) {err_dword.common_sock = 1;}
 
 	//port socket
-	if(cfg_1.sock_rs485[0].en==TRUE) {socket_init(SOCKET_1,cfg_1.sock_rs485[0].src_port,cfg_1.sock_rs485[0].mode);}
-	if(cfg_1.sock_rs485[1].en==TRUE) {socket_init(SOCKET_2,cfg_1.sock_rs485[1].src_port,cfg_1.sock_rs485[1].mode);}
-	if(cfg_1.sock_rs485[2].en==TRUE) {socket_init(SOCKET_3,cfg_1.sock_rs485[2].src_port,cfg_1.sock_rs485[2].mode);}
-	if(cfg_1.sock_rs485[3].en==TRUE) {socket_init(SOCKET_4,cfg_1.sock_rs485[3].src_port,cfg_1.sock_rs485[3].mode);}
-
+	for(BYTE i=0; i<4; i++)
+	{
+		if(cfg_1.sock_rs485[i].en==FALSE) {i++; continue;} 
+		if(socket_init(i+1,cfg_1.sock_rs485[i].src_port,cfg_1.sock_rs485[i].mode)) {err_dword.socket += (1 << i);}
+	}
 }
 
 void eth_process(void)

@@ -11,17 +11,19 @@ typedef struct{
 }MBAP_HDR;
 typedef struct
 {
-	BYTE w5500_init:	1;
-	BYTE cfg_1_init:	1;
-	BYTE cfg_2_init:	1;
-	BYTE rsv:			1;
-	BYTE socket:		4;
-	BYTE ip_init_er:	1;
-	BYTE mask_init_er:	1;
-	BYTE gw_init_er:	1;
-	BYTE mac_init_er:	1;
-	//12
+	DWORD rsv:			1;
+	DWORD cfg_1_init:	1;
+	DWORD cfg_2_init:	1;
+	DWORD common_sock:	1;
+	DWORD socket:		4;
+	DWORD ip_init_er:	1;
+	DWORD mask_init_er:	1;
+	DWORD gw_init_er:	1;
+	DWORD mac_init_er:	1;
+	//12bit
 } ERRORS;
+
+extern ERRORS err_dword;
 
 extern void cmd_process(void);
 extern void cmd_common_process (void);

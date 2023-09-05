@@ -13,34 +13,34 @@ W5500_MODE w5500_mode;
 
 volatile WORD sizert=0;
 
-func_st w5500_init_reg(void)
+BYTE w5500_init_reg(void)
 {
 	pin_ctrl(W55,PWR,SET);
 
-	if(ip_init()	)	{return ERROR;}
-	if(mask_init()	)	{return ERROR;}
-	if(gw_init()	)	{return ERROR;}		
-	if(mac_init()	)	{return ERROR;}
+	if(ip_init()	)	{err_dword.ip_init_er = 1;	return ERROR;}
+	if(mask_init()	)	{err_dword.mask_init_er = 1;return ERROR;}
+	if(gw_init()	)	{err_dword.gw_init_er = 1;	return ERROR;}		
+	if(mac_init()	)	{err_dword.mac_init_er = 1;	return ERROR;}
 		
 	return SUCCESS;
 }
 
-func_st mac_init(void)
+BYTE mac_init(void)
 {
 	spi_write_timeout(ADDR_COM_MAC_ADDR_0,COMMON_REGISTER,cfg_2.mac_addr,sizeof(cfg_2.mac_addr),10);
 	return SUCCESS;
 }
-func_st gw_init(void)
+BYTE gw_init(void)
 {
 	spi_write_timeout(ADDR_COM_GATEWAY_ADDR_0,COMMON_REGISTER,cfg_1.com_network.ip_gate,sizeof(cfg_1.com_network.ip_gate),10);
 	return SUCCESS;
 }
-func_st mask_init(void)
+BYTE mask_init(void)
 {
 	spi_write_timeout(ADDR_COM_MASK_ADDR_0,COMMON_REGISTER,cfg_1.com_network.ip_mask,sizeof(cfg_1.com_network.ip_mask),10);
 	return SUCCESS;
 }
-func_st ip_init(void)
+BYTE ip_init(void)
 {
 	spi_write_timeout(ADDR_COM_SRC_IP_ADR_0,COMMON_REGISTER,cfg_1.com_network.ip_addr,sizeof(cfg_1.com_network.ip_addr),10);
 	return SUCCESS;

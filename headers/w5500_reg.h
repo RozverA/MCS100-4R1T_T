@@ -377,11 +377,11 @@ extern w5500 chip;
 
 
 
-extern func_st w5500_init_reg(void);
-extern func_st mac_init(void);
-extern func_st mask_init(void);
-extern func_st gw_init(void);
-extern func_st ip_init(void);
+extern BYTE w5500_init_reg(void);
+extern BYTE mac_init(void);
+extern BYTE mask_init(void);
+extern BYTE gw_init(void);
+extern BYTE ip_init(void);
 extern WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf);
 extern WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf);
 extern WORD w5500_write_socket_udp (BYTE numb, BYTE *buf);

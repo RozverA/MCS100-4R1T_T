@@ -25,7 +25,7 @@ extern BYTE check_data_wr_process (BYTE *data_buf);
 extern void eth_parse (BYTE numb_sock,BYTE *buf,WORD size);
 extern BYTE* eth_cbuf_ptr();
 
-extern func_st socket_init (BYTE numb, WORD src_port, BYTE mode);
+extern BYTE socket_init (BYTE numb, WORD src_port, BYTE mode);
 
 #define UDP		1
 #define TCP		2
@@ -72,6 +72,10 @@ extern func_st socket_init (BYTE numb, WORD src_port, BYTE mode);
 #define STATUS_CLOSE 0x00
 #define STATUS_INIT 0x013
 #define STATUS_ESTABLISHED 0x17
+
+#define SUCCESS  0
+#define TIMEOUT  1
+#define ERROR	 2
 
 
 #define SOCKET_0 0

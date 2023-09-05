@@ -10,14 +10,6 @@
 
 #define SKIP_HDR 8 //TCP connect reciv without UDP HEADER
 
-typedef enum
-{
-	SUCCESS = 0,  //0
-	TIMEOUT,      //1
-	ERROR         //2
-} func_st;
-
-
 #define PROC_WAIT	0
 #define PROC_OK		1
 #define PROC_ER		2
@@ -35,15 +27,11 @@ typedef unsigned int   DWORD;
 
 #ifdef PROC_HERZ8
 	#define PROC_HERZ  PROC_HERZ8
-	#define TIMER_COEF 0x01F4 //500
 #endif
 
 #ifdef PROC_HERZ48
 	#define PROC_HERZ  PROC_HERZ48
-	#define TIMER_COEF 0x02EE //750
 #endif
-
-#define TIMER_LMT (0xFFFF - (TIMER_COEF * 1.2))// лимит - считается как: <<предел wordа - (размер коэф * множитель для малой вероятности)>>
 
 #define ANSWER	0
 #define SPAM	1

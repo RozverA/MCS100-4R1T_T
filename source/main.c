@@ -1,6 +1,6 @@
 #include "def.h"
 
-
+ERRORS err_dword;
 WORD reset;
 
 int main(void)
@@ -15,8 +15,8 @@ int main(void)
 	wdt_start();
 		
 	cfg_init  ();
-	if(cfg_2_read() == CFG_ERR) {cfg_2_err = CFG_ERR;}
-	if(cfg_read()   == CFG_ERR)	{cfg_default();}
+	if(cfg_2_read() == CFG_ERR) {cfg_2_err = CFG_ERR; err_dword.cfg_2_init = 1;}
+	if(cfg_read()   == CFG_ERR)	{err_dword.cfg_2_init = 1; cfg_default();}
 
 	cfg_check();
 
