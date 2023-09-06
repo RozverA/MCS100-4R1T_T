@@ -5,9 +5,7 @@ CFG_1 cfg_1;
 CFG_1 cfg_1_tmp;
 CFG_2 cfg_2;
 
-BYTE	cfg_2_err = 1;
-
-
+BYTE cfg_2_err = 1;
 
 void cfg_init(void)
 //--------------------------------------------------------------------------

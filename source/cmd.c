@@ -1,9 +1,7 @@
 #include "def.h"
 
 
-BYTE cbuf[600];
-BYTE n_port=1;
-WORD u_size = 0;	//for usart_read
+BYTE cbuf[300];
 
 #define CM2_WHO_ARE_YOU 0x01
 #define UID_WHO_ARE_YOU 0x8001
@@ -35,13 +33,11 @@ void cmd_common_process (void)
 
 	size=((eth_sock[0].len[0]<<8) | (eth_sock[0].len[1]));
 	
-	if(size>sizeof(cbuf))	{size=sizeof(cbuf);}
+	if(size  >    sizeof(cbuf))	{size=sizeof(cbuf);}
+	if(size	 <    5			  )	{ return; }
 	
 	memcpy(cbuf,(BYTE*)&eth_sock[0].data,size);
 
-	if(size						  <    5)	{ return; }
-	if(size                       >  1024)	{ return; }
-	
 	if(crc16_ccit(cbuf,size)   !=   0)		{ return; }
 	
 	addr  = *(__packed WORD*)(cbuf+0);      wn=+sizeof(WORD);
@@ -167,9 +163,15 @@ void cmd_common_process (void)
 
 void cmd_usart_process (void)
 {
-	if(n_port==5){n_port=1;}
-	usart_process(n_port);
-	n_port++;
+	static BYTE n_port=1;
+	
+	for(n_port=1;n_port<5;n_port++)
+	{
+		if(cfg_1.sock_rs485[n_port-1].en==FALSE) {continue;}
+		usart_process(n_port);
+	}
+	
+	
 }
 
 void usart_process (BYTE n_port)
@@ -177,68 +179,62 @@ void usart_process (BYTE n_port)
 	WORD size=0;
 	WORD crc;
 	
-	if(cfg_1.sock_rs485[n_port-1].en==FALSE) {return;}
-	
 	switch(port[n_port-1].stage)
 	{
 		case RS485_WRITE:
-		//ETH message check
-		if (!eth_sock[n_port].r_status){return;}									//check read stat
-		port[n_port-1].time_port = port[n_port-1].tout_port*10;						//
+			//ETH message check
+			if (!eth_sock[n_port].r_status){return;}									//check read stat
+			port[n_port-1].time_port = port[n_port-1].tout_port*10;						//
 		
-		size = eth_sock[n_port].len[0] << 8 | eth_sock[n_port].len[1];				//give size
-					
-		switch(cfg_1.sock_rs485[n_port - 1].pl)
-		{
-			case MBUS:		
-				crc = crc16_mbus(eth_sock[n_port].data+MBAP_HDR_LEN, size-MBAP_HDR_LEN);
-				eth_sock[n_port].data[size] = crc; 
-				eth_sock[n_port].data[size + 1] = crc >> 8;
-				usart_write(n_port - 1, eth_sock[n_port].data+MBAP_HDR_LEN, size - MBAP_HDR_LEN + 2);
-			break;
-			case GATE:
-				usart_write(n_port - 1, eth_sock[n_port].data, size);
-			break;
-			default:
-				usart_write(n_port - 1, eth_sock[n_port].data, size);
-			break;
-		}
-		port[n_port-1].stage = RS485_READ;
-		port[n_port-1].rn = 0;
+			size = eth_sock[n_port].len[0] << 8 | eth_sock[n_port].len[1];				//give size
+		
+			if(size>USART_BUF_SIZE)	{eth_sock[n_port].r_status = 0; return;}	
+				
+			switch(cfg_1.sock_rs485[n_port - 1].pl)
+			{
+				case MBUS:		
+					crc = crc16_mbus(eth_sock[n_port].data+MBAP_HDR_LEN, size - MBAP_HDR_LEN);
+					eth_sock[n_port].data[size] = crc; 
+					eth_sock[n_port].data[size + 1] = crc >> 8;
+					usart_write(n_port - 1, eth_sock[n_port].data + MBAP_HDR_LEN, size - MBAP_HDR_LEN + 2);
+				break;
+				default://GATE
+					usart_write(n_port - 1, eth_sock[n_port].data, size);
+				break;
+			}
+			port[n_port-1].stage = RS485_READ;
+			port[n_port-1].rn = 0;
 
 		return;
 		case RS485_READ://UP
-		u_size = usart_read(n_port - 1, port[n_port-1].rbuf, USART_BUF_SIZE);   //give mess size
-		if (u_size != 0)
-		{
-			switch (cfg_1.sock_rs485[n_port - 1].pl)
+			size = usart_read(n_port - 1, port[n_port-1].rbuf, USART_BUF_SIZE);   //give mess size
+			if (size != 0)
 			{
-				case MBUS:
-					memcpy(eth_sock[n_port].data + MBAP_HDR_LEN, port[n_port-1].rbuf, u_size);
-					u_size += MBAP_HDR_LEN - 2;
-				break;
-				case GATE:
-					memcpy(eth_sock[n_port].data, port[n_port-1].rbuf, u_size); 
-				break;
-				default:
-					memcpy(eth_sock[n_port].data, port[n_port-1].rbuf, u_size); 
-				break;
-			}								//gate mode
+				switch (cfg_1.sock_rs485[n_port - 1].pl)
+				{
+					case MBUS:
+						memcpy(eth_sock[n_port].data + MBAP_HDR_LEN, port[n_port-1].rbuf, size);
+						size += MBAP_HDR_LEN - 2;
+					break;
+					default://GATE
+						memcpy(eth_sock[n_port].data, port[n_port-1].rbuf, size); 
+					break;
+				}
 			
-			eth_sock[n_port].len[0]		= (u_size & 0xFF00) >> 8;
-			eth_sock[n_port].len[1]		=  u_size & 0x00FF; //write mess size in port_udp
-			eth_sock[n_port].w_status	= 1;
-			port[n_port-1].dt			= (port[n_port-1].tout_port*10)-port[n_port-1].time_port;
-			port[n_port-1].stage		= RS485_WRITE;
-			eth_sock[n_port].r_status = 0;
-			return;
-		}
-		if (port[n_port-1].time_port==0)
-		{
-			port[n_port-1].stage = RS485_WRITE;
-			port[n_port-1].dt 	 = 0;
-			eth_sock[n_port].r_status = 0;
-		}
+				eth_sock[n_port].len[0]		= (size & 0xFF00) >> 8;
+				eth_sock[n_port].len[1]		=  size & 0x00FF;
+				eth_sock[n_port].w_status	= 1;
+				port[n_port-1].dt			= (port[n_port-1].tout_port*10)-port[n_port-1].time_port;
+				port[n_port-1].stage		= RS485_WRITE;
+				eth_sock[n_port].r_status	= 0;
+				return;
+			}
+			if (port[n_port-1].time_port==0)
+			{
+				port[n_port-1].stage = RS485_WRITE;
+				port[n_port-1].dt 	 = 0;
+				eth_sock[n_port].r_status = 0;
+			}
 		return;
 		default:
 			port[n_port-1].stage = RS485_WRITE;

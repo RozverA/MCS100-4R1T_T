@@ -75,6 +75,7 @@ WORD spi_process (uint16_t addr, uint8_t cb, uint8_t *buf, uint16_t len, BYTE cm
 {
 	BYTE st_spi=0;
 	WORD rn_wn=0;
+	
 	st_spi = cmd;
 	switch(st_spi)
 	{

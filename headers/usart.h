@@ -20,6 +20,18 @@
 typedef struct
 //-----------------------------------------------------------------------------
 {
+	WORD	collision;
+	WORD	synchr;
+	WORD	buf_ovf;
+	WORD	st_bit;
+	WORD	prty;
+}USART_STAT;
+#pragma pack()
+
+#pragma pack(1)
+typedef struct
+//-----------------------------------------------------------------------------
+{
 	DWORD	tx;
 	DWORD	rx;
 	WORD	crc_err;
@@ -54,6 +66,8 @@ typedef struct
 	WORD dre;
 	WORD rxc;
 	WORD txc;
+	
+	USART_STAT errors;
 	
 	POIN counters;
 }USART;

@@ -17,10 +17,10 @@ BYTE w5500_init_reg(void)
 {
 	pin_ctrl(W55,PWR,SET);
 
-	if(ip_init()	)	{err_dword.ip_init_er = 1;	return ERROR;}
-	if(mask_init()	)	{err_dword.mask_init_er = 1;return ERROR;}
-	if(gw_init()	)	{err_dword.gw_init_er = 1;	return ERROR;}		
-	if(mac_init()	)	{err_dword.mac_init_er = 1;	return ERROR;}
+	if(ip_init()	)	{err_dword.ip_init_er   = 1;	return ERROR;}
+	if(mask_init()	)	{err_dword.mask_init_er = 1;	return ERROR;}
+	if(gw_init()	)	{err_dword.gw_init_er   = 1;	return ERROR;}		
+	if(mac_init()	)	{err_dword.mac_init_er  = 1;	return ERROR;}
 		
 	return SUCCESS;
 }
@@ -46,7 +46,7 @@ BYTE ip_init(void)
 	return SUCCESS;
 }
 
-WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
+WORD w5500_process (BYTE spi_mode, BYTE sock_numb)
 {
 	static BYTE w5500_st=0;
 	WORD rtrn=0;
@@ -56,39 +56,38 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf)
 	switch (w5500_st)
 	{
 		case NULLS:
-			w5500_st=spi_mode;
-			cmd_spi_wait=time_20ms;
-			return PROC_WAIT;
-		break;
+								w5500_st=spi_mode;
+								cmd_spi_wait=time_20ms;
+								return PROC_WAIT;
 		case SPI_PROCESS:
 								if(spi_process(addr_w5500,cb_w5500,ptr_buf,len_buf,cmd)){w5500_st=spi_mode;cmd=0;}
 		break;
 		case MODE_OP_READ_UDP:
-								rtrn=w5500_cmd_read_socket_udp(sock_numb,buf);
+								rtrn=w5500_cmd_read_socket_udp(sock_numb);
 								if(rtrn)	{w5500_st=NULLS;spi_mode=0;return (rtrn);}
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_WRITE_UDP:
-								if(w5500_write_socket_udp(sock_numb,buf))	{w5500_st=NULLS;spi_mode=0;return PROC_OK;}
+								if(w5500_write_socket_udp(sock_numb))	{w5500_st=NULLS;spi_mode=0;return PROC_OK;}
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_READ_TCP:
-								rtrn=w5500_cmd_read_socket_tcp(sock_numb,buf);
+								rtrn=w5500_cmd_read_socket_tcp(sock_numb);
 								if(rtrn)	{w5500_st=NULLS;spi_mode=0;return (rtrn);}
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_WRITE_TCP:
-								if(w5500_write_socket_tcp(sock_numb,buf))	{w5500_st=NULLS;spi_mode=0;return PROC_OK;}
+								if(w5500_write_socket_tcp(sock_numb))	{w5500_st=NULLS;spi_mode=0;return PROC_OK;}
 								w5500_st=SPI_PROCESS;
 		break;
 		default:
-				w5500_st=0; return PROC_ER;
+								w5500_st=0; return PROC_ER;
 		break;
 	}
 	return PROC_WAIT;
 }
 
-WORD w5500_cmd_read_socket_udp (BYTE sock_numb, BYTE *buf)
+WORD w5500_cmd_read_socket_udp (BYTE sock_numb)
 {
 	static BYTE numb_static_r=0;
 	static BYTE st_cmd_w5500=0;
@@ -115,10 +114,11 @@ WORD w5500_cmd_read_socket_udp (BYTE sock_numb, BYTE *buf)
 			{
 				addr_w5500=eth_sock[sock_numb].ptr_rx_buf;
 				cb_w5500=SOCKET_RX_BUFFER | SOCKET(sock_numb);
-				ptr_buf=buf;
+				ptr_buf=(BYTE*) & eth_sock[sock_numb];
 				len_buf=sizert;
 				eth_sock[sock_numb].ptr_rx_buf=eth_sock[sock_numb].ptr_rx_buf+len_buf;
-				if(len_buf>DEFAULT_MTU_UDP){size=2;/*min value '8'*/}else{size=len_buf;}							
+				size=len_buf;
+				if(len_buf>DEFAULT_MTU_UDP){size=PROC_ER;}							
 				cmd=READ_DATA;
 				st_cmd_w5500++;
 				break;
@@ -151,26 +151,20 @@ WORD w5500_cmd_read_socket_udp (BYTE sock_numb, BYTE *buf)
 			return (size);
 		break;
 		default:
-				st_cmd_w5500=0; return 2;
+				st_cmd_w5500=0; return PROC_ER;
 		break;
 	}
 	return PROC_WAIT;
 }
 
-WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
+WORD w5500_write_socket_udp (BYTE sock_numb)
 {
 	static BYTE st_wr_w5500 = 0;
 	static BYTE numb_static = 0;
 	WORD cnt = 0;
-	WORD size = 0;
 	
 	if(numb_static != sock_numb) {numb_static = sock_numb; st_wr_w5500 = 0;}
-	if(st_wr_w5500 == 0)
-	{
-		memcpy( (BYTE*) & eth_sock[sock_numb], buf, 8 );
-		size=(eth_sock[sock_numb].len[0] << 8) | (eth_sock[sock_numb].len[1]);
-		memcpy( (BYTE*) & eth_sock[sock_numb].data, &buf[8], size);
-	}
+
 	switch(st_wr_w5500)
 	{
 		case UDP_RD_TX_STAT:																	//read reg tx status
@@ -226,7 +220,7 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			len_buf=cnt;
 			cmd=WRITE_DATA;
 			st_wr_w5500++;
-			eth_sock[sock_numb].time_wait_SEND_OK=time_50ms;
+			eth_sock[sock_numb].time_wait_SEND_OK=time_10ms;
 		break;
 		case UDP_STAT_RD:																//read status_SEND_OK
 			addr_w5500=ADDR_SOC_INT;
@@ -256,17 +250,18 @@ WORD w5500_write_socket_udp (BYTE sock_numb, BYTE *buf)
 			}
 		break;
 		case 8:
-			st_wr_w5500=0;
-			return PROC_OK;
+				st_wr_w5500=0;
+				return PROC_OK;
 		break;
 		default:
-				st_wr_w5500=0; return PROC_ER;
+				st_wr_w5500=0; 
+				return PROC_ER;
 		break;
 	}
 	return PROC_WAIT;
 }
 
-WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
+WORD w5500_cmd_read_socket_tcp (BYTE sock_numb)
 {
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
@@ -285,7 +280,7 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			size=0; 
 			
 			eth_sock[sock_numb].check_connect_cnt++;
-			if(eth_sock[sock_numb].check_connect_cnt > 20) {st_cmd_w5500 = TCP_STATUS_RD; eth_sock[sock_numb].check_connect_cnt=0;}
+			if(eth_sock[sock_numb].check_connect_cnt > 30) {st_cmd_w5500 = TCP_STATUS_RD; eth_sock[sock_numb].check_connect_cnt=0;}
 		break;	
 		case TCP_STATUS_RD:
 			addr_w5500=ADDR_SOC_STATUS;//addr in w5500 
@@ -326,11 +321,13 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 			{
 				addr_w5500=eth_sock[sock_numb].ptr_rx_buf;//addr start messege
 				cb_w5500=SOCKET_RX_BUFFER | SOCKET(sock_numb);//bsb sock RX
-				ptr_buf=buf;
+				ptr_buf=(BYTE*) & eth_sock[sock_numb].data;
 				len_buf = sizert;
 				eth_sock[sock_numb].ptr_rx_buf=eth_sock[sock_numb].ptr_rx_buf+len_buf;
 				
-				if(len_buf>DEFAULT_MTU_TCP){size=2;/*min value '8'*/}else{size=len_buf;}
+				size=len_buf;
+				if(len_buf>DEFAULT_MTU_TCP){size=PROC_ER;}
+					
 				eth_sock[sock_numb].len[0]=	(size & 0xFF00)>>8;
 				eth_sock[sock_numb].len[1]=	(size & 0x00FF);							
 				cmd=READ_DATA;
@@ -372,20 +369,14 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf)
 	return PROC_WAIT;
 }
 
-WORD w5500_write_socket_tcp (BYTE sock_numb, BYTE *buf)
+WORD w5500_write_socket_tcp (BYTE sock_numb)
 {
 	static BYTE st_wr_w5500=0;
 	static BYTE numb_static=0;
 	WORD cnt=0;
-	WORD size=0;
 	
 	if(numb_static!=sock_numb){numb_static=sock_numb;st_wr_w5500=0;}
-	if(st_wr_w5500==0)
-	{
-		memcpy((BYTE*)&eth_sock[sock_numb],buf,8);
-		size=(eth_sock[sock_numb].len[0] << 8) | (eth_sock[sock_numb].len[1]);
-		memcpy((BYTE*)&eth_sock[sock_numb].data,&buf[8],size);
-	}
+
 	switch(st_wr_w5500)
 	{
 		case TCP_RD_FSR:																	//read reg tx status FSR

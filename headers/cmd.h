@@ -28,5 +28,6 @@ extern ERRORS err_dword;
 extern void cmd_process(void);
 extern void cmd_common_process (void);
 extern void cmd_usart_process (void);
+extern void usart_process (BYTE n_port);
 
 #endif /* CMD_H_ */

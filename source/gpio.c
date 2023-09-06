@@ -162,24 +162,24 @@ DWORD pin_ctrl(BYTE device, BYTE  numb, BYTE mod)
 	{
 		//RTS
 		case (RTS << 8| PORT485_0 << 4| STAT):		return(PORT->Group[0].IN.reg & PORT_PA15);
-		case (RTS << 8| PORT485_0 << 4| SET):		PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA15;return;
-		case (RTS << 8| PORT485_0 << 4| CLR):		PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA15;return;
+		case (RTS << 8| PORT485_0 << 4| SET):		PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA15;return 0;
+		case (RTS << 8| PORT485_0 << 4| CLR):		PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA15;return 0;
 		case (RTS << 8| PORT485_1 << 4| STAT):		return(PORT->Group[0].IN.reg & PORT_PA14);
-		case (RTS << 8| PORT485_1 << 4| SET):		PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA14;return;
-		case (RTS << 8| PORT485_1 << 4| CLR):		PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA14;return;		
+		case (RTS << 8| PORT485_1 << 4| SET):		PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA14;return 0;
+		case (RTS << 8| PORT485_1 << 4| CLR):		PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA14;return 0;		
 		case (RTS << 8| PORT485_2 << 4| STAT):		return(PORT->Group[0].IN.reg & PORT_PA13);
-		case (RTS << 8| PORT485_2 << 4| SET):		PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA13;return;
-		case (RTS << 8| PORT485_2 << 4| CLR):		PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA13;return;				
+		case (RTS << 8| PORT485_2 << 4| SET):		PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA13;return 0;
+		case (RTS << 8| PORT485_2 << 4| CLR):		PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA13;return 0;				
 		case (RTS << 8| PORT485_3 << 4| STAT):		return(PORT->Group[0].IN.reg & PORT_PA12);
-		case (RTS << 8| PORT485_3 << 4| SET):		PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA12;return;
-		case (RTS << 8| PORT485_3 << 4| CLR):		PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA12;return;
+		case (RTS << 8| PORT485_3 << 4| SET):		PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA12;return 0;
+		case (RTS << 8| PORT485_3 << 4| CLR):		PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA12;return 0;
 
 		//LED TX
-		case (LED << 8| PWR << 4| ON):		PORT_IOBUS->Group[1].OUTCLR.reg=PORT_PB03;return; 
-		case (LED << 8| PWR << 4| OFF):		PORT_IOBUS->Group[1].OUTSET.reg=PORT_PB03;return;
-		case (LED << 8| PWR << 4| TGL):		PORT_IOBUS->Group[1].OUTTGL.reg=PORT_PB03;return;
-		case (W55 << 8| PWR << 4| CLR):     PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA18;return;
-		case (W55 << 8| PWR << 4| SET):     PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA18;return;
+		case (LED << 8| PWR << 4| ON):		PORT_IOBUS->Group[1].OUTCLR.reg=PORT_PB03;return 0; 
+		case (LED << 8| PWR << 4| OFF):		PORT_IOBUS->Group[1].OUTSET.reg=PORT_PB03;return 0;
+		case (LED << 8| PWR << 4| TGL):		PORT_IOBUS->Group[1].OUTTGL.reg=PORT_PB03;return 0;
+		case (W55 << 8| PWR << 4| CLR):     PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA18;return 0;
+		case (W55 << 8| PWR << 4| SET):     PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA18;return 0;
 		
 	}
 }

@@ -2,7 +2,7 @@
 #define SPI_H_
 
 
-#define spi_write_timeout(addr,cb,buf,len,timeout)	{spi_wait=timeout;while(!spi_write(addr, cb, buf, len)){if(!spi_wait){err_dword.socket; return TIMEOUT;}}}
+#define spi_write_timeout(addr,cb,buf,len,timeout)	{spi_wait=timeout;while(!spi_write(addr, cb, buf, len)){if(!spi_wait){return TIMEOUT;}}}
 
 extern void spi_init(void);
 

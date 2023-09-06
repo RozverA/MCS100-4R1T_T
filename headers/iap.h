@@ -27,8 +27,4 @@ extern DWORD iap_key;
 extern DWORD iap_addr;
 extern WORD  iap_size;
 
-
-extern BYTE* get_word (BYTE *buf,WORD  *val);
-extern BYTE* get_dword(BYTE *buf,DWORD *val);
-
 #endif /* IAP_H_ */

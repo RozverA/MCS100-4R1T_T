@@ -382,11 +382,11 @@ extern BYTE mac_init(void);
 extern BYTE mask_init(void);
 extern BYTE gw_init(void);
 extern BYTE ip_init(void);
-extern WORD w5500_process (BYTE spi_mode, BYTE sock_numb, BYTE *buf);
-extern WORD w5500_cmd_read_socket_udp (BYTE numb, BYTE *buf);
-extern WORD w5500_write_socket_udp (BYTE numb, BYTE *buf);
-extern WORD w5500_cmd_read_socket_tcp (BYTE sock_numb, BYTE *buf);
-extern WORD w5500_write_socket_tcp (BYTE numb, BYTE *buf);
+extern WORD w5500_process (BYTE spi_mode, BYTE sock_numb);
+extern WORD w5500_cmd_read_socket_udp (BYTE numb);
+extern WORD w5500_write_socket_udp (BYTE numb);
+extern WORD w5500_cmd_read_socket_tcp (BYTE sock_numb);
+extern WORD w5500_write_socket_tcp (BYTE numb);
 
 
 extern WORD spi_mode;

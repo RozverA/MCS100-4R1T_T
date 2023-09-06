@@ -1,6 +1,6 @@
 #ifndef DEF_H_
 #define DEF_H_
-#define wdt_start() {if(!WDT->CTRL.bit.ENABLE==0x01){WDT->CONFIG.bit.PER=0x0B;WDT->EWCTRL.bit.EWOFFSET=0x0A;WDT->INTENSET.bit.EW=0x01;WDT->CTRL.bit.ENABLE=0x01;}}
+#define wdt_start() {if(!(WDT->CTRL.bit.ENABLE)){WDT->CONFIG.bit.PER=0x0B;WDT->EWCTRL.bit.EWOFFSET=0x0A;WDT->INTENSET.bit.EW=0x01;WDT->CTRL.bit.ENABLE=0x01;}}
 #define wdt_reset() { if(WDT->INTFLAG.bit.EW==1){WDT->INTFLAG.bit.EW=0x01;  WDT->CLEAR.bit.CLEAR=0xA5;} }
 #define wdt_stop()  { WDT->CTRL.bit.ENABLE=0x00; WDT->INTENCLR.bit.EW=0x01; } 		
 	
@@ -53,9 +53,6 @@ typedef unsigned int   DWORD;
 #include "spi.h"
 #include "w5500_reg.h"
 #include "eth_parse.h"
-#include "moduls.h"
-#include "dma.h"
-#include "debug.h"
 #include "cmd.h"
 
 extern WORD reset;

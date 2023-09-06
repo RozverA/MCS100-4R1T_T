@@ -203,21 +203,6 @@
     <Compile Include="headers\w5500_reg.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="moduls\debug.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="moduls\debug.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="moduls\dma.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="moduls\dma.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="moduls\moduls.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="source\cmd.c">
       <SubType>compile</SubType>
     </Compile>
@@ -264,7 +249,6 @@
   <ItemGroup>
     <Folder Include="Device_Startup\" />
     <Folder Include="headers" />
-    <Folder Include="moduls" />
     <Folder Include="source" />
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,6 @@
 #ifndef ETH_PARSE_H_
 #define ETH_PARSE_H_
 
-#include "moduls.h"
-
 #define NULLS					0
 #define SPI_PROCESS				1
 #define MODE_OP_READ_UDP		2
@@ -20,9 +18,9 @@
 
 extern void eth_init(void);
 extern void eth_process(void);
-extern BYTE check_sockets_process (BYTE *buf);
-extern BYTE check_data_wr_process (BYTE *data_buf);
-extern void eth_parse (BYTE numb_sock,BYTE *buf,WORD size);
+extern void check_sockets_process (BYTE *buf);
+extern BYTE check_data_wr_process (void);
+extern void eth_parse (BYTE numb_sock,WORD size);
 extern BYTE* eth_cbuf_ptr();
 
 extern BYTE socket_init (BYTE numb, WORD src_port, BYTE mode);

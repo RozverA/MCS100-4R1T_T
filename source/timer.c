@@ -55,7 +55,7 @@ void TC3_init(void)
 	NVIC_DisableIRQ(TC3_IRQn);					// Disable the interrupt
 	//TC3->COUNT16.INTENSET.bit.MC0=0x01;	// Enable match interrupts on compare channel 0
 	TC3->COUNT16.INTENSET.bit.OVF=0x01;
-	NVIC_SetPriority(TC3_IRQn, 1);			// Set the interrupt priority to lowest value
+	NVIC_SetPriority(TC3_IRQn, 0);			// Set the interrupt priority to lowest value
 	NVIC_EnableIRQ(TC3_IRQn);						// Enable the interrupt
 	
 	TC3_start(TC3_100mk);

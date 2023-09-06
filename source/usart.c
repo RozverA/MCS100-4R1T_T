@@ -2,7 +2,14 @@
 
 volatile USART port[4];
 
-void usart_init(void){for(BYTE i = 0; i < 4; i++) {init(i);}}
+void usart_init(void)
+{
+	BYTE i; 
+	for(i= 0; i < 4; i++) 
+	{
+		init(i);
+	}
+}
 	
 void init(BYTE n_port)
 {
@@ -128,8 +135,9 @@ WORD usart_write(BYTE n_port, BYTE* wbuf,WORD size)
 	if(size > USART_BUF_SIZE) { size = USART_BUF_SIZE; }
 	memcpy(port[n_port].wbuf,wbuf,size);
 	port[n_port].wn = size;
-	port[n_port].wx = 1;
-	port[n_port].sercom->USART.DATA.reg=port[n_port].wbuf[0];
+	//port[n_port].wx = 1;
+	port[n_port].wx = 0;
+	//port[n_port].sercom->USART.DATA.reg=port[n_port].wbuf[0];
 	port[n_port].sercom->USART.INTENCLR.bit.RXC = 1;
 	port[n_port].sercom->USART.INTENSET.bit.DRE = 1;
 	port[n_port].counters.tx++;
@@ -155,11 +163,11 @@ WORD usart_read (BYTE n_port, BYTE* rbuf,WORD size)
 
 void sercom_proc(BYTE n_port)
 {
-	if (port[n_port].sercom->USART.STATUS.bit.COLL)		{er_list.usart[n_port].collision++;		port[n_port].sercom->USART.STATUS.bit.COLL   = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.ISF)		{er_list.usart[n_port].synchr++;		port[n_port].sercom->USART.STATUS.bit.ISF    = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.BUFOVF)	{er_list.usart[n_port].buf_ovf++;		port[n_port].sercom->USART.STATUS.bit.BUFOVF = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.FERR)		{er_list.usart[n_port].st_bit++;		port[n_port].sercom->USART.STATUS.bit.FERR   = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.PERR)		{er_list.usart[n_port].prty++;			port[n_port].sercom->USART.STATUS.bit.PERR   = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.COLL)		{port[n_port].errors.collision++;		port[n_port].sercom->USART.STATUS.bit.COLL   = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.ISF)		{port[n_port].errors.synchr++;		port[n_port].sercom->USART.STATUS.bit.ISF    = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.BUFOVF)	{port[n_port].errors.buf_ovf++;		port[n_port].sercom->USART.STATUS.bit.BUFOVF = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.FERR)		{port[n_port].errors.st_bit++;		port[n_port].sercom->USART.STATUS.bit.FERR   = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.PERR)		{port[n_port].errors.prty++;			port[n_port].sercom->USART.STATUS.bit.PERR   = 1;}
 		
 	if (port[n_port].sercom->USART.INTFLAG.bit.RXC)
 	{
