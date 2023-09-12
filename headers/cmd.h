@@ -11,7 +11,7 @@ typedef struct{
 }MBAP_HDR;
 typedef struct
 {
-	DWORD rsv:			1;
+	DWORD ssh_er:			1;
 	DWORD cfg_1_init:	1;
 	DWORD cfg_2_init:	1;
 	DWORD common_sock:	1;

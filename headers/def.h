@@ -54,6 +54,7 @@ typedef unsigned int   DWORD;
 #include "w5500_reg.h"
 #include "eth_parse.h"
 #include "cmd.h"
+#include "ssh.h"
 
 extern WORD reset;
 

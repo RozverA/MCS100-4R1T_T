@@ -2,6 +2,7 @@
 
 ETH_HDR eth_sock[MAX_SOCKETS];
 
+
 void eth_init(void)
 {
 	w5500_init_reg();
@@ -21,12 +22,12 @@ void eth_process(void)
 {
 	static BYTE eth_st=0;
 	WORD rtrn = 0;
-	
+
 	switch(eth_st)
 	{
-		case CHECK:				
-			rtrn = check_data_wr_process();	
-			if(rtrn != MAX_SOCKETS)								
+		case CHECK:
+			rtrn = check_data_wr_process();
+			if(rtrn != MAX_SOCKETS)
 			{
 				eth_st					= WRITE_PROCESS;
 				w5500_mode.mode_op		= MODE_OP_WRITE_UDP;
@@ -36,7 +37,7 @@ void eth_process(void)
 				break;
 			}
 
-			check_sockets_process((BYTE*)&w5500_mode);//select sockets for read			
+			check_sockets_process((BYTE*)&w5500_mode);//select sockets for read
 			eth_st = READ_PROCESS;
 		break;
 		case READ_PROCESS:

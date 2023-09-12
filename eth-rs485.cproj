@@ -191,6 +191,9 @@
     <Compile Include="headers\spi.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="headers\ssh.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="headers\sys_clock.h">
       <SubType>compile</SubType>
     </Compile>
@@ -228,6 +231,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\spi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\ssh.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\sys_clock.c">
