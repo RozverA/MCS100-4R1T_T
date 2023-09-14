@@ -59,7 +59,7 @@ void cfg_default(void)
 	cfg_1.com_network.ip_addr[0]=0xC0;//192
 	cfg_1.com_network.ip_addr[1]=0xA8;//168
 	cfg_1.com_network.ip_addr[2]=0x01;//1
-	cfg_1.com_network.ip_addr[3]=0x66;//102
+	cfg_1.com_network.ip_addr[3]=0x65;//101
 
 	//mask 255.255.255.0 /SUBR
 	cfg_1.com_network.ip_mask[0]=0xFF;

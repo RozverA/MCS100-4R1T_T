@@ -5,6 +5,8 @@ volatile WORD	spi_wait;
 volatile WORD	cmd_spi_wait;
 volatile DWORD  tc3_cnt=0;
 
+volatile WORD	ger_wait = 0;
+
 volatile DWORD  time_100mk=0;
 volatile DWORD  TTL=0;
 

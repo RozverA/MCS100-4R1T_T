@@ -2,14 +2,7 @@
 
 volatile USART port[4];
 
-void usart_init(void)
-{
-	BYTE i; 
-	for(i= 0; i < 4; i++) 
-	{
-		init(i);
-	}
-}
+void usart_init(void)	{for(BYTE i= 0; i < 4; i++) {init(i);}}
 	
 void init(BYTE n_port)
 {

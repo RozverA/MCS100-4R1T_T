@@ -137,6 +137,15 @@ void gpio_init (void)
     PORT->Group[0].DIRSET.reg=PORT_PA18;       // Bits 31:0 - DIRSET: Port Data Direction Set
     PORT->Group[0].PINCFG[18].bit.PMUXEN=0;    // Bit  0    - PMUXEN: Peripheral Multiplexer Enable (0: The peripheral multiplexer selection is disabled)*/  
 	PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA18;  
+	
+	/*
+	//.............................................................................
+	// Gerkon ....................................................................
+	//.............................................................................*/
+	
+	PORT->Group[1].DIRCLR.reg=PORT_PB23;	  	// Bits 31:0 - DIRCLR: Port Data Direction Clear
+	PORT->Group[1].PINCFG[23].bit.INEN  =0x01;	// Bit  17   - INEN:   Input Enable
+	PORT->Group[1].PINCFG[23].bit.PMUXEN=0x00;
 }
 
 void led_init()
@@ -182,4 +191,12 @@ DWORD pin_ctrl(BYTE device, BYTE  numb, BYTE mod)
 		case (W55 << 8| PWR << 4| SET):     PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA18;return 0;
 		
 	}
+}
+
+void check_gerkon()
+{
+	if (PORT->Group[1].IN.reg & PORT_PB23)	{ger_wait = 0; pin_ctrl(LED,PWR,ON); return;}
+	if (ger_wait == 0)						{ger_wait = time_wait + 10000; pin_ctrl(LED,PWR,OFF); return;}
+	if (time_wait > ger_wait)				{reset = 1; return;}
+	
 }
