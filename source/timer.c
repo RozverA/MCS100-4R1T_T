@@ -5,7 +5,7 @@ volatile WORD	spi_wait;
 volatile WORD	cmd_spi_wait;
 volatile DWORD  tc3_cnt=0;
 
-volatile WORD	ger_wait = 0;
+volatile DWORD	ger_wait = 0;
 
 volatile DWORD  time_100mk=0;
 volatile DWORD  TTL=0;
@@ -81,6 +81,8 @@ void TC3_init(void)
 		if(port[1].time_port){port[1].time_port--;}
 		if(port[2].time_port){port[2].time_port--;}
 		if(port[3].time_port){port[3].time_port--;}
+			
+		
 				
 		if(eth_sock[0].time_wait_SEND_OK){eth_sock[0].time_wait_SEND_OK--;}
 		if(eth_sock[1].time_wait_SEND_OK){eth_sock[1].time_wait_SEND_OK--;}
@@ -89,8 +91,8 @@ void TC3_init(void)
 		if(eth_sock[4].time_wait_SEND_OK){eth_sock[4].time_wait_SEND_OK--;}	
 		
 		time_100mk=time_100mk+tc3_cnt;	
-		if(time_100mk>=10000){time_100mk=0;TTL++;}
-			
+		if(time_100mk>=10000){time_100mk=0;TTL++; if(ger_wait){ger_wait--;} check_gerkon();}
+		
 		tc3_cnt=0;		
 		
 	}

@@ -33,6 +33,6 @@ int main(void)
 		eth_process();
 		cmd_process();
 		tc3_process();
-		check_gerkon();
+		
 	}
 }

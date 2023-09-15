@@ -36,8 +36,7 @@ extern volatile DWORD	time_wait;
 extern volatile WORD	spi_wait;
 extern volatile WORD	cmd_spi_wait;
 extern volatile DWORD	tc3_cnt;
-extern volatile WORD	ger_wait;
-
+extern volatile DWORD	ger_wait;
 extern volatile DWORD  TTL;
 
 #endif /* TIMER_H_ */

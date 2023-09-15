@@ -24,6 +24,7 @@ void led_init();
 
 extern void gpio_init (void);
 extern DWORD pin_ctrl(BYTE device, BYTE  numb, BYTE mod);
+extern void check_gerkon(void);
 
 #define CS_set() { PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA24; }
 #define CS_clr() { PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA24; }

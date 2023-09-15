@@ -1,6 +1,5 @@
 #include "def.h"
 
-
 void gpio_init (void)
 {
 	//.............................................................................
@@ -193,9 +192,24 @@ DWORD pin_ctrl(BYTE device, BYTE  numb, BYTE mod)
 	}
 }
 
-void check_gerkon()
+void check_gerkon(void)
 {
-	if (PORT->Group[1].IN.reg & PORT_PB23)	{ger_wait = 0; pin_ctrl(LED,PWR,ON); return;}		//neeed delete
-	if (ger_wait == 0)						{ger_wait = time_wait + 10000; pin_ctrl(LED,PWR,OFF); return;}
-	if (time_wait > ger_wait)				{reset = 1; cfg_default(); cfg_save(); return;}
+	static BYTE gerkon_st = 0;
+	
+	if (PORT->Group[1].IN.reg & PORT_PB23)	{if(PORT->Group[1].OUTSET.reg & PORT_PB03){pin_ctrl(LED,PWR,ON);} gerkon_st = 0; return;}
+	
+	switch (gerkon_st)
+	{
+		case 0:
+			pin_ctrl(LED,PWR,OFF);
+			ger_wait = 10;
+			gerkon_st = 1;
+		break;
+		case 1:
+			if (ger_wait)	{return;}
+			reset = 1; 
+			cfg_default(); 
+			cfg_save();
+		break;
+	}
 }
