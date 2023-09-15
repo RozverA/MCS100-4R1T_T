@@ -11,6 +11,14 @@
 #define MODE_OP_GIVE_STAT		7
 
 #define LEN_HDR					8
+
+#define COMMON_SOCK_CNT			1
+#define COMMON_SOCK_VAL			0
+#define RS485_SOCK_CNT			4
+#define RS485_SOCK_VAL			4
+#define SSH_SOCK_CNT			1
+#define SSH_SOCK_VAL			5
+
 #define MAX_SOCKETS				5
 #define DEFAULT_MTU_UDP			1480 //1472(MTU) + ip + port + data
 #define DEFAULT_MTU_TCP			1460

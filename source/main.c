@@ -17,8 +17,7 @@ int main(void)
 	cfg_init  ();
 	if(cfg_2_read() == CFG_ERR) {cfg_2_err = CFG_ERR; err_dword.cfg_2_init = 1;}
 	if(cfg_read()   == CFG_ERR)	{err_dword.cfg_2_init = 1; cfg_default();}
-	
-	//memcpy(0x00,"test write10  16"); only for test FUSE bits
+
 	cfg_check();
 
 	gpio_init();

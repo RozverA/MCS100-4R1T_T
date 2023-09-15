@@ -31,9 +31,12 @@ void eth_process(void)
 				eth_st					= WRITE_PROCESS;
 				w5500_mode.mode_op		= MODE_OP_WRITE_UDP;
 				w5500_mode.numb_socket	= rtrn;
-				if (rtrn == SOCKET_0)	{break;}
-				if (cfg_1.sock_rs485[rtrn-1].mode == TCP)	{w5500_mode.mode_op=MODE_OP_WRITE_TCP;}
-				break;
+				switch(rtrn)
+				{
+					case COMMON_SOCK_VAL:																						return;
+					case SSH_SOCK_VAL:		w5500_mode.mode_op = MODE_OP_WRITE_TCP;												return;
+					default:				if(cfg_1.sock_rs485[rtrn-1].mode == TCP) {w5500_mode.mode_op=MODE_OP_WRITE_TCP;}	return;
+				} 
 			}
 
 			check_sockets_process((BYTE*)&w5500_mode);//select sockets for read			

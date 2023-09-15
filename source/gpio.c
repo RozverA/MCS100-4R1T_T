@@ -195,8 +195,7 @@ DWORD pin_ctrl(BYTE device, BYTE  numb, BYTE mod)
 
 void check_gerkon()
 {
-	if (PORT->Group[1].IN.reg & PORT_PB23)	{ger_wait = 0; pin_ctrl(LED,PWR,ON); return;}
+	if (PORT->Group[1].IN.reg & PORT_PB23)	{ger_wait = 0; pin_ctrl(LED,PWR,ON); return;}		//neeed delete
 	if (ger_wait == 0)						{ger_wait = time_wait + 10000; pin_ctrl(LED,PWR,OFF); return;}
-	if (time_wait > ger_wait)				{reset = 1; return;}
-	
+	if (time_wait > ger_wait)				{reset = 1; cfg_default(); cfg_save(); return;}
 }
