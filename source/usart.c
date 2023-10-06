@@ -73,26 +73,13 @@ void init(BYTE n_port)
 
 	//cfg settings
 	//frame
-	switch (cfg_1.sock_rs485[n_port].parity) 
-	{
-		case  PARITY_EVEN:	port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_WITH_PARITY; port[n_port].sercom->USART.CTRLB.bit.PMODE = EVEN; break;
-		case  PARITY_ODD:	port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_WITH_PARITY; port[n_port].sercom->USART.CTRLB.bit.PMODE = ODD; break;
-		default:			port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_NO_PARITY; break;
-	}
+	port[n_port].sercom->USART.CTRLA.bit.FORM = FRAME_NO_PARITY;
 	//stop bit
-	switch(cfg_1.sock_rs485[n_port].stop)	
-	{
-		case 2:		port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 1; break;
-		default:	port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 0; break;
-	}
+	port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 0;
 	//char size
-	switch (cfg_1.sock_rs485[n_port].bsize)
-	{
-		case 7:	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x07; break;
-		default:port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x00; break;
-	}
+	port[n_port].sercom->USART.CTRLB.bit.CHSIZE = 0x00;
 	//baud
-	val = cfg_1.sock_rs485[n_port].baud;
+	val = 38400;
 	if ( !((val == 600) || (val == 1200) || (val == 2400) || (val == 4800) || (val == 9600) || (val == 19200) || (val == 38400) || (val == 57600) || (val == 115200) || (val == 128000) || (val == 256000)) ) {val = 38400;}
 	port[n_port].sercom->USART.BAUD.bit.BAUD = 65536.0f*(1.0f-(8.0*(float)(val))/(float)(PROC_HERZ)); 
 	//cfg settings end
@@ -108,7 +95,7 @@ void init(BYTE n_port)
 	while(port[n_port].sercom->USART.SYNCBUSY.reg & 0x07) { ; }
 	port[n_port].sercom->USART.CTRLA.bit.ENABLE=0x01;   // Bit 1 - ENABLE: Enable (1: The peripheral is enabled or being enabled.)
 
-	tout = (double)1000000 / (double)cfg_1.sock_rs485[n_port].baud;
+	tout = (double)1000000 / 38400;
 	tout = tout * bsize;
 	tout = tout * 4;
 	tout = tout / 100;

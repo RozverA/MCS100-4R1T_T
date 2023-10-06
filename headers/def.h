@@ -47,17 +47,8 @@ typedef unsigned int   DWORD;
 #include "usart.h"
 #include "sys_clock.h"
 #include "timer.h"
-#include "flash.h"
-#include "iap.h"
-#include "cfg.h"
-#include "spi.h"
-#include "w5500_reg.h"
-#include "eth_parse.h"
 #include "cmd.h"
 
 extern WORD reset;
-
-extern WORD crc16_ccit(BYTE *buf,WORD size);
-extern WORD crc16_mbus( BYTE *buf, WORD size );
 
 #endif /* DEF_H_ */

@@ -167,9 +167,6 @@
     <Compile Include="Device_Startup\system_samr21.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="headers\cfg.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="headers\cmd.h">
       <SubType>compile</SubType>
     </Compile>
@@ -179,16 +176,7 @@
     <Compile Include="headers\eth_parse.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="headers\flash.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="headers\gpio.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="headers\iap.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="headers\spi.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="headers\sys_clock.h">
@@ -206,28 +194,10 @@
     <Compile Include="source\cmd.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="source\crc.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\eth_parse.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\flash.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="source\gpio.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="source\iap.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="source\main.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\socket.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\spi.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\sys_clock.c">
@@ -237,12 +207,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\usart.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\w5500_reg.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\cfg.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
