@@ -179,9 +179,6 @@
     <Compile Include="headers\eth_parse.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="headers\flash.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="headers\gpio.h">
       <SubType>compile</SubType>
     </Compile>

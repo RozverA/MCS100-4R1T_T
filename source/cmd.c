@@ -213,8 +213,10 @@ void usart_process (BYTE n_port)
 				switch (cfg_1.sock_rs485[n_port - 1].pl)
 				{
 					case MBUS:
+					
 						memcpy(eth_sock[n_port].data + MBAP_HDR_LEN, port[n_port-1].rbuf, size);
 						size += MBAP_HDR_LEN - 2;
+						eth_sock[n_port].data[5]=size-MBAP_HDR_LEN;
 					break;
 					default://GATE
 						memcpy(eth_sock[n_port].data, port[n_port-1].rbuf, size); 

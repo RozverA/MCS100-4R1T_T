@@ -280,7 +280,7 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb)
 			size=0; 
 			
 			eth_sock[sock_numb].check_connect_cnt++;
-			if(eth_sock[sock_numb].check_connect_cnt > 30) {st_cmd_w5500 = TCP_STATUS_RD; eth_sock[sock_numb].check_connect_cnt=0;}
+			if(eth_sock[sock_numb].check_connect_cnt > 5) {st_cmd_w5500 = TCP_STATUS_RD; eth_sock[sock_numb].check_connect_cnt=0;}
 		break;	
 		case TCP_STATUS_RD:
 			addr_w5500=ADDR_SOC_STATUS;//addr in w5500 
