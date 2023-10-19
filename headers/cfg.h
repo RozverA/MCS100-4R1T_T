@@ -51,10 +51,10 @@
 			DWORD				guid;			//4       		  
 			char				name[32];
 			COMMON_CFG			com_network;	//16
-			SOCKET_RS485_CFG	sock_rs485[RS485_SOCK_CNT];	//12*4 72	
-			WORD				in_numb;		//74						//<<HOZ>> number
-			BYTE				reserv[148];				//256-76 180
-			WORD				cs; 			//76	
+			SOCKET_RS485_CFG	sock_rs485[RS485_SOCK_CNT];	//12*4 48	
+			WORD				in_numb;		//2						//<<HOZ>> number
+			BYTE				reserv[148];	
+			WORD				cs; 			//2	
 		}CFG_1;
 		#pragma pack()
 		

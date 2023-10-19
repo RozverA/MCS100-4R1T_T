@@ -147,23 +147,6 @@ void gpio_init (void)
 	PORT->Group[1].PINCFG[23].bit.PMUXEN=0x00;
 }
 
-void led_init()
-{
-	BYTE i = 0;
-	for (i = 0; i<5; i++)
-	{
-		pin_ctrl(LED,PWR,ON);
-		wait(2000);
-		pin_ctrl(LED,PWR,OFF);
-		wait(2000);
-	}
-	pin_ctrl(LED,PWR,ON);
-	
-	
-	
-	
-}
-
 DWORD pin_ctrl(BYTE device, BYTE  numb, BYTE mod)
 {
 	switch(device << 8 | numb << 4 | mod)

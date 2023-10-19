@@ -7,7 +7,6 @@
 	//struct
 		typedef struct
 		{
-			DWORD ssh_init_err:	1;
 			DWORD cfg_1_init:	1;
 			DWORD cfg_2_init:	1;
 			DWORD common_sock:	1;
@@ -16,6 +15,7 @@
 			DWORD mask_init_er:	1;
 			DWORD gw_init_er:	1;
 			DWORD mac_init_er:	1;
+			DWORD ssh_init_err:	1;
 			//12bit
 		} ERRORS;
 //extern

@@ -117,7 +117,8 @@ void cfg_check()
 		port[i].tout_port=cfg_1.sock_rs485[i].tout;
 		if ((port[i].tout_port < 50) || (port[i].tout_port > 1000))  {port[i].tout_port= 100;}
 	}
-	
+	if (sizeof(CFG_1) != 256) {err_dword.cfg_1_init = 1;}
+	if (sizeof(CFG_2) != 256) {err_dword.cfg_2_init = 1;}
 	return;
 }
 
