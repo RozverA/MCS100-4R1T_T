@@ -14,16 +14,22 @@
 		#define MODE_OP_READ_TCP		4
 		#define MODE_OP_WRITE_TCP		5
 	//ports
+		#define ZERO_START				(-1)
 		#define COMMON_SOCK_CNT			1
 		#define COMMON_SOCK_VAL			0
 		#define RS485_SOCK_CNT			4
 		#define RS485_SOCK_VAL			4
-		#define MAX_SOCKETS				COMMON_SOCK_CNT + RS485_SOCK_CNT
-	//SSH
+		//#define MAX_SOCKETS				COMMON_SOCK_CNT + RS485_SOCK_CNT
+		#define MAX_SOCKETS_CNT			COMMON_SOCK_CNT + RS485_SOCK_CNT
+		#define MAX_SOCKETS_VAL			ZERO_START + COMMON_SOCK_CNT + RS485_SOCK_CNT
+	//SSH --------------------------------------------------------------------------------------------MODUL
 		#ifdef ssh_modul
 			#define SSH_SOCK_CNT		1
 			#define SSH_SOCK_VAL		5
-			#define MAX_SOCKETS			COMMON_SOCK_CNT + RS485_SOCK_CNT + SSH_SOCK_CNT
+			#define MAX_SOCKETS_VAL		ZERO_START + COMMON_SOCK_CNT + RS485_SOCK_CNT + SSH_SOCK_CNT
+			#define MAX_SOCKETS_CNT		COMMON_SOCK_CNT + RS485_SOCK_CNT + SSH_SOCK_CNT
+			#define SOCKET_5			5
+			#define MBAP_HDR_LEN		6
 		#endif
 	//soket work mode
 		#define UDP						1
@@ -73,14 +79,13 @@
 		#define WRITE_PROCESS			2
 		#define TCP_SOCK_PROCESS		3
 	//numbers sockets
+		#define NO_SOKET				109
 		#define SOCKET_0				0
 		#define SOCKET_1				1
 		#define SOCKET_2				2
 		#define SOCKET_3				3
 		#define SOCKET_4				4
-		#ifdef ssh_modul
-			#define SOCKET_5			5
-		#endif
+		//#define in SSH MODULE SOCKET	5
 		//#define SOCKET_6				6
 		//#define SOCKET_7				7
 	//socket_status_tcp from w5500
@@ -90,9 +95,6 @@
 		#define STATUS_ESTABLISHED		0x17
 	//other
 		#define SKIP_HDR				8 //TCP connect reciv without UDP HEADER
-		#ifdef ssh_modul
-			#define MBAP_HDR_LEN		6
-		#endif
 	//funx
 		////inits
 			extern void eth_init(void);
@@ -105,11 +107,13 @@
 			extern void eth_parse (BYTE numb_sock,WORD size);
 	//type defs
 		//struct
-			typedef struct{
-				BYTE 	transaction_n[2];
-				BYTE 	protocol[2];
-				BYTE	len[2];
-			}MBAP_HDR;
+			#ifdef ssh_modul
+				typedef struct{
+					BYTE 	transaction_n[2];
+					BYTE 	protocol[2];
+					BYTE	len[2];
+				}MBAP_HDR;
+			#endif
 		//___________________________________________//
 			#pragma pack(1)
 			typedef struct
@@ -143,6 +147,6 @@
 			}ETH_HDR;
 			#pragma pack()
 		//extern
-			extern ETH_HDR eth_sock[MAX_SOCKETS];
+			extern ETH_HDR eth_sock[MAX_SOCKETS_CNT];
 
 #endif

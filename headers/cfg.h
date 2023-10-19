@@ -50,14 +50,14 @@
 		{
 			DWORD				guid;			//4       		  
 			char				name[32];
-			COMMON_CFG			com_network;	//16+8 24
-			SOCKET_RS485_CFG	sock_rs485[4];	//12*4	48+24 72	
+			COMMON_CFG			com_network;	//16
+			SOCKET_RS485_CFG	sock_rs485[RS485_SOCK_CNT];	//12*4 72	
 			WORD				in_numb;		//74						//<<HOZ>> number
 			BYTE				reserv[148];				//256-76 180
 			WORD				cs; 			//76	
 		}CFG_1;
 		#pragma pack()
-
+		
 		typedef struct
 		{
 			char data_day[2];

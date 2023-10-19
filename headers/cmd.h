@@ -7,7 +7,7 @@
 	//struct
 		typedef struct
 		{
-			DWORD rsv:			1;
+			DWORD ssh_init_err:	1;
 			DWORD cfg_1_init:	1;
 			DWORD cfg_2_init:	1;
 			DWORD common_sock:	1;
@@ -22,9 +22,9 @@
 	////variable
 		extern ERRORS err_dword;
 	////funx
-extern void cmd_process(void);
-extern void cmd_common_process (void);
-extern void cmd_usart_process (void);
-extern void usart_process (BYTE n_port);
+		extern void cmd_process(void);
+		extern void cmd_common_process (void);
+		extern void cmd_usart_process (void);
+		extern void usart_process (BYTE n_port);
 
 #endif /* CMD_H_ */

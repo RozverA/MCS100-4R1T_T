@@ -14,6 +14,7 @@ void cmd_process(void)
 {
 	cmd_common_process ();
 	cmd_usart_process ();
+	ssh_process();
 }
 
 
@@ -170,8 +171,6 @@ void cmd_usart_process (void)
 		if(cfg_1.sock_rs485[n_port-1].en==FALSE) {continue;}
 		usart_process(n_port);
 	}
-	
-	
 }
 
 void usart_process (BYTE n_port)

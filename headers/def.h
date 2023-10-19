@@ -10,22 +10,24 @@
 		#include <stdlib.h>
 	////includes local
 		#include "samr21g18a.h"
+		#include "spi.h"
+		#include "eth_parse.h"
 		#include "gpio.h"
 		#include "usart.h"
 		#include "sys_clock.h"
 		#include "timer.h"
-		//#include "flash.h"
+		#ifdef ssh_modul
+			#include "ssh.h"
+		#endif
 		#include "iap.h"
 		#include "cfg.h"
-		#include "spi.h"
 		#include "w5500_reg.h"
-		#include "eth_parse.h"
 		#include "cmd.h"
 //define
 	////WDT
-		#define wdt_start() {if(!(WDT->CTRL.bit.ENABLE)){WDT->CONFIG.bit.PER=0x0B;WDT->EWCTRL.bit.EWOFFSET=0x0A;WDT->INTENSET.bit.EW=0x01;WDT->CTRL.bit.ENABLE=0x01;}}
-		#define wdt_reset() { if(WDT->INTFLAG.bit.EW==1){WDT->INTFLAG.bit.EW=0x01;  WDT->CLEAR.bit.CLEAR=0xA5;} }
-		#define wdt_stop()  { WDT->CTRL.bit.ENABLE=0x00; WDT->INTENCLR.bit.EW=0x01; } 		
+		#define wdt_start() { if (!(WDT->CTRL.bit.ENABLE))	{WDT->CONFIG.bit.PER=0x0B;	WDT->EWCTRL.bit.EWOFFSET=0x0A;	WDT->INTENSET.bit.EW=0x01;	WDT->CTRL.bit.ENABLE=0x01;}}
+		#define wdt_reset() { if (WDT->INTFLAG.bit.EW==1)	{WDT->INTFLAG.bit.EW=0x01;  WDT->CLEAR.bit.CLEAR=0xA5;} }
+		#define wdt_stop()  { WDT -> CTRL.bit.ENABLE=0x00;	WDT->INTENCLR.bit.EW=0x01; } 		
 	////bool
 		#define NULL  0
 		#define TRUE  1

@@ -362,7 +362,7 @@
 					BYTE case2;
 				}R019_Sn_RX_WR_2A_2B;
 
-			}sockReg[MAX_SOCKETS];
+			}sockReg[MAX_SOCKETS_CNT];
 		}w5500;
 //extern
 	////funx
