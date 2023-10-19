@@ -73,7 +73,11 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb)
 		break;
 		case MODE_OP_READ_TCP:
 								rtrn=w5500_cmd_read_socket_tcp(sock_numb);
-								if(rtrn)	{w5500_st=NULLS;spi_mode=0;return (rtrn);}
+								if(rtrn)	
+								{
+																										if(rtrn > 2	)	
+																										{rtrn = rtrn;}
+								w5500_st=NULLS;spi_mode=0;return (rtrn);}
 								w5500_st=SPI_PROCESS;
 		break;
 		case MODE_OP_WRITE_TCP:

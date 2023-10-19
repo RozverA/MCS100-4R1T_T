@@ -1,8 +1,6 @@
 #include "def.h"
 
 
-
-
 BYTE socket_init (BYTE numb, WORD src_port, BYTE mode)
 {
 	BYTE buf[2];

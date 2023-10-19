@@ -24,11 +24,9 @@ void led_init();
 	////funx
 		#define CS_set() { PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA24; }
 		#define CS_clr() { PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA24; }
-		
+	////warning sys
 		#define led_init() {pin_ctrl(LED,PWR,ON); wait(2500);}
-		
-		#define warning_led(err_numb) {for (BYTE i = 0; i < err_numb*2; i++) {pin_ctrl(LED,PWR,TGL); wait(3500);}}	
-					
+		#define warning_led(err_numb) {for (BYTE i = 0; i < err_numb*2; i++) {pin_ctrl(LED,PWR,TGL); wait(3500);}}				
 		#define check_cfg_1_err()			{led_init(); if (err_dword.cfg_1_init)			{warning_led(1);} }
 		#define check_cfg_2_err()			{led_init(); if (err_dword.cfg_2_init)			{warning_led(2);} }
 		#define check_common_sock_err()		{led_init(); if (err_dword.common_sock)			{warning_led(3);} }
@@ -41,7 +39,6 @@ void led_init();
 		#define check_gw_init_err()			{led_init(); if (err_dword.gw_init_er)			{warning_led(10);} }
 		#define check_mac_init_err()		{led_init(); if (err_dword.mac_init_er)			{warning_led(11);} }
 		#define check_ssh_init_err()		{led_init(); if (err_dword.ssh_init_err)		{warning_led(12);} }
-			
 		#define warning() { check_cfg_1_err();  check_cfg_2_err(); check_common_sock_err(); check_socket_1_err(); check_socket_2_err(); check_socket_3_err(); check_socket_4_err(); check_ip_init_err(); check_mask_init_err(); check_gw_init_err(); check_mac_init_err(); check_ssh_init_err()}
 //extern
 	extern void gpio_init (void);

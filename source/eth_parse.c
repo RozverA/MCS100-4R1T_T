@@ -48,6 +48,8 @@ void eth_process(void)
 		case READ_PROCESS:
 			rtrn = w5500_process (w5500_mode.mode_op,w5500_mode.numb_socket);
 			if(rtrn == 2)	{eth_st=0;break;}
+																					if(rtrn > 2	)	
+																					{rtrn = rtrn;}
 			if(rtrn)		{eth_parse(w5500_mode.numb_socket,rtrn); eth_st=0;}
 		break;
 		case WRITE_PROCESS:
@@ -98,7 +100,7 @@ BYTE check_data_wr_process (void)
 {
 	BYTE numb_sock=0;
 
-	for( numb_sock = 0; numb_sock < MAX_SOCKETS_VAL; numb_sock++ )
+	for( numb_sock = 0; numb_sock < MAX_SOCKETS_CNT; numb_sock++ )
 	{
 		if( eth_sock[numb_sock].w_status == 1 )
 		{
