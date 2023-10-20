@@ -266,7 +266,7 @@ WORD w5500_write_socket_udp (BYTE sock_numb)
 }
 
 WORD w5500_cmd_read_socket_tcp (BYTE sock_numb)
-{
+ {
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
 	static BYTE status_ded[MAX_SOCKETS_CNT];
@@ -321,6 +321,8 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb)
 		break;
 		case TCP_PART_RD:	
 			sizert=(*(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27.case2);//check len
+									if (sizert > 2)
+									{sizert = sizert;}
 			if(sizert!=0x0000)//back & return		
 			{
 				addr_w5500=eth_sock[sock_numb].ptr_rx_buf;//addr start messege
@@ -362,8 +364,9 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb)
 		break;
 		case TCP_BK_START:
 			st_cmd_w5500=TCP_GIVE_LEN;//סבנמס ןאנאלוענמג
-			if(!size)					 {return PROC_ER;}
-			if(size > USART_BUF_SIZE)	 {return PROC_ER;}
+			if(!size)						{return PROC_ER;}
+			if ((sock_numb == SSH_SOCK_VAL) && (size < DEFAULT_MTU_TCP))	{return (size);}
+			if(size > USART_BUF_SIZE)		{return PROC_ER;}
 			return (size);
 		break;
 		default:

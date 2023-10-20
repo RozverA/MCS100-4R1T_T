@@ -102,9 +102,9 @@ BYTE write_key_exchange()
 	//languages
 	str_len = 0;
 	ssh.messege[ptr_cnt] = str_len;
-	ptr_cnt++; //c to s
+	ptr_cnt++; //cli to ser
 	ssh.messege[ptr_cnt] = str_len;
-	ptr_cnt++; //s to c
+	ptr_cnt++; //ser to cli
 	
 	ssh.messege[ptr_cnt] = str_len;
 	ptr_cnt++; //fist KEX
@@ -123,5 +123,6 @@ BYTE write_key_exchange()
 	eth_sock[SSH_SOCK_VAL].len[0] = ptr_cnt >> 8;
 	eth_sock[SSH_SOCK_VAL].len[1] = ptr_cnt;
 	
+	memcpy(eth_sock[SSH_SOCK_VAL].data[0], ssh.messege[0], ptr_cnt);
 	
 }
