@@ -16,7 +16,7 @@ void eth_init(void)
 		if(socket_init(i+1,cfg_1.sock_rs485[i].src_port,cfg_1.sock_rs485[i].mode)) {err_dword.socket += (1 << i);}
 	}
 	//ssh socket
-	if(socket_init(SOCKET_5,109,TCP)) {err_dword.ssh_init_err = 1;}
+	if(socket_init(SOCKET_5,22,TCP)) {err_dword.ssh_init_err = 1;}
 	
 }
 
