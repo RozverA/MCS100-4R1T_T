@@ -105,6 +105,8 @@
 			extern BYTE check_data_wr_process (void);
 		////other
 			extern void eth_parse (BYTE numb_sock,WORD size);
+		////toggle
+			#define WR_TGL(sock)	{eth_sock[sock].w_status = 1;	eth_sock[sock].r_status = 0;}
 	//type defs
 		//struct
 			#ifdef ssh_modul
