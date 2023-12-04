@@ -11,7 +11,6 @@
 	#define protocol_name		"SSH-2.0-MCS100-4R1T"
 
 	#define KEX					"diffie-hellman-group1-sha1"
-	//#define KEX					"diffie-hellman-group14-sha256,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group16-sha512"
 	#define SERV_HOST_KEY		"ssh-rsa"
 	#define ENCRYPTION_CLI_SRV	"3des-cbc"
 	#define ENCRYPTION_SRV_CLI	"3des-cbc"
@@ -22,7 +21,10 @@
 	//no used
 	#define LANG_CLI_SRV		""
 	#define LANG_SRV_CLI		""
-	
+	//KEX code
+	#define KEY_EXCHANGE_INIT		0x14
+	#define DH_KEY_EXCHANGE_INIT	0x1E
+	#define DH_KEY_EXCHANGE_REPLY   0x1F
 //mod
 	#define B_LEN			1
 	#define W_LEN			2
@@ -47,14 +49,12 @@
 	extern BYTE num_to_byte(DWORD num, BYTE len, BYTE* dst, BYTE side);
 	
 //mod end
-
-
 #define		COOKIE_LEN			16
 #define		SSH_PADDING_LEN		5
 #define		SSH_STR_LEN			1
 
 extern BYTE ssh_process();
-extern void write_KEX_init();
+extern void KEX_init();
 
 typedef struct {
 	BYTE conn_st;

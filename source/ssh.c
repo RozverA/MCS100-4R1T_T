@@ -28,13 +28,13 @@ BYTE ssh_process()
 			ssh.conn_st = SSH_KEY_EXC_INIT;
 		break;
 		case SSH_KEY_EXC_INIT:
-			write_KEX_init();
+			KEX_init();
 			WR_TGL(SSH_SOCK_VAL);
 			ssh.conn_st = SSH_KEY_EXC_REPLY;
 		break;
 		case SSH_KEY_EXC_REPLY:
-			write_KEX_reply();
-			//WR_TGL(SSH_SOCK_VAL);
+			KEX_reply();
+			WR_TGL(SSH_SOCK_VAL);
 			ssh.conn_st = 109;
 		break;
 		
@@ -78,7 +78,7 @@ DWORD num_aus_byte(BYTE len, BYTE* src, BYTE side)//read bite line as number
     return num;
 }
 
-void write_KEX_init()//ok
+void KEX_init()//ok
 {
 	DWORD ptr_cnt = 0;
 	DWORD str_len = 0;
@@ -156,21 +156,12 @@ void write_KEX_init()//ok
 	memcpy(&eth_sock[SSH_SOCK_VAL].data[0], &ssh.messege[0], ptr_cnt);
 }
 
-void write_KEX_reply()
+void KEX_reply()
 {
-	parse_KEX_reply();
-	//forming messege	
-}
+	if (eth_sock[SSH_SOCK_VAL].data[5] != DH_KEY_EXCHANGE_INIT)	{return ERROR;}
+	BYTE cli_mess_len = num_aus_byte(DW_LEN, &ssh.messege[0], L_SIDE);
+	BYTE key_size = num_aus_byte(DW_LEN, &eth_sock[SSH_SOCK_VAL].data[6],L_SIDE);
+	BYTE cli_key[128];
+	memcpy(&cli_key[0],&eth_sock[SSH_SOCK_VAL].data[10],128);	
 
-void parse_KEX_reply()
-{
-	DWORD ptr_cnt = 0;
-	DWORD packet_len =	ssh_len_r(&eth_sock[5].data[0])	;								ptr_cnt += DW_LEN;	ptr_cnt += 1;//padding len
-	BYTE mess_code = eth_sock[SSH_SOCK_VAL].data[ptr_cnt];								ptr_cnt += 1;
-	BYTE key[32];
-	memcpy(key,eth_sock[SSH_SOCK_VAL].data[ptr_cnt],32);								ptr_cnt += 32;
-
-	
-	
-	
 }
