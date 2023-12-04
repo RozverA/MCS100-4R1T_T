@@ -29,7 +29,7 @@ int main(void)
 
 	warning();
 	
-	test();
+	//test();
 	
 	while (1)
 	{

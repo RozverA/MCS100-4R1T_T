@@ -1,0 +1,16 @@
+SSH_DPD:
+-rework define`s
+-add funx`s for write bite line aus number and back
+-add warning system for debug:
+		cfg_1_err	warning_led-1
+		cfg_2_err	warning_led-2
+		common_sock_err	warning_led-3
+		socket_1_err	warning_led-4
+		socket_2_err	warning_led-5
+		socket_3_err	warning_led-6
+		socket_4_err	warning_led-7
+		ip_init_err	warning_led-8
+		mask_init_err	warning_led-9
+		gw_init_err	warning_led-10
+		mac_init_err	warning_led-11
+		ssh_init_err	warning_led-12

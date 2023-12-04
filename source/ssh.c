@@ -46,13 +46,13 @@ BYTE ssh_process()
 	
 }
 
-void random_gen(BYTE size,BYTE* ptr)
+void random_gen(BYTE size,BYTE* ptr)//size, place for write
 {
 	BYTE tc3 = 0;
 	for (BYTE i = 0; i < size; i++) 	{*ptr++ = ((tc3_cnt + 3) ^ (i + 1)) % 0xFF;}
 }
 
-BYTE num_to_byte(DWORD num, BYTE len, BYTE* dst, BYTE side) //
+BYTE num_to_byte(DWORD num, BYTE len, BYTE* dst, BYTE side)//write number as bite line
 {
 	if((len != W_LEN)    &&  (len != DW_LEN))         {return LEN_ERR;}
 	if((side != L_SIDE)  &&  (side != R_SIDE))     {return SIDE_ERR;}
@@ -66,7 +66,7 @@ BYTE num_to_byte(DWORD num, BYTE len, BYTE* dst, BYTE side) //
 	return SUCCES;
 }
 
-DWORD num_aus_byte(BYTE len, BYTE* src, BYTE side)
+DWORD num_aus_byte(BYTE len, BYTE* src, BYTE side)//read bite line as number
 {
     DWORD num = 0;
     for (BYTE i = 0; i < len;i++)
@@ -78,7 +78,7 @@ DWORD num_aus_byte(BYTE len, BYTE* src, BYTE side)
     return num;
 }
 
-void write_KEX_init()
+void write_KEX_init()//ok
 {
 	DWORD ptr_cnt = 0;
 	DWORD str_len = 0;
@@ -140,7 +140,8 @@ void write_KEX_init()
 	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 1; return;}			ptr_cnt += DW_LEN;
 		
 //padding
-	random_gen(5, &ssh.messege[ptr_cnt]);												ptr_cnt += SSH_PADDING_LEN;//padding string	
+	BYTE padding_len = (ptr_cnt + 4) % 8;
+	random_gen(padding_len, &ssh.messege[ptr_cnt]);												ptr_cnt += padding_len;//padding string	
 
 //len write	
 	for (BYTE i = 0; i < 4; i++)	{ssh.messege[i] = (ptr_cnt - 4) >> (24 - (i * 8));}

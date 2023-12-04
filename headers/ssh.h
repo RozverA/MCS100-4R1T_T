@@ -10,11 +10,11 @@
 //algoritms
 	#define protocol_name		"SSH-2.0-MCS100-4R1T"
 
-	#define KEX					"curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group16-sha512"
+	#define KEX					"diffie-hellman-group1-sha1"
 	//#define KEX					"diffie-hellman-group14-sha256,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group16-sha512"
-	#define SERV_HOST_KEY		"ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-rsa"
-	#define ENCRYPTION_CLI_SRV	"aes128-cbc,3des-cbc,aes128-ctr,aes256-ctr,aes256-cbc,3des-ctr"
-	#define ENCRYPTION_SRV_CLI	"aes128-cbc,3des-cbc,aes128-ctr,aes256-ctr,aes256-cbc,3des-ctr"
+	#define SERV_HOST_KEY		"ssh-rsa"
+	#define ENCRYPTION_CLI_SRV	"3des-cbc"
+	#define ENCRYPTION_SRV_CLI	"3des-cbc"
 	#define MAC_CLI_SRV			"hmac-sha1"
 	#define MAC_SRV_CLI			"hmac-sha1"
 	#define COPRESS_CLI_SRV		"none"
@@ -26,8 +26,9 @@
 //mod
 	#define B_LEN			1
 	#define W_LEN			2
+	#define DW_LEN_BIT		(W_LEN * 8)
 	#define DW_LEN			4
-	#define DW_LEN_BIT		(4 * 8)
+	#define DW_LEN_BIT		(DW_LEN * 8)
 
 	#define L_SIDE			1 //1234 - 1.2.3.4
 	#define R_SIDE			0 //1234 - 4.3.2.1
