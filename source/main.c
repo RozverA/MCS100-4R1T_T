@@ -13,7 +13,7 @@ int main(void)
 	__enable_irq();
 	wdt_reset();
 	wdt_start();
-			
+	
 	cfg_init  ();
 	if(cfg_2_read() == CFG_ERR) {cfg_2_err = CFG_ERR; err_dword.cfg_2_init = 1;}
 	if(cfg_read()   == CFG_ERR)	{err_dword.cfg_2_init = 1; cfg_default();}
@@ -28,6 +28,8 @@ int main(void)
 	eth_init();
 
 	warning();
+	
+	test();
 	
 	while (1)
 	{

@@ -11,6 +11,7 @@
 	#define protocol_name		"SSH-2.0-MCS100-4R1T"
 
 	#define KEX					"curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group16-sha512"
+	//#define KEX					"diffie-hellman-group14-sha256,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group16-sha512"
 	#define SERV_HOST_KEY		"ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-rsa"
 	#define ENCRYPTION_CLI_SRV	"aes128-cbc,3des-cbc,aes128-ctr,aes256-ctr,aes256-cbc,3des-ctr"
 	#define ENCRYPTION_SRV_CLI	"aes128-cbc,3des-cbc,aes128-ctr,aes256-ctr,aes256-cbc,3des-ctr"
@@ -23,19 +24,27 @@
 	#define LANG_SRV_CLI		""
 	
 //mod
-	#define B_LEN        1
-	#define W_LEN        2
-	#define DW_LEN       4
+	#define B_LEN			1
+	#define W_LEN			2
+	#define DW_LEN			4
+	#define DW_LEN_BIT		(4 * 8)
 
-	#define L_SIDE       1 //1234 - 1.2.3.4
-	#define R_SIDE      0 //1234 - 4.3.2.1
+	#define L_SIDE			1 //1234 - 1.2.3.4
+	#define R_SIDE			0 //1234 - 4.3.2.1
 
 	#define LEN_ERR         101
 	#define SIDE_ERR        102
 
 	#define SUCCES          0
 
+	
+	#define ssh_len_w(num, dst)		(num_to_byte(num, DW_LEN, dst, L_SIDE))
+	#define ssh_len_r(src)			(num_aus_byte(DW_LEN, src,L_SIDE))
+	
+	extern DWORD num_aus_byte(BYTE len, BYTE* src, BYTE side);
+	extern void random_gen(BYTE size,BYTE* ptr);
 	extern BYTE num_to_byte(DWORD num, BYTE len, BYTE* dst, BYTE side);
+	
 //mod end
 
 

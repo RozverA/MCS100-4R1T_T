@@ -167,6 +167,9 @@
     <Compile Include="Device_Startup\system_samr21.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="headers\alg.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="headers\cfg.h">
       <SubType>compile</SubType>
     </Compile>
@@ -201,6 +204,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="headers\w5500_reg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\alg.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\cmd.c">
