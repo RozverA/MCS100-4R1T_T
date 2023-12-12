@@ -55,12 +55,6 @@ void random_gen(BYTE size,BYTE* ptr)//size, place for write
 	for (BYTE i = 0; i < size; i++) 	{*ptr++ = ((tc3_cnt + 3) ^ (i + 1)) % 0xFF;}
 }
 
-void pub_key_gen(BYTE size,BYTE* ptr, DWORD seed)//size, place for write
-{
-	BYTE tc3 = 0;
-	for (BYTE i = 0; i < size; i++) 	{*ptr++ = ((seed + 3) ^ (i + 1)) % 0xFF;}
-}
-
 BYTE num_to_byte(DWORD num, BYTE len, BYTE* dst, BYTE side)//write number as bite line
 {
 	if((len != W_LEN)    &&  (len != DW_LEN))         {return LEN_ERR;}
@@ -92,65 +86,48 @@ void KEX_init()//ok
 	DWORD ptr_cnt = 0;
 	DWORD str_len = 0;
 
-	
 	random_gen(16, &ssh.messege[SSH_HEADER_LEN]);			//Cookie
 	ptr_cnt = SSH_HEADER_LEN + COOKIE_LEN;//21				//pointer for write messeeg
 	
 //key exchange
-	str_len = sizeof(KEX) - 1;
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 1; return;}			ptr_cnt += DW_LEN;
-	memcpy(&ssh.messege[ptr_cnt],KEX,str_len);											ptr_cnt += str_len;
+	ptr_cnt = data_pack(ptr_cnt,KEX,sizeof(KEX));
 
 //server host key alg
-	str_len = sizeof(SERV_HOST_KEY) - 1;
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 2; return;}			ptr_cnt += DW_LEN;
-	memcpy(&ssh.messege[ptr_cnt],SERV_HOST_KEY,str_len);								ptr_cnt += str_len;
+	ptr_cnt = data_pack(ptr_cnt,SERV_HOST_KEY,sizeof(SERV_HOST_KEY));
 
 //encryption alg cl to serv
-	str_len = sizeof(ENCRYPTION_CLI_SRV) - 1;
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 3; return;}			ptr_cnt += DW_LEN;
-	memcpy(&ssh.messege[ptr_cnt],ENCRYPTION_CLI_SRV,str_len);							ptr_cnt += str_len;
+	ptr_cnt = data_pack(ptr_cnt,ENCRYPTION_CLI_SRV,sizeof(ENCRYPTION_CLI_SRV));
 
 //encryption alg serv to cl
-	str_len = sizeof(ENCRYPTION_SRV_CLI) - 1;
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 4; return;}			ptr_cnt += DW_LEN;
-	memcpy(&ssh.messege[ptr_cnt],ENCRYPTION_SRV_CLI,str_len);							ptr_cnt += str_len;
+	ptr_cnt = data_pack(ptr_cnt,ENCRYPTION_SRV_CLI,sizeof(ENCRYPTION_SRV_CLI));
 
 //mac alg cli to serv
-	str_len = sizeof(MAC_CLI_SRV) - 1;
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 5; return;}			ptr_cnt += DW_LEN;
-	memcpy(&ssh.messege[ptr_cnt],MAC_CLI_SRV,str_len);									ptr_cnt += str_len;
+	ptr_cnt = data_pack(ptr_cnt,MAC_CLI_SRV,sizeof(MAC_CLI_SRV));
 
 //mac alg serv to cli
-	str_len = sizeof(MAC_SRV_CLI) - 1;
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 6; return;}			ptr_cnt += DW_LEN;
-	memcpy(&ssh.messege[ptr_cnt],MAC_SRV_CLI,str_len);									ptr_cnt += str_len;
+	ptr_cnt = data_pack(ptr_cnt,MAC_SRV_CLI,sizeof(MAC_SRV_CLI));
 
 //compression alg cli to serv
-	str_len = sizeof(COPRESS_CLI_SRV) - 1;
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 7; return;}			ptr_cnt += DW_LEN;
-	memcpy(&ssh.messege[ptr_cnt],COPRESS_CLI_SRV,str_len);								ptr_cnt += str_len;
+	ptr_cnt = data_pack(ptr_cnt,COPRESS_CLI_SRV,sizeof(COPRESS_CLI_SRV));
 
 //compression alg serv to cli
-	str_len = sizeof(COPRESS_SRV_CLI) - 1;
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 8; return;}			ptr_cnt += DW_LEN;
-	memcpy(&ssh.messege[ptr_cnt],COPRESS_SRV_CLI,str_len);								ptr_cnt += str_len;
+	ptr_cnt = data_pack(ptr_cnt,COPRESS_SRV_CLI,sizeof(COPRESS_SRV_CLI));
 
 //languages
 	str_len = 0;
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 9; return;}			ptr_cnt += DW_LEN;
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 10; return;}			ptr_cnt += DW_LEN;
+	ssh_len_w(str_len,&ssh.messege[ptr_cnt]);			ptr_cnt += DW_LEN;
+	ssh_len_w(str_len,&ssh.messege[ptr_cnt]);			ptr_cnt += DW_LEN;
 
 //fist KEX
-	ssh.messege[ptr_cnt] = str_len;										ptr_cnt++; 
+	ssh.messege[ptr_cnt] = str_len;				ptr_cnt++; 
 
 //reserved
 	str_len = 0;//4
-	if( ssh_len_w(str_len,&ssh.messege[ptr_cnt]) ){err_ssh_point = 11; return;}			ptr_cnt += DW_LEN;
+	ssh_len_w(str_len,&ssh.messege[ptr_cnt]);			ptr_cnt += DW_LEN;
 		
 //padding
 	BYTE padding_len = (ptr_cnt + 4) % 8;
-	random_gen(padding_len, &ssh.messege[ptr_cnt]);												ptr_cnt += padding_len;//padding string	
+	random_gen(padding_len, &ssh.messege[ptr_cnt]);			ptr_cnt += padding_len;//padding string	
 
 //len write	
 	wr_header(ptr_cnt, KEY_EXCHANGE_INIT);
@@ -169,28 +146,22 @@ void KEX_reply()
 	BYTE cli_mess_len;
 	BYTE key_size;
 	BYTE cli_key[128];
-	BYTE str_len;
-	BYTE ptr_cnt = SSH_HEADER_LEN;
+	DWORD str_len;
+	DWORD ptr_cnt = SSH_HEADER_LEN;
 //read messege
 	cli_mess_len = num_aus_byte(DW_LEN, &ssh.messege[0], L_SIDE);
 	key_size = num_aus_byte(DW_LEN, &eth_sock[SSH_SOCK_VAL].data[6],L_SIDE);
 	//copy public key from socket buf and read key len(num aus bute)
-	memcpy( &cli_key[0], &eth_sock[SSH_SOCK_VAL].data[10], num_aus_byte( DW_LEN, eth_sock[SSH_SOCK_VAL].data[6], L_SIDE));	
+	BYTE test  =  num_aus_byte( DW_LEN, eth_sock[SSH_SOCK_VAL].data[6], L_SIDE);
+	memcpy( &cli_key[0], &eth_sock[SSH_SOCK_VAL].data[10], test);	
 
-//host key len
+//KEX exchange	
 	BYTE kex_len;
-	str_len = sizeof(SERV_HOST_KEY);										
-	ssh_len_w(str_len, ssh.messege[ptr_cnt]);							ptr_cnt	+= DW_LEN;
-	memcpy(ssh.messege[ptr_cnt],SERV_HOST_KEY,str_len);					ptr_cnt += str_len;
-//block 2
-	str_len = sizeof(RSA);
-	ssh_len_w(str_len, ptr_cnt);										ptr_cnt += DW_LEN;
-	//random_gen(128, ssh.messege[ptr_cnt]);							ptr_cnt += 128;
-	str_len = sizeof(N);
-	memcpy(&ssh.messege[ptr_cnt], N, str_len);
+	ptr_cnt = data_pack(ptr_cnt, SERV_HOST_KEY, sizeof(SERV_HOST_KEY));//7-RSA
+	BYTE a = E;
+	ptr_cnt = data_pack(ptr_cnt, &a, sizeof(E)); //6 - "010001"
+	//ptr_cnt = data_pack()
 	
-	
-	kex_len = ptr_cnt - SSH_HEADER_LEN;
 
 	
 	
@@ -211,16 +182,10 @@ void wr_header(DWORD ptr_cnt, BYTE mess_code)
 	memcpy(&ssh.messege[0],&hdr.pack_len,sizeof(SSH_HEADER));
 }
 
-
-// void key_gen(BYTE* dst)
-// {
-// 	p[64]
-// 	q[64]
-// 	
-// }
-
-void use_saved_key()
+DWORD data_pack(DWORD ptr_cnt, BYTE* dst, DWORD len)
 {
-	
-	
+	len -= 1;
+	ssh_len_w(len, &ssh.messege[ptr_cnt]);										ptr_cnt += DW_LEN;
+	memcpy(&ssh.messege[ptr_cnt], dst, len);										ptr_cnt += len;
+	return ptr_cnt;
 }
