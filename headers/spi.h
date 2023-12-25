@@ -3,7 +3,7 @@
 
 
 #define spi_write_timeout(addr,cb,buf,len,timeout)	{spi_wait=timeout;while(!spi_write(addr, cb, buf, len)){if(!spi_wait){return TIMEOUT;}}}
-
+#define spi_read_timeout(addr,cb,buf,len,timeout)	{spi_wait=timeout;while(!spi_read(addr, cb, buf, len)){if(!spi_wait){return TIMEOUT;}}}
 extern void spi_init(void);
 
 extern WORD spi_process (uint16_t addr, uint8_t cb, uint8_t *buf, uint16_t len, BYTE cmd);

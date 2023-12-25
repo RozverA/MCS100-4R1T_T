@@ -34,7 +34,6 @@ void eth_process(void)
 				switch(rtrn)
 				{
 					case COMMON_SOCK_VAL:																						return;
-					case SSH_SOCK_VAL:		w5500_mode.mode_op = MODE_OP_WRITE_TCP;												return;
 					default:				if(cfg_1.sock_rs485[rtrn-1].mode == TCP) {w5500_mode.mode_op=MODE_OP_WRITE_TCP;}	return;
 				} 
 			}
@@ -88,7 +87,7 @@ void eth_parse (BYTE numb_sock,WORD size)
 
 BYTE check_data_wr_process (void)
 {
-	BYTE numb_sock=0;		
+	BYTE numb_sock=0;
 
 	for( numb_sock = 0; numb_sock < MAX_SOCKETS; numb_sock++ )
 	{

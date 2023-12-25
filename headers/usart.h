@@ -4,8 +4,8 @@
 #define USART_BUF_SIZE 256
 
 #define PARITY_NONE 0
-#define PARITY_EVEN 1
-#define PARITY_ODD  2
+#define PARITY_EVEN 2
+#define PARITY_ODD  1
 
 #define EVEN	0
 #define ODD		1

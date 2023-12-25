@@ -91,7 +91,7 @@ void TC3_init(void)
 		if(eth_sock[4].time_wait_SEND_OK){eth_sock[4].time_wait_SEND_OK--;}	
 		
 		time_100mk=time_100mk+tc3_cnt;	
-		if(time_100mk>=10000){time_100mk=0;TTL++; if(ger_wait){ger_wait--;} check_gerkon();}
+		//if(time_100mk>=10000){time_100mk=0;TTL++; if(ger_wait){ger_wait--;} check_gerkon();}
 		
 		tc3_cnt=0;		
 		
