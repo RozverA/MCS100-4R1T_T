@@ -29,7 +29,7 @@ int main(void)
 
 	warning();
 	
-	//test();
+	//sha1_test();
 	
 	while (1)
 	{

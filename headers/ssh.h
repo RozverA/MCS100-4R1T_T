@@ -26,6 +26,7 @@
 	#define KEY_EXCHANGE_INIT		20//14
 	#define DH_KEY_EXCHANGE_INIT	30//1E
 	#define DH_KEY_EXCHANGE_REPLY   31//1F
+	#define DH_KEY_NEW_KEY			21//1F
 	//rsa
 	#define RSA "rsa"
 	//#define RSA_KEY
@@ -71,10 +72,13 @@
 #define		SSH_PADDING_LEN		5
 #define		SSH_STR_LEN			1
 #define		SSH_HEADER_LEN		6
+#define SHA1_BLOCK_SIZE 20              // SHA1 outputs a 20 byte digest
+
 
 extern BYTE ssh_process();
 extern void KEX_init();
 extern DWORD data_pack(DWORD ptr_cnt, BYTE* dst, DWORD len, BYTE offset);
+extern sha1_test();
 
 typedef struct {
 	BYTE conn_st;
@@ -86,6 +90,14 @@ typedef struct {
 	BYTE	padding_len;
 	BYTE	messege_code;
 }SSH_HEADER;
+
+typedef struct {
+	BYTE data[64];
+	DWORD datalen;
+	unsigned long long bitlen;
+	DWORD state[5];
+	DWORD k[4];
+} SHA1_CTX;
 
 extern SSH_STR ssh;
 extern SSH_HEADER;
