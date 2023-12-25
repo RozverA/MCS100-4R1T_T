@@ -37,8 +37,9 @@ rom_copy_main   (rx)  : ORIGIN = 0x00020000, LENGTH = 0x0001C000  //copy main		1
 res			    (rx)  : ORIGIN = 0x0003C000, LENGTH = 0x00003000  //reserv			12k	
 cfg			    (rx)  : ORIGIN = 0x0003F000, LENGTH = 0x00000100  //config			256b
 cfg_2			(rx)  : ORIGIN = 0x0003F100, LENGTH = 0x00000100  //config_2		256b
-key				(rx)  : ORIGIN = 0x0003F200, LENGTH = 0x00000100  //key				256b		
-res			    (rx)  : ORIGIN = 0x0003F300, LENGTH = 0x00000D00  //reserv			3k	
+key				(rx)  : ORIGIN = 0x0003F200, LENGTH = 0x00000100  //key				256b
+logs		    (rx)  : ORIGIN = 0x0003F300, LENGTH = 0x00000400  //logs			1k			
+res			    (rx)  : ORIGIN = 0x0003F700, LENGTH = 0x00000900  //reserv			2k	
 
 ram_main		(rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000
 ram_boot        (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000

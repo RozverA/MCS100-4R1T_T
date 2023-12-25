@@ -245,6 +245,9 @@
     <Compile Include="source\cfg.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="TARGETS.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Device_Startup\" />

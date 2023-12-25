@@ -23,6 +23,23 @@ typedef struct
 }COMMON_CFG;
 #pragma pack()
 
+#pragma pack(1) 
+typedef struct {BYTE  ip[4];}IP_FOR_LIST; 
+#pragma pack()
+
+#pragma pack(1)
+typedef struct {BYTE  mac[6]; }MAC_FOR_LIST;
+#pragma pack()
+
+#pragma pack(1)
+typedef struct
+//-----------------------------------------------------------------------------
+{
+	IP_FOR_LIST  ip[5];      //20
+	MAC_FOR_LIST  mac[5];    //30
+}ACCESS_LIST;
+#pragma pack()
+
 #pragma pack(1)
 typedef struct
 //-----------------------------------------------------------------------------
@@ -49,12 +66,13 @@ typedef struct             // size 256 bytes
 //-----------------------------------------------------------------------------
 {
 	DWORD				guid;			//4       		  
-	char				name[32];
-	COMMON_CFG			com_network;	//16+8 24
-	SOCKET_RS485_CFG	sock_rs485[4];	//12*4	48+24 72	
-	WORD				in_numb;		//74						//<<HOZ>> number
-	BYTE				reserv[148];				//256-76 180
-	WORD				cs; 			//76	
+	char				name[32];		//32	36
+	COMMON_CFG			com_network;	//16	52
+	SOCKET_RS485_CFG	sock_rs485[4];	//12*4	100	
+	WORD				in_numb;		//2		102		//<<HOZ>> number
+	ACCESS_LIST			access_l;		//50	152
+	BYTE				reserv[102];					//256-154 102
+	WORD				cs; 			//2		154
 }CFG_1;
 #pragma pack()
 
