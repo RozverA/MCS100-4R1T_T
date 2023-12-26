@@ -1,13 +1,16 @@
 #ifndef CFG_H_
 #define CFG_H_
 
-#define CFG_OK  1
-#define CFG_ERR 0
+//define
+//status	
+	#define CFG_OK  1
+	#define CFG_ERR 0
+//parameters
+	#define VERSION "0.0.0.03"		//8 b
+	#define MODEL	"_MCS100-4R1T"	//12 b
+//funx
+	#define cfg_drop() {cfg_default();cfg_save();}
 
-#define CHECK 0
-#define READ_PROCESS 1
-#define WRITE_PROCESS 2
-#define TCP_SOCK_PROCESS 3
 
 
 #pragma pack(1)
@@ -71,7 +74,7 @@ typedef struct             // size 256 bytes
 	SOCKET_RS485_CFG	sock_rs485[4];	//12*4	100	
 	WORD				in_numb;		//2		102		//<<HOZ>> number
 	ACCESS_LIST			access_l;		//50	152
-	BYTE				reserv[102];					//256-154 102
+	BYTE				reserv[98];					//256-154 102
 	WORD				cs; 			//2		154
 }CFG_1;
 #pragma pack()
@@ -96,21 +99,19 @@ typedef struct             // size 256 bytes
 }CFG_2;
 #pragma pack()
 
-extern CFG_2 cfg_2;     //no change cfg
-extern BYTE	cfg_2_err;	//error counter
+//extern
+////variables
+	extern BYTE	cfg_2_err;	//error counter
+////struct
+	extern CFG_1 cfg_1;
+	extern CFG_1 cfg_1_tmp;
+	extern CFG_2 cfg_2;     //no change cfg
+////funx
+	extern void cfg_init(void);
+	extern WORD cfg_read(void);
+	extern void cfg_default(void);
+	extern WORD cfg_save(void);
 
-
-extern CFG_1 cfg_1;
-extern CFG_1 cfg_1_tmp;
-
-extern void cfg_init(void);
-extern WORD cfg_read(void);
-extern void cfg_default(void);
-extern WORD cfg_save(void);
-#define cfg_drop() {cfg_default();cfg_save();}
 void cfg_check();
-
-#define VERSION "0.0.0.03"		//8 b
-#define MODEL	"_MCS100-4R1T"	//12 b
 
 #endif /* CFG_H_ */

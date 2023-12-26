@@ -265,7 +265,7 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb)
 {
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
-	static BYTE status_ded[MAX_SOCKETS];
+	static BYTE status_ded[MAX_SOCKETS_CNT];
 	BYTE cnt=0;
 
 	switch(st_cmd_w5500)

@@ -1,6 +1,6 @@
 #include "def.h"
 
-ETH_HDR eth_sock[MAX_SOCKETS];
+ETH_HDR eth_sock[MAX_SOCKETS_CNT];
 
 void eth_init(void)
 {
@@ -26,7 +26,7 @@ void eth_process(void)
 	{
 		case CHECK:				
 			rtrn = check_data_wr_process();	
-			if(rtrn != MAX_SOCKETS)								
+			if(rtrn != NO_SOKET)								
 			{
 				eth_st					= WRITE_PROCESS;
 				w5500_mode.mode_op		= MODE_OP_WRITE_UDP;
@@ -59,21 +59,23 @@ void eth_process(void)
 
 void check_sockets_process (BYTE *buf)
 {
-	static BYTE index = MAX_SOCKETS;
+	static BYTE index = MAX_SOCKETS_VAL;
 	
 	index++;
-	if(index >= MAX_SOCKETS){index=0;}
+	if(index >= MAX_SOCKETS_VAL){index=0;}
 	
-	if(!index)	
+	switch (index)
 	{
-		w5500_mode.numb_socket	= SOCKET_0; 
-		w5500_mode.mode_op		= MODE_OP_READ_UDP;	
+		case COMMON_SOCK_VAL:
+			w5500_mode.numb_socket	= SOCKET_0;
+			w5500_mode.mode_op		= MODE_OP_READ_UDP;
 		return;
-	}
-	
-	w5500_mode.numb_socket = index;
-	if (cfg_1.sock_rs485[index-1].mode == TCP)	{w5500_mode.mode_op=MODE_OP_READ_TCP;} 
-	else										{w5500_mode.mode_op=MODE_OP_READ_UDP;}
+		default:
+			w5500_mode.numb_socket = index;
+			if (cfg_1.sock_rs485[index-1].mode == TCP)	{w5500_mode.mode_op = MODE_OP_READ_TCP;}
+			else										{w5500_mode.mode_op = MODE_OP_READ_UDP;}
+		return;
+	}									{w5500_mode.mode_op=MODE_OP_READ_UDP;}
 	return;
 }
 
@@ -89,7 +91,7 @@ BYTE check_data_wr_process (void)
 {
 	BYTE numb_sock=0;
 
-	for( numb_sock = 0; numb_sock < MAX_SOCKETS; numb_sock++ )
+	for( numb_sock = 0; numb_sock < MAX_SOCKETS_CNT; numb_sock++ )
 	{
 		if( eth_sock[numb_sock].w_status == 1 )
 		{
@@ -98,5 +100,5 @@ BYTE check_data_wr_process (void)
 			return (numb_sock);
 		}
 	}
-	return (MAX_SOCKETS);	
+	return (NO_SOKET);	
 }

@@ -27,6 +27,10 @@ int main(void)
 	usart_init();
 	eth_init();
 	
+	led_init();
+	if (sizeof(CFG_1) != 0x100 ) { warning_led(1);}
+	if (sizeof(CFG_2) != 0x100 ) { warning_led(2);}
+	
 	while (1)
 	{
 	    if(reset == NULL) {wdt_reset();}//wdt-drop timer
