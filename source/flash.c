@@ -110,7 +110,5 @@ WORD flash_read(DWORD addr,void* buf,WORD size)
 		ptr++;
 		wdt_reset();
 	}
-	
-
 	return(cnt);
 }

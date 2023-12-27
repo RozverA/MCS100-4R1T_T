@@ -20,6 +20,7 @@
 	#include "cfg.h"
 	#include "w5500_reg.h"
 	#include "cmd.h"
+	#include "alg.h"
 //define
 ////WDT
 	#define wdt_start() { if (!(WDT->CTRL.bit.ENABLE))	{WDT->CONFIG.bit.PER=0x0B;	WDT->EWCTRL.bit.EWOFFSET=0x0A;	WDT->INTENSET.bit.EW=0x01;	WDT->CTRL.bit.ENABLE=0x01;}}
@@ -52,9 +53,20 @@
 	#define SUCCESS				0
 	#define TIMEOUT				1
 	#define ERROR				2
+////proc
+	#define READ				0
+	#define WRITE				1
+	#define DROP				2
+////login
+	#define ADMIN				"admin"
+	#define USER				"user"
+//////place in flash
+	#define LOGINS_MEM_PLACE	(0x0003F700)
+	#define LOGS_MEM_PLACE		(0x0003F800)
 //externs
 ////variables
 	extern WORD reset;
+	extern ACCOUNTS accnts;
 ////fun
 //////crc
 	extern WORD crc16_ccit(BYTE *buf,WORD size);

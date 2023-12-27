@@ -2,6 +2,7 @@
 
 
 BYTE cbuf[300];
+volatile BYTE log_stat = 0;
 
 #define CM2_WHO_ARE_YOU 0x01
 #define UID_WHO_ARE_YOU 0x8001
@@ -26,6 +27,7 @@ void cmd_common_process (void)
 	WORD  cs   = 0;
 	BYTE  i		= 0;
 	WORD  ixo  = 0;
+	DWORD ip_addr;
 
 	
 	if(eth_sock[0].r_status==FALSE) {return;}
@@ -44,7 +46,11 @@ void cmd_common_process (void)
 
 	if(addr !=  0){return;}
 	wn++;//cmd
-
+//logging
+	if (!SRAV(4, &eth_sock[0].ip_addr[0], &ip_addr)){log_stat = 0;}
+	if ((cbuf[2] != 0x20) && (!log_stat)) {return 0;}
+	
+	
 	switch(cbuf[2])
 	{
 		case 0x01:	if(size != 6) { return; }             // CMD=0x07 Read CFG		
@@ -125,6 +131,19 @@ void cmd_common_process (void)
 					wn+=cnt;
 		break;
 		//......................................................................
+		case 0x20:	if(size <  7) { return; }
+					if (!cbuf[3])	{return;}										cnt = 4;
+					if			(!SRAV(32, cbuf[cnt], accnts.user.login[0]))		{wn++;break;}
+					else if		(!SRAV(32, cbuf[cnt], accnts.admin.login[0]))		{wn++;break;}
+
+					cnt += 32;														
+					if			(!SRAV(32, cbuf[cnt], accnts.user.password[0]))		{wn++;break;}
+					if			(!SRAV(32, cbuf[cnt], accnts.admin.password[0]))		{wn++;break;}
+					log_stat = 1;
+					memcpy(&ip_addr, eth_sock[0].ip_addr[0], DW_LEN);					
+		break;
+
+		//......................................................................
 		case 0x27:	if(size  !=  5) { return; }
 		
 					if(crc16_ccit((BYTE*)&cfg_1_tmp,sizeof(CFG_1)) != 0)
@@ -136,7 +155,7 @@ void cmd_common_process (void)
 					wn |=+cfg_save();
 					reset=1;
 		break;
-		
+		//......................................................................
 		case 0x29:	if(size  !=  5) { return; }
 		
 					reset=1; wn++;

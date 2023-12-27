@@ -16,7 +16,9 @@ volatile WORD sizert=0;
 BYTE w5500_init_reg(void)
 {
 	pin_ctrl(W55,PWR,SET);
-
+	
+	
+		
 	if(ip_init()	)	{err_dword.ip_init_er   = 1;	return ERROR;}
 	if(mask_init()	)	{err_dword.mask_init_er = 1;	return ERROR;}
 	if(gw_init()	)	{err_dword.gw_init_er   = 1;	return ERROR;}		
