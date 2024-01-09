@@ -106,7 +106,7 @@ WORD w5500_cmd_read_socket_udp (BYTE sock_numb)
 			ptr_buf=(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27;//4 data (point write data aus w5500)
 			len_buf=2;//len
 			cmd=READ_DATA;//mode
-			st_cmd_w5500++;//"next"
+			st_cmd_w5500 = UDP_PART_RD;//"next"
 								
 			size=0;
 		break;	
@@ -459,3 +459,28 @@ WORD w5500_write_socket_tcp (BYTE sock_numb)
 	}
 	return PROC_WAIT;
 }
+
+// BYTE w5500_read_mac()
+// {
+// 	
+// }
+// sizert=(*(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27.case2);//check len
+// if(sizert!=0x0000)//back & return
+// {
+// 	addr_w5500=eth_sock[sock_numb].ptr_rx_buf;//addr start messege
+// 	cb_w5500=SOCKET_RX_BUFFER | SOCKET(sock_numb);//bsb sock RX
+// 	ptr_buf=(BYTE*) & eth_sock[sock_numb].data;
+// 	len_buf = sizert;
+// 	eth_sock[sock_numb].ptr_rx_buf=eth_sock[sock_numb].ptr_rx_buf+len_buf;
+// 	
+// 	size=len_buf;
+// 	if(len_buf>DEFAULT_MTU_TCP){size=PROC_ER;}
+// 	
+// 	eth_sock[sock_numb].len[0]=	(size & 0xFF00)>>8;
+// 	eth_sock[sock_numb].len[1]=	(size & 0x00FF);
+// 	cmd=READ_DATA;
+// 	st_cmd_w5500 = TCP_DROP_PTR;
+// 	break;
+// }
+// st_cmd_w5500=TCP_GIVE_LEN;
+// return PROC_ER;

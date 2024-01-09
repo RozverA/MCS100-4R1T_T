@@ -21,6 +21,7 @@
 	#include "w5500_reg.h"
 	#include "cmd.h"
 	#include "alg.h"
+	#include "encod_k.h"
 //define
 ////WDT
 	#define wdt_start() { if (!(WDT->CTRL.bit.ENABLE))	{WDT->CONFIG.bit.PER=0x0B;	WDT->EWCTRL.bit.EWOFFSET=0x0A;	WDT->INTENSET.bit.EW=0x01;	WDT->CTRL.bit.ENABLE=0x01;}}

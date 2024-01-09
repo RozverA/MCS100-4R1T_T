@@ -3,6 +3,7 @@
 ERRORS err_dword;
 WORD reset;
 ACCOUNTS accnts;
+DWORD ERR1, ERR2;
 
 int main(void)
 {
@@ -14,11 +15,14 @@ int main(void)
 	__enable_irq();
 	wdt_reset();
 	wdt_start();
-		
+		ERR1 = sizeof(CFG_1);
+		ERR2 = sizeof(CFG_2);
+		if (sizeof(CFG_1) != 0x100 ) { ERR1 = sizeof(CFG_1);}
+		if (sizeof(CFG_2) != 0x100 ) { ERR2 = sizeof(CFG_2);}	
+			
 	cfg_init  ();
-	if(cfg_2_read() == CFG_ERR) {cfg_2_err = CFG_ERR; err_dword.cfg_2_init = 1;}
+	if(cfg_2_read() == CFG_ERR) {cfg_2_err = CFG_ERR; err_dword.cfg_2_init = 1; }
 	if(cfg_read()   == CFG_ERR)	{err_dword.cfg_2_init = 1; cfg_default();}
-	
 	cfg_check();
 
 	gpio_init();
@@ -31,9 +35,10 @@ int main(void)
 	acc(READ);
 	
 	led_init();
-	if (sizeof(CFG_1) != 0x100 ) { warning_led(1);}
-	if (sizeof(CFG_2) != 0x100 ) { warning_led(2);}
-	
+		if (ERR1)	{warning_led(1);}
+		if (ERR2)	{warning_led(2);}
+	//cfg_drop();
+				
 	while (1)
 	{
 	    if(reset == NULL) {wdt_reset();}//wdt-drop timer

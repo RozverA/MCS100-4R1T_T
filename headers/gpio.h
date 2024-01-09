@@ -26,7 +26,7 @@
 	#define CS_set() { PORT_IOBUS->Group[0].OUTSET.reg=PORT_PA24; }
 	#define CS_clr() { PORT_IOBUS->Group[0].OUTCLR.reg=PORT_PA24; }
 	#define warning_led(err_numb) {for (BYTE i = 0; i < err_numb*2; i++) {pin_ctrl(LED,PWR,TGL); wait(3500);}}	
-	#define led_init() {pin_ctrl(LED,PWR,ON); wait(10000);}			
+	#define led_init() {pin_ctrl(LED,PWR,ON); /*wait(1000);*/}			
 //extern
 	extern void gpio_init (void);
 	extern DWORD pin_ctrl(BYTE device, BYTE  numb, BYTE mod);

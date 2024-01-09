@@ -179,6 +179,9 @@
     <Compile Include="headers\def.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="headers\encod_k.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="headers\eth_parse.h">
       <SubType>compile</SubType>
     </Compile>
@@ -213,6 +216,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\crc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\encod_k.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\eth_parse.c">

@@ -2,6 +2,7 @@
 
 
 BYTE cbuf[300];
+BYTE ip_addrs[4];
 volatile BYTE log_stat = 0;
 
 #define CM2_WHO_ARE_YOU 0x01
@@ -27,7 +28,7 @@ void cmd_common_process (void)
 	WORD  cs   = 0;
 	BYTE  i		= 0;
 	WORD  ixo  = 0;
-	DWORD ip_addr;
+	
 
 	
 	if(eth_sock[0].r_status==FALSE) {return;}
@@ -47,7 +48,7 @@ void cmd_common_process (void)
 	if(addr !=  0){return;}
 	wn++;//cmd
 //logging
-	if (!SRAV(4, &eth_sock[0].ip_addr[0], &ip_addr)){log_stat = 0;}
+	if (!SRAV(4, &eth_sock[0].ip_addr[0], &ip_addrs)) {log_stat = 0;}
 	if ((cbuf[2] != 0x20) && (!log_stat)) {return 0;}
 	
 	
@@ -131,16 +132,21 @@ void cmd_common_process (void)
 					wn+=cnt;
 		break;
 		//......................................................................
-		case 0x20:	if(size <  7) { return; }
-					if (!cbuf[3])	{return;}										cnt = 4;
-					if			(!SRAV(32, cbuf[cnt], accnts.user.login[0]))		{wn++;break;}
-					else if		(!SRAV(32, cbuf[cnt], accnts.admin.login[0]))		{wn++;break;}
+		case 0x20:	if(size <  7)		{ return; }
+					
+					BYTE ch = 0;
+					cnt = 3;
+					decrypted(&cbuf[cnt]);
+					ch =  SRAV(32, cbuf[cnt], accnts.user.login[0]);
+					ch += SRAV(32, cbuf[cnt], accnts.admin.login[0]);	
+					if (!ch) {wn++;break;} 
 
 					cnt += 32;														
-					if			(!SRAV(32, cbuf[cnt], accnts.user.password[0]))		{wn++;break;}
-					if			(!SRAV(32, cbuf[cnt], accnts.admin.password[0]))		{wn++;break;}
+					ch = SRAV(32, cbuf[cnt], accnts.user.password[0]);
+					ch += SRAV(32, cbuf[cnt], accnts.admin.password[0]);	
+					if (!ch) {wn++;break;} 
 					log_stat = 1;
-					memcpy(&ip_addr, eth_sock[0].ip_addr[0], DW_LEN);					
+					memcpy(&ip_addrs, &eth_sock[0].ip_addr[0], DW_LEN);					
 		break;
 
 		//......................................................................
@@ -189,8 +195,16 @@ void cmd_usart_process (void)
 		if(cfg_1.sock_rs485[n_port-1].en==FALSE) {continue;}
 		usart_process(n_port);
 	}
-	
-	
+}
+
+BYTE acces_ip(BYTE n_port)//True-1,F-0;
+{
+	BYTE ch = 0;
+	if		(SRAV(4, &cfg_1.access[n_port].ip[0], eth_sock[n_port+1].ip_addr)) {ch++;}
+	else if (SRAV(4, &cfg_1.access[n_port].ip[1], eth_sock[n_port+1].ip_addr)) {ch++;}
+	else if (SRAV(4, &cfg_1.access[n_port].ip[2], eth_sock[n_port+1].ip_addr)) {ch++;}	
+	else if (SRAV(4, &cfg_1.access[n_port].ip[3], eth_sock[n_port+1].ip_addr)) {ch++;}
+	return ch;
 }
 
 void usart_process (BYTE n_port)
@@ -203,6 +217,9 @@ void usart_process (BYTE n_port)
 		case RS485_WRITE:
 			//ETH message check
 			if (!eth_sock[n_port].r_status){return;}									//check read stat
+			
+			if(cfg_1.access[n_port - 1].en) {	if (!acces_ip(n_port - 1)) {return;} 	}	
+			
 			port[n_port-1].time_port = port[n_port-1].tout_port*10;						//
 		
 			size = eth_sock[n_port].len[0] << 8 | eth_sock[n_port].len[1];				//give size

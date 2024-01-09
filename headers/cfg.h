@@ -26,23 +26,6 @@ typedef struct
 }COMMON_CFG;
 #pragma pack()
 
-#pragma pack(1) 
-typedef struct {BYTE  ip[4];}IP_FOR_LIST; 
-#pragma pack()
-
-#pragma pack(1)
-typedef struct {BYTE  mac[6]; }MAC_FOR_LIST;
-#pragma pack()
-
-#pragma pack(1)
-typedef struct
-//-----------------------------------------------------------------------------
-{
-	IP_FOR_LIST  ip[5];      //20
-	MAC_FOR_LIST  mac[5];    //30
-}ACCESS_LIST;
-#pragma pack()
-
 #pragma pack(1)
 typedef struct
 //-----------------------------------------------------------------------------
@@ -71,17 +54,26 @@ typedef struct {ACCOUNT user; ACCOUNT admin; BYTE rsv[128];}ACCOUNTS;
 #pragma pack()
 
 #pragma pack(1)
+typedef struct
+{
+  BYTE  en;
+  BYTE reserve;
+  DWORD ip[4];
+}access_rs485;
+#pragma pack()
+
+#pragma pack(1)
 typedef struct             // size 256 bytes
 //-----------------------------------------------------------------------------
 {
 	DWORD				guid;			//4       		  
-	char				name[32];		//32	36
-	COMMON_CFG			com_network;	//16	52
-	SOCKET_RS485_CFG	sock_rs485[4];	//12*4	100	
-	WORD				in_numb;		//2		102		//<<HOZ>> number
-	ACCESS_LIST			access_l;		//50	152
-	BYTE				reserv[98];					//256-154 102
-	WORD				cs; 			//2		154
+	char				name[32];		//32		
+	COMMON_CFG			com_network;	//16		
+	SOCKET_RS485_CFG	sock_rs485[4];	//12*4(112)		
+	WORD				in_numb;		//2			//<<HOZ>> number
+	access_rs485		access[4];
+	BYTE				reserv[76];					
+	WORD				cs; 			//2		
 }CFG_1;
 #pragma pack()
 
