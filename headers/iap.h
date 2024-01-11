@@ -8,9 +8,7 @@
 		#define IAP_SIZE  (DWORD)0x00014000  //80 KB
 		#define IAP_KEY   (DWORD)0x0003F200	 	
 		#define IAP_VAL   (DWORD)0x43FF56AC
-	//CFG
-		#define CFG_1_ADDR  (DWORD)0x0003F000
-		#define CFG_2_ADDR  (DWORD)0x0003F100
+	
 	//CM2
 		#define CM2_R_START_BOOTLOADER     0x00
 		#define CM2_A_BOOTLOADER_START     0x01

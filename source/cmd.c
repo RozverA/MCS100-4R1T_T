@@ -2,12 +2,19 @@
 
 
 BYTE cbuf[300];
-BYTE ip_addrs[4];
+DWORD ip_addrs;
 volatile BYTE log_stat = 0;
+BYTE actv_user_id = 0;
+DWORD times = 0;
 
 #define CM2_WHO_ARE_YOU 0x01
 #define UID_WHO_ARE_YOU 0x8001
 
+#define send_error()		{cbuf[wn] = 0; wn++; break;}
+#define send_admin()		{cbuf[wn] = 1; wn++;}
+#define send_user()			{cbuf[wn] = 2; wn++;}
+#define check_permission()	{if(!accnts.accnt[actv_user_id].access_level) {send_error();}}
+#define save_log()			{if (times == 0) {break;} log_safe(actv_user_id, ip_addrs, times, cbuf[2]);}
 
 #define CM2_STATUS_PACK 0x02
 #define UID_STATUS_PACK 0x8002
@@ -54,6 +61,12 @@ void cmd_common_process (void)
 	
 	switch(cbuf[2])
 	{
+		case 0x00:	if(size  !=  9) { return; }
+					check_permission();
+					if(crc16_ccit((BYTE*)&cbuf[3], 4) != 0)		{break;}
+					times = num_aus_byte(DW_LEN, cbuf[3], L_SIDE);
+					reset=1; wn++;
+		break;
 		case 0x01:	if(size != 6) { return; }             // CMD=0x07 Read CFG		
 		
 					if(cbuf[wn]==0x01)
@@ -65,21 +78,21 @@ void cmd_common_process (void)
 						break;
 					}
 		
-				if(cbuf[wn]==0x02)
-				{
-					cbuf[wn]  = (BYTE)UID_STATUS_PACK;								wn += sizeof(BYTE);
-					cbuf[wn]  = (BYTE)(UID_STATUS_PACK>>8);							wn += sizeof(BYTE); //uid device
-					memcpy(&cbuf[wn],(BYTE*)&TTL,4);								wn += sizeof(DWORD);//TTL
+					if(cbuf[wn]==0x02)
+					{
+						cbuf[wn]  = (BYTE)UID_STATUS_PACK;								wn += sizeof(BYTE);
+						cbuf[wn]  = (BYTE)(UID_STATUS_PACK>>8);							wn += sizeof(BYTE); //uid device
+						memcpy(&cbuf[wn],(BYTE*)&TTL,4);								wn += sizeof(DWORD);//TTL
 			
-					for (i = 0; i < 4; i++)
-						{
-						memcpy(&cbuf[wn],(BYTE*)&eth_sock[i+1].counters.rx,4);		wn += sizeof(DWORD);
-						memcpy(&cbuf[wn],(BYTE*)&eth_sock[i+1].counters.tx,4);		wn += sizeof(DWORD);
-						memcpy(&cbuf[wn],(BYTE*)&port[i].counters.rx,4);			wn += sizeof(DWORD);
-						memcpy(&cbuf[wn],(BYTE*)&port[i].counters.tx,4);			wn += sizeof(DWORD);
-						memcpy(&cbuf[wn],(BYTE*)&port[i].dt,2);						wn += sizeof(WORD);//dt port0
-						}			
-				}
+						for (i = 0; i < 4; i++)
+							{
+							memcpy(&cbuf[wn],(BYTE*)&eth_sock[i+1].counters.rx,4);		wn += sizeof(DWORD);
+							memcpy(&cbuf[wn],(BYTE*)&eth_sock[i+1].counters.tx,4);		wn += sizeof(DWORD);
+							memcpy(&cbuf[wn],(BYTE*)&port[i].counters.rx,4);			wn += sizeof(DWORD);
+							memcpy(&cbuf[wn],(BYTE*)&port[i].counters.tx,4);			wn += sizeof(DWORD);
+							memcpy(&cbuf[wn],(BYTE*)&port[i].dt,2);						wn += sizeof(WORD);//dt port0
+							}			
+					}
 		break;
 		//......................................................................
 		//......................................................................
@@ -132,38 +145,53 @@ void cmd_common_process (void)
 					wn+=cnt;
 		break;
 		//......................................................................
-		case 0x20:	if(size <  7)		{ return; }
+		case 0x20:	if(size <  7)		{ return; }								//login
 					
 					BYTE ch = 0;
 					cnt = 3;
 					decrypted(&cbuf[cnt]);
-					ch =  SRAV(32, cbuf[cnt], accnts.user.login[0]);
-					ch += SRAV(32, cbuf[cnt], accnts.admin.login[0]);	
-					if (!ch) {wn++;break;} 
+					
+					for (BYTE i = 0; i < 64; i++) {if (cbuf[cnt + i] != 0) {ch++; break;}}									//zero message protect
+					if (!ch) {send_error();}																				//if reciv zero message
+					
+					ch = 0;
+					
+					for (BYTE i = 0; i < 2; i++ ) { if (SRAV(30, &cbuf[3], &accnts.accnt[i].login[0])) 	{ch = i + 1; break;	} } //compare login
+					if (!ch) {send_error();}																				//if login not searched
 
-					cnt += 32;														
-					ch = SRAV(32, cbuf[cnt], accnts.user.password[0]);
-					ch += SRAV(32, cbuf[cnt], accnts.admin.password[0]);	
-					if (!ch) {wn++;break;} 
-					log_stat = 1;
-					memcpy(&ip_addrs, &eth_sock[0].ip_addr[0], DW_LEN);					
+					cnt += 32;
+					if (!SRAV(30, &cbuf[cnt], &accnts.accnt[ch-1].password[0])) {send_error();}									//if password no match
+																
+					actv_user_id = ch;																						//write user ID
+					if (ch == 1) {send_admin();} else {send_user()};
+					log_stat = 1;																							//login status up
+					memcpy(&ip_addrs, &eth_sock[0].ip_addr[0], DW_LEN);														//write access ip addr
 		break;
-
 		//......................................................................
-		case 0x27:	if(size  !=  5) { return; }
-		
-					if(crc16_ccit((BYTE*)&cfg_1_tmp,sizeof(CFG_1)) != 0)
-					{
-						break;
-					}
+		case 0x21:	if(size <  64)		{ return; }								//login change
+					check_permission();
+					save_log();
+					cnt = 3;
+					decrypted(&cbuf[cnt]);		cnt += 64;	
+					decrypted(&cbuf[cnt]);		cnt += 64;	
+					decrypted(&cbuf[cnt]);		cnt += 64;	
+					decrypted(&cbuf[cnt]);		cnt += 64;
+					memcpy(&accnts.accnt[0].numb, &cbuf[3], 256);
+		break;
+		//......................................................................
+		case 0x27:	if(size  !=  5) { return; }									//change config
+					check_permission();
+					if(crc16_ccit((BYTE*)&cfg_1_tmp,sizeof(CFG_1)) != 0)		{break;}
 		
 					memcpy(&cfg_1,&cfg_1_tmp,sizeof(CFG_1));
+					save_log();
 					wn |=+cfg_save();
 					reset=1;
 		break;
 		//......................................................................
 		case 0x29:	if(size  !=  5) { return; }
-		
+					check_permission();
+					save_log();
 					reset=1; wn++;
 		break;
 		//......................................................................
@@ -183,7 +211,6 @@ void cmd_common_process (void)
 	eth_sock[0].len[0]=((wn & 0xFF00)>>8);
 	eth_sock[0].len[1]=(wn & 0x00FF);
 	eth_sock[0].w_status=1;
-
 }
 
 void cmd_usart_process (void)
@@ -197,16 +224,6 @@ void cmd_usart_process (void)
 	}
 }
 
-BYTE acces_ip(BYTE n_port)//True-1,F-0;
-{
-	BYTE ch = 0;
-	if		(SRAV(4, &cfg_1.access[n_port].ip[0], eth_sock[n_port+1].ip_addr)) {ch++;}
-	else if (SRAV(4, &cfg_1.access[n_port].ip[1], eth_sock[n_port+1].ip_addr)) {ch++;}
-	else if (SRAV(4, &cfg_1.access[n_port].ip[2], eth_sock[n_port+1].ip_addr)) {ch++;}	
-	else if (SRAV(4, &cfg_1.access[n_port].ip[3], eth_sock[n_port+1].ip_addr)) {ch++;}
-	return ch;
-}
-
 void usart_process (BYTE n_port)
 {
 	WORD size=0;
@@ -216,15 +233,15 @@ void usart_process (BYTE n_port)
 	{
 		case RS485_WRITE:
 			//ETH message check
-			if (!eth_sock[n_port].r_status){return;}									//check read stat
+			if (!eth_sock[n_port].r_status){return;}										//check read stat
 			
-			if(cfg_1.access[n_port - 1].en) {	if (!acces_ip(n_port - 1)) {return;} 	}	
+			if(cfg_1.access[n_port - 1].en) {	if (!acces_ip(n_port - 1)) {return;} 	}	//check access ip
 			
-			port[n_port-1].time_port = port[n_port-1].tout_port*10;						//
+			port[n_port-1].time_port = port[n_port-1].tout_port*10;							//check timeout
 		
 			size = eth_sock[n_port].len[0] << 8 | eth_sock[n_port].len[1];				//give size
 		
-			if(size>USART_BUF_SIZE)	{eth_sock[n_port].r_status = 0; return;}	
+			if(size>USART_BUF_SIZE)	{eth_sock[n_port].r_status = 0; return;}			//check overload
 				
 			switch(cfg_1.sock_rs485[n_port - 1].pl)
 			{

@@ -38,9 +38,9 @@ res			    (rx)  : ORIGIN = 0x0003C000, LENGTH = 0x00003000  //reserv			12k
 cfg			    (rx)  : ORIGIN = 0x0003F000, LENGTH = 0x00000100  //config			256b
 cfg_2			(rx)  : ORIGIN = 0x0003F100, LENGTH = 0x00000100  //config_2		256b
 key				(rx)  : ORIGIN = 0x0003F200, LENGTH = 0x00000100  //key				256b
-logs		    (rx)  : ORIGIN = 0x0003F300, LENGTH = 0x00000400  //logs			1k
-logins		    (rx)  : ORIGIN = 0x0003F700, LENGTH = 0x00000100  //logins and pass	256b			
-res			    (rx)  : ORIGIN = 0x0003F800, LENGTH = 0x00000900  //reserv			2k	
+logs		    (rx)  : ORIGIN = 0x0003F300, LENGTH = 0x00000800  //logs			2k
+logins		    (rx)  : ORIGIN = 0x0003FB00, LENGTH = 0x00000100  //logins and pass	256b			
+res			    (rx)  : ORIGIN = 0x0003FC00, LENGTH = 0x00000400  //reserv			1k	
 
 ram_main		(rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000
 ram_boot        (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000

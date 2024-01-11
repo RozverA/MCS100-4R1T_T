@@ -209,6 +209,9 @@
     <Compile Include="headers\w5500_reg.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="source\acc_and_logs.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="source\alg.c">
       <SubType>compile</SubType>
     </Compile>

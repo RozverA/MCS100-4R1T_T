@@ -46,14 +46,6 @@ typedef struct
 #pragma pack()
 
 #pragma pack(1)
-typedef struct {char  login[32];char password[32]; }ACCOUNT;
-#pragma pack()
-
-#pragma pack(1)
-typedef struct {ACCOUNT user; ACCOUNT admin; BYTE rsv[128];}ACCOUNTS;
-#pragma pack()
-
-#pragma pack(1)
 typedef struct
 {
   BYTE  en;
