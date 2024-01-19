@@ -3,7 +3,6 @@
 ERRORS err_dword;
 WORD reset;
 ACCOUNTS accnts;
-DWORD ERR1, ERR2;
 
 int main(void)
 {
@@ -14,11 +13,7 @@ int main(void)
 		
 	__enable_irq();
 	wdt_reset();
-	wdt_start();
-		ERR1 = sizeof(CFG_1);
-		ERR2 = sizeof(CFG_2);
-		if (sizeof(CFG_1) != 0x100 ) { ERR1 = sizeof(CFG_1);}
-		if (sizeof(CFG_2) != 0x100 ) { ERR2 = sizeof(CFG_2);}	
+	wdt_start();	
 			
 	cfg_init  ();
 	if(cfg_2_read() == CFG_ERR) {cfg_2_err = CFG_ERR; err_dword.cfg_2_init = 1; }
@@ -32,14 +27,17 @@ int main(void)
 	eth_init();
 	
 	acc(READ);
-	
 	led_init();
-		if (ERR1)	{warning_led(1);}
-		if (ERR2)	{warning_led(2);}
-	log_drop();
-	acc(DROP);
+		
+	log_ch();
+/*DEBUG*/
+	log_clear();
+	//log_safe(1, 0xAAAAAAAA, 0xBBBBBBBB, 109);
+	//acc(DROP);
 	//cfg_drop();
-				
+	if (sizeof(CFG_1) != 0x100 ) { warning_led(1); DWORD ERR1 = sizeof(CFG_1);}
+	if (sizeof(CFG_2) != 0x100 ) { warning_led(2); DWORD ERR2 = sizeof(CFG_2);}
+/*DEBUG*/				
 	while (1)
 	{
 	    if(reset == NULL) {wdt_reset();}//wdt-drop timer

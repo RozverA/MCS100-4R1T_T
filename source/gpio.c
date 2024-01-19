@@ -193,6 +193,7 @@ void check_gerkon(void)
 			reset = 1; 
 			cfg_default(); 
 			cfg_save();
+			acc(DROP);
 		break;
 	}
 }

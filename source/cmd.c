@@ -1,11 +1,12 @@
 #include "def.h"
 
 
-BYTE cbuf[300];
-DWORD ip_addrs;
-volatile BYTE log_stat = 0;
-BYTE actv_user_id = 0;
-DWORD times = 0;
+BYTE			cbuf[300];
+DWORD			ip_addrs;
+volatile BYTE	log_stat		= 0;
+BYTE			actv_user_id	= 0;
+DWORD			rsv_time		= 0;
+DWORD			logout_timer	= 0;
 
 #define CM2_WHO_ARE_YOU 0x01
 #define UID_WHO_ARE_YOU 0x8001
@@ -13,8 +14,10 @@ DWORD times = 0;
 #define send_error()		{cbuf[wn] = 0; wn++; break;}
 #define send_admin()		{cbuf[wn] = 1; wn++;}
 #define send_user()			{cbuf[wn] = 2; wn++;}
-#define check_permission()	{if(!accnts.accnt[actv_user_id].access_level) {send_error();}}
-#define save_log()			{if (times == 0) {break;} log_safe(actv_user_id, ip_addrs, times, cbuf[2]);}
+#define send_numb(numb)		{cbuf[wn] = numb; wn++;}
+#define check_permission()	{if(actv_user_id) {send_error();}}
+#define save_log()			{log_safe(actv_user_id, ip_addrs, rsv_time, cbuf[2]);}
+//#define if (rsv_time == 0) {break;} 
 
 #define CM2_STATUS_PACK 0x02
 #define UID_STATUS_PACK 0x8002
@@ -28,16 +31,21 @@ void cmd_process(void)
 
 void cmd_common_process (void)
 {
-	WORD  size = 0;
-	WORD  addr = 0;
-	WORD  cnt  = 0;
-	WORD  wn   = 0;
-	WORD  cs   = 0;
-	BYTE  i		= 0;
-	WORD  ixo  = 0;
+	WORD	size	= 0;
+	WORD	addr	= 0;
+	WORD	cnt		= 0;
+	WORD	wn		= 0;
+	WORD	cs		= 0;
+	BYTE	i		= 0;
+	WORD	ixo		= 0;
 	
-
-	
+	if (log_stat == 1)	
+	{
+		logout_timer++;
+		if (logout_timer == 0xE2F0)	
+		{log_stat = 0;}
+	}
+			
 	if(eth_sock[0].r_status==FALSE) {return;}
 	eth_sock[0].r_status=FALSE;
 
@@ -59,16 +67,17 @@ void cmd_common_process (void)
 	if ((cbuf[2] != 0x20) && (!log_stat)) {return 0;}
 	
 	
+	
+	
 	switch(cbuf[2])
 	{
 		case 0x00:	if(size  !=  9) { return; }
-					check_permission();
-					if(crc16_ccit((BYTE*)&cbuf[3], 4) != 0)		{break;}
-					times = num_aus_byte(DW_LEN, cbuf[3], L_SIDE);
-					reset=1; wn++;
+					rsv_time = num_aus_byte(DW_LEN, &cbuf[3], L_SIDE);
+					logout_timer = 0;
+					send_admin();
 		break;
 		case 0x01:	if(size != 6) { return; }             // CMD=0x07 Read CFG		
-		
+					logout_timer = 0;
 					if(cbuf[wn]==0x01)
 					{
 						cbuf[wn]  = (BYTE)UID_WHO_ARE_YOU;								wn += sizeof(BYTE);
@@ -156,41 +165,71 @@ void cmd_common_process (void)
 					
 					ch = 0;
 					
-					for (BYTE i = 0; i < 2; i++ ) { if (SRAV(30, &cbuf[3], &accnts.accnt[i].login[0])) 	{ch = i + 1; break;	} } //compare login
+					for (BYTE i = 0; i < 2; i++ ) { if (SRAV(32, &cbuf[3], &accnts.accnt[i].login[0])) 	{ch = i + 1; break;	} } //compare login
 					if (!ch) {send_error();}																				//if login not searched
 
 					cnt += 32;
-					if (!SRAV(30, &cbuf[cnt], &accnts.accnt[ch-1].password[0])) {send_error();}									//if password no match
+					if (!SRAV(32, &cbuf[cnt], &accnts.accnt[ch-1].password[0])) {send_error();}									//if password no match
 																
-					actv_user_id = ch;																						//write user ID
+					actv_user_id = ch-1;																						//write user ID
 					if (ch == 1) {send_admin();} else {send_user()};
 					log_stat = 1;																							//login status up
 					memcpy(&ip_addrs, &eth_sock[0].ip_addr[0], DW_LEN);														//write access ip addr
 		break;
 		//......................................................................
-		case 0x21:	if(size <  64)		{ return; }								//login change
-					check_permission();
+		case 0x21:	if(size < 5)		{ return; }								//login send
+// 					check_permission();
+ 					save_log();
+					cnt = 3;
+					
+					memcpy(&cbuf[3], &accnts.accnt[0].login[0], 256);
+					crypted(&cbuf[cnt]);		cnt += 64;
+					crypted(&cbuf[cnt]);		cnt += 64;
+					crypted(&cbuf[cnt]);		cnt += 64;
+					crypted(&cbuf[cnt]);		cnt += 64;
+					wn += 256;
+		break;
+		//......................................................................
+		case 0x22:	if(size <  5)		{ return; }								//login change
+					//check_permission();
 					save_log();
 					cnt = 3;
 					decrypted(&cbuf[cnt]);		cnt += 64;	
 					decrypted(&cbuf[cnt]);		cnt += 64;	
 					decrypted(&cbuf[cnt]);		cnt += 64;	
 					decrypted(&cbuf[cnt]);		cnt += 64;
-					memcpy(&accnts.accnt[0].numb, &cbuf[3], 256);
+					
+					//if (num_aus_byte(2, cbuf[256], L_SIDE) != crc16_ccit(&cbuf[3]), 256)	{}
+					
+					memcpy(&accnts.accnt[0].login[0], &cbuf[3], 256);
+
+		break;
+		
+		//......................................................................
+		case 0x23:	if(size <  5)		{ return; }								//read logs
+// 					check_permission();
+  					save_log();
+					cnt = 3; wn++;
+					flash_read(LOGS_ADDR + (256 * cbuf[3]), &cbuf[4], 256);		wn +=256;
 		break;
 		//......................................................................
 		case 0x27:	if(size  !=  5) { return; }									//change config
-					check_permission();
-					if(crc16_ccit((BYTE*)&cfg_1_tmp,sizeof(CFG_1)) != 0)		{break;}
-		
+					//check_permission();	
+					if((crc16_ccit((BYTE*)&cfg_1_tmp,sizeof(CFG_1)) != 0))		{break;}		
 					memcpy(&cfg_1,&cfg_1_tmp,sizeof(CFG_1));
 					save_log();
 					wn |=+cfg_save();
+					
 					reset=1;
 		break;
 		//......................................................................
-		case 0x29:	if(size  !=  5) { return; }
-					check_permission();
+		case 0x28:	if(size  !=  5) { return; }									//change config
+					acc(WRITE);
+					reset=1;
+		break;
+		//......................................................................
+		case 0x29:	if(size  !=  5) { return; }									//reboot
+					//check_permission();
 					save_log();
 					reset=1; wn++;
 		break;

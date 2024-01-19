@@ -18,7 +18,7 @@
 //typedefs
 	////
 	#pragma pack(1)
-	typedef struct {BYTE accnt_logg_in; BYTE operat_code; BYTE indx; BYTE rsv;}CELL_INFO;
+	typedef struct { BYTE indx; BYTE operat_code; BYTE rsv[2];}CELL_INFO;
 	#pragma pack()
 	
 	#pragma pack(1)
@@ -30,11 +30,11 @@
 	#pragma pack()
 	////accounts
 	#pragma pack(1)
-	typedef struct {BYTE numb; BYTE access_level; char  login[30]; char password[30]; BYTE rsv[2];}ACCOUNT;
+	typedef struct {char  login[32]; char password[32];}ACCOUNT;
 	#pragma pack()
 
 	#pragma pack(1)
-	typedef struct {ACCOUNT accnt[3]; BYTE rsv[62]; WORD cs;}ACCOUNTS;
+	typedef struct {ACCOUNT accnt[2]; BYTE rsv[126]; WORD cs;}ACCOUNTS;
 	#pragma pack()
 	
 #endif /* FLASH_H_ */
