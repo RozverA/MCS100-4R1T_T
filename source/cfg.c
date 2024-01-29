@@ -97,6 +97,9 @@ void cfg_default(void)
 	}
 	cfg_1.cs=crc16_ccit(((BYTE *)&cfg_1),sizeof(CFG_1)-2);
 	//..............................................................................
+	cfg_save();
+	log_clear();
+	acc(DROP);
 }
 
 void cfg_check()

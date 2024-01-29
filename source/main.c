@@ -18,7 +18,7 @@ int main(void)
 			
 	cfg_init  ();
 	if(cfg_2_read() == CFG_ERR) {cfg_2_err = CFG_ERR; err_dword.cfg_2_init = 1; }
-	if(cfg_read()   == CFG_ERR)	{err_dword.cfg_2_init = 1; cfg_default(); acc(DROP);}
+	if(cfg_read()   == CFG_ERR)	{err_dword.cfg_2_init = 1; cfg_default();}
 	cfg_check();
 
 	gpio_init();

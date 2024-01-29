@@ -185,16 +185,13 @@ void check_gerkon(void)
 	{
 		case 0:
 			pin_ctrl(LED,PWR,OFF);
-			ger_wait = 30;
+			ger_wait = 10;
 			gerkon_st = 1;
 		break;
 		case 1:
 			if (ger_wait)	{return;}
 			reset = 1; 
 			cfg_default(); 
-			cfg_save();
-			log_clear();
-			acc(DROP);
 		break;
 	}
 }

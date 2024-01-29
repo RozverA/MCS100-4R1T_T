@@ -13,6 +13,7 @@ BYTE			wr_flag_acc = 0;
 #define UID_WHO_ARE_YOU 0x8001
 
 #define send_error()		{cbuf[wn] = 0; wn++; break;}
+#define send_error_EX()		{cbuf[wn] = 0; memset(cbuf[wn - 4], 0, 4); wn+=5; break;}
 #define send_admin()		{cbuf[wn] = 1; wn++;}
 #define send_user()			{cbuf[wn] = 2; wn++;}
 #define send_numb(numb)		{cbuf[wn] = numb; wn++;}
@@ -167,14 +168,15 @@ void cmd_common_process (void)
 					ch = 0;
 					
 					for (BYTE i = 0; i < 2; i++ ) { if (SRAV(32, &cbuf[3], &accnts.accnt[i].login[0])) 	{ch = i + 1; break;	} } //compare login
-					if (!ch) {send_error();}																				//if login not searched
+					if (!ch) {send_error_EX();}																				//if login not searched
 
 					cnt += 32;
-					if (!SRAV(32, &cbuf[cnt], &accnts.accnt[ch-1].password[0])) {send_error();}									//if password no match
+					if (!SRAV(32, &cbuf[cnt], &accnts.accnt[ch-1].password[0])) {send_error_EX();}									//if password no match
 																
 					if (ch == ADMIN_LOGIN) {save_log(ADMIN_LOGIN); send_admin();} else {send_user();}
 					actv_user_id = ch;
-					log_stat = 1;																							//login status up
+					log_stat = 1;	
+					loggin_timeout = 0;																						//login status up
 					memcpy(&ip_addrs, &eth_sock[0].ip_addr[0], DW_LEN);														//write crc firmware
 					num_to_byte(crc_fw, DW_LEN, &cbuf[wn], L_SIDE);			wn += 4;
 		break;
@@ -235,6 +237,7 @@ void cmd_common_process (void)
 		case 0x29:	if(size  !=  5) { return; }									//reboot
 					check_permission();
 					reset=1; wn++;
+					send_admin();
 		break;
 		//......................................................................
 		

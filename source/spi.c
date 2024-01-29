@@ -49,7 +49,7 @@ void spi_init(void)
 	SERCOM5->SPI.CTRLB.bit.PLOADEN=0x00;  // Bit 6      – PLOADEN: Slave Data Preload Enable ()
 	SERCOM5->SPI.CTRLB.bit.CHSIZE =0x00;  // Bits 2:0   - CHSIZE: Character Size (0: 8 bits)
 
-	SERCOM5->SPI.BAUD.bit.BAUD        = (float)(PROC_HERZ ) / (2 * (float)(8000000 )) - 1;
+	SERCOM5->SPI.BAUD.bit.BAUD        = (float)(PROC_HERZ ) / (2 * (float)(1000000 )) - 1;
 	SERCOM5->SPI.INTENSET.bit.TXC	  = 0x00;
 	SERCOM5->SPI.INTENSET.bit.DRE     = 0x00;
 	SERCOM5->SPI.INTENSET.bit.RXC     = 0x00;	
