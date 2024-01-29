@@ -62,7 +62,7 @@ void check_sockets_process (BYTE *buf)
 	static BYTE index = MAX_SOCKETS_VAL;
 	
 	index++;
-	if(index >= MAX_SOCKETS_VAL){index=0;}
+	if(index > MAX_SOCKETS_VAL){index=0;}
 	
 	switch (index)
 	{
@@ -72,8 +72,10 @@ void check_sockets_process (BYTE *buf)
 		return;
 		default:
 			w5500_mode.numb_socket = index;
-			if (cfg_1.sock_rs485[index-1].mode == TCP)	{w5500_mode.mode_op = MODE_OP_READ_TCP;}
-			else										{w5500_mode.mode_op = MODE_OP_READ_UDP;}
+			if (cfg_1.sock_rs485[index-1].mode == TCP)	
+			{w5500_mode.mode_op = MODE_OP_READ_TCP;}
+			else										
+			{w5500_mode.mode_op = MODE_OP_READ_UDP;}
 		return;
 	}									{w5500_mode.mode_op=MODE_OP_READ_UDP;}
 	return;

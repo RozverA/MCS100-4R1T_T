@@ -7,6 +7,7 @@
 	#define CFG_ERR 0
 //parameters
 	#define VERSION "0.0.0.04"		//8 b logins and logs
+	#define VERSION_B 0x0004		//8 b logins and logs
 	#define MODEL	"_MCS100-4R1T"	//12 b
 //funx
 	#define cfg_drop() {cfg_default();cfg_save();}

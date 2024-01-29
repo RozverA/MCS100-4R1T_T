@@ -38,8 +38,8 @@
 	#define PROC_ER		2
 ////HERZ SETTINGS
 
-//#define PROC_HERZ48		48000000
-#define PROC_HERZ8			8000000
+#define PROC_HERZ48			48000000
+//#define PROC_HERZ8			8000000
 
 #ifdef PROC_HERZ8
 	#define PROC_HERZ		PROC_HERZ8
@@ -59,11 +59,19 @@
 	#define READ				0
 	#define WRITE				1
 	#define DROP				2
+//////logs status
+	#define USER_LOGIN			2
+	#define ADMIN_LOGIN			1
+	#define EEPROM				2
+	#define ACC_CHANGE			3
+	#define START				4
+	//#define INIT				5
 
 //externs
 ////variables
 	extern WORD reset;
 	extern ACCOUNTS accnts;
+	extern DWORD crc_fw;
 ////fun
 //////crc
 	extern WORD crc16_ccit(BYTE *buf,WORD size);

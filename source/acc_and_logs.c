@@ -45,46 +45,51 @@ BYTE acces_ip(BYTE n_port)//True-1,F-0;
 
 void log_ch( )
 {
-	WORD ch;
-	flash_read(LOGS_ADDR, &ch, 2);
-	if(ch != 0xFF) {return;}
+	if (!flash_empty(LOGS_ADDR, 1024))/*1024 * 4(DWORD)*/{return;}
 	
 	LOG_DATA data;
-	data.ptr = 0;
-	data.cell[0].inform.indx = 0;
-	data.cell[0].times = 0x00000109;
-	data.cell[0].ip = 0x00010009;
-	data.cell[0].inform.operat_code = 109;
-	memset(&data.rsv[0] , 1, 7);
-	
-	log_clear();
-	flash_write(LOGS_ADDR,(BYTE*)&data.ptr, 256);
-	
-	return(CFG_OK);
+	data.cell[0].ip				= 0x00000000;
+	data.cell[0].times			= 0x00000000;
+	data.cell[0].indx			= 0;
+	data.cell[0].operat_code	= START;
+	data.cell[0].version		= VERSION_B;
+	flash_write(LOGS_ADDR ,&data.cell[0] , 16);
 }
 
-void log_safe(BYTE actv_user_id, DWORD ip, DWORD times, BYTE operat_code)
+void log_safe(BYTE actv_user_id, DWORD ip, DWORD times, WORD operat_code)
 {
 	LOG_DATA data;
-	BYTE indx;
-	flash_read(LOGS_ADDR, &data.ptr, 2048);
-	indx = data.cell[data.ptr].inform.indx;
-	data.ptr++;
-	if (data.ptr > 170)	{data.ptr = 1;}
-	data.cell[data.ptr].ip = ip;
-	data.cell[data.ptr].times = times;
-	data.cell[data.ptr].inform.indx = indx + 1;
-	data.cell[data.ptr].inform.operat_code = operat_code;
+	flash_read(LOGS_ADDR, &data, 4096);
+	BYTE ptr = 1;
+	BYTE last_ptr = 0;
+	BYTE* dst;
 	
-	log_clear();
-	flash_write(LOGS_ADDR, (BYTE*)&data, sizeof(LOG_DATA));
+	while(1)	
+	{
+		if (ptr == CELLS)
+			{ptr = 0; break;}//OVF
+		if ((data.cell[last_ptr].indx + 1) != data.cell[ptr].indx) 
+			{ break;}
+		last_ptr++;	ptr++;	
+	}
+	data.cell[ptr].ip			= ip;
+	data.cell[ptr].times		= times;
+	data.cell[ptr].indx			= data.cell[last_ptr].indx + 1;
+	data.cell[ptr].operat_code	= operat_code;
+	data.cell[ptr].version		= VERSION_B;
 	
-	return(CFG_OK);
+	dst = LOGS_ADDR + (ptr * CELL);
+		
+	if ((ptr % 16) == 0) 
+	{
+		flash_erase_row(LOGS_ADDR + ((ptr/CELL) * BLOCK));
+	} 
+	flash_write(dst, &data.cell[ptr].ip, 16);
 }
 
 void log_clear()
 {
-	for (BYTE i = 0; i < 8; i++)	
+	for (BYTE i = 0; i < 16; i++)	
 	{
 		if(!flash_empty(LOGS_ADDR + (i * 256), 256))	
 		{flash_erase_page(LOGS_ADDR + (i * 256));}	

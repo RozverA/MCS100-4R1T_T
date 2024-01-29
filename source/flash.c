@@ -18,20 +18,15 @@ WORD flash_empty(DWORD addr,WORD size)
 	return(1);
 }
 
-
-
 void flash_erase_page(DWORD addr)
 //-----------------------------------------------------------------------------
 {
 	while (NVMCTRL->INTFLAG.bit.READY == 0);//wait
 	NVMCTRL->STATUS.reg = NVMCTRL_STATUS_MASK;
-	*(__IO DWORD *)(addr)=0xFFFFFFFF;//dummy data to automatically set ADDR register
-	//NVMCTRL->ADDR.reg = (uint32_t)dst>>2;
+	*(__IO DWORD *)(addr)=0xFFFFFFFF;
 	NVMCTRL->CTRLA.reg=NVMCTRL_CTRLA_CMDEX_KEY|NVMCTRL_CTRLA_CMD_ER;
 	while (NVMCTRL->INTFLAG.bit.READY == 0);//wait
 }
-
-
 
 void flash_write(DWORD addr,BYTE *buf,WORD size)
 //-----------------------------------------------------------------------------
@@ -48,7 +43,7 @@ void flash_write(DWORD addr,BYTE *buf,WORD size)
 		
 		size-=len;
 		
-		wdt_reset();
+		//wdt_reset();
 		
 		NVMCTRL->CTRLA.reg=NVMCTRL_CTRLA_CMDEX_KEY | NVMCTRL_CTRLA_CMD_PBC;
 		while(NVMCTRL->INTFLAG.bit.READY == 0) { ; }
@@ -63,8 +58,6 @@ void flash_write(DWORD addr,BYTE *buf,WORD size)
 		while (NVMCTRL->INTFLAG.bit.READY == 0) { ; }
 	}
 }
-
-
 
 WORD flash_copy(DWORD dst,DWORD src,DWORD size)
 //--------------------------------------------------------------------------
@@ -97,7 +90,6 @@ WORD flash_copy(DWORD dst,DWORD src,DWORD size)
 	return 0;
 }
 
-
 WORD flash_read(DWORD addr,void* buf,WORD size)
 //--------------------------------------------------------------------------
 {
@@ -111,5 +103,31 @@ WORD flash_read(DWORD addr,void* buf,WORD size)
 		wdt_reset();
 	}
 	return(cnt);
+}
+
+void flash_erase_row(DWORD *dst) 
+//-----------------------------------------------------------------------------
+{
+while(NVMCTRL->INTFLAG.bit.READY == 0) { ; }
+
+NVMCTRL->STATUS.reg=NVMCTRL_STATUS_MASK;
+*dst=0xFFFFFFFF;
+NVMCTRL->CTRLA.reg=NVMCTRL_CTRLA_CMDEX_KEY|NVMCTRL_CTRLA_CMD_ER;
+
+while (NVMCTRL->INTFLAG.bit.READY == 0) { ; }
+}
+
+void flash_write_dword(DWORD *dst,DWORD* val) 
+//-----------------------------------------------------------------------------
+{
+NVMCTRL->CTRLB.bit.MANW=0;
+
+NVMCTRL->CTRLA.reg = NVMCTRL_CTRLA_CMDEX_KEY | NVMCTRL_CTRLA_CMD_PBC;
+while (NVMCTRL->INTFLAG.bit.READY == 0) { ; }
+
+*dst=*val;
+
+NVMCTRL->CTRLA.reg = NVMCTRL_CTRLA_CMDEX_KEY | NVMCTRL_CTRLA_CMD_WP;
+while (NVMCTRL->INTFLAG.bit.READY == 0) { ; }
 }
 

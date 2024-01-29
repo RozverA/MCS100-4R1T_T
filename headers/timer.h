@@ -17,6 +17,7 @@
 	extern volatile DWORD	tc3_cnt;
 	extern volatile DWORD	ger_wait;
 	extern volatile DWORD	TTL;
+	extern volatile DWORD	loggin_timeout;
 //funx
 	extern void TC3_init(void);
 	extern void wait(DWORD time_100mk);

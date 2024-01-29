@@ -66,6 +66,7 @@ __lock___env_recursive_mutex
                     0x1               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-lock.o)
 __lock___sinit_recursive_mutex
                     0x1               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-lock.o)
+crc_fw              0x4               source/main.o
 err_dword           0x4               source/main.o
 ip_addrs            0x4               source/cmd.o
 __lock___malloc_recursive_mutex
@@ -722,7 +723,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/alg.o
  .debug_macro   0x00000000       0x2e source/alg.o
  .debug_macro   0x00000000       0x5e source/alg.o
- .debug_macro   0x00000000       0x28 source/alg.o
+ .debug_macro   0x00000000       0x2e source/alg.o
  .debug_macro   0x00000000      0x44a source/alg.o
  .debug_macro   0x00000000       0x16 source/alg.o
  .debug_macro   0x00000000       0x52 source/alg.o
@@ -737,8 +738,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/alg.o
  .debug_macro   0x00000000       0x16 source/alg.o
  .debug_macro   0x00000000      0x18b source/alg.o
- .debug_macro   0x00000000       0x46 source/alg.o
- .debug_macro   0x00000000       0x70 source/alg.o
+ .debug_macro   0x00000000       0x58 source/alg.o
+ .debug_macro   0x00000000       0x8e source/alg.o
  .group         0x00000000        0x8 source/cmd.o
  .group         0x00000000        0x8 source/cmd.o
  .group         0x00000000        0x8 source/cmd.o
@@ -942,7 +943,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/cmd.o
  .debug_macro   0x00000000       0x2e source/cmd.o
  .debug_macro   0x00000000       0x5e source/cmd.o
- .debug_macro   0x00000000       0x28 source/cmd.o
+ .debug_macro   0x00000000       0x2e source/cmd.o
  .debug_macro   0x00000000      0x44a source/cmd.o
  .debug_macro   0x00000000       0x16 source/cmd.o
  .debug_macro   0x00000000       0x52 source/cmd.o
@@ -957,8 +958,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/cmd.o
  .debug_macro   0x00000000       0x16 source/cmd.o
  .debug_macro   0x00000000      0x18b source/cmd.o
- .debug_macro   0x00000000       0x46 source/cmd.o
- .debug_macro   0x00000000       0x70 source/cmd.o
+ .debug_macro   0x00000000       0x58 source/cmd.o
+ .debug_macro   0x00000000       0x8e source/cmd.o
  .group         0x00000000        0x8 source/crc.o
  .group         0x00000000        0x8 source/crc.o
  .group         0x00000000        0x8 source/crc.o
@@ -1164,7 +1165,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/crc.o
  .debug_macro   0x00000000       0x2e source/crc.o
  .debug_macro   0x00000000       0x5e source/crc.o
- .debug_macro   0x00000000       0x28 source/crc.o
+ .debug_macro   0x00000000       0x2e source/crc.o
  .debug_macro   0x00000000      0x44a source/crc.o
  .debug_macro   0x00000000       0x16 source/crc.o
  .debug_macro   0x00000000       0x52 source/crc.o
@@ -1179,8 +1180,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/crc.o
  .debug_macro   0x00000000       0x16 source/crc.o
  .debug_macro   0x00000000      0x18b source/crc.o
- .debug_macro   0x00000000       0x46 source/crc.o
- .debug_macro   0x00000000       0x70 source/crc.o
+ .debug_macro   0x00000000       0x58 source/crc.o
+ .debug_macro   0x00000000       0x8e source/crc.o
  .group         0x00000000        0x8 source/encod_k.o
  .group         0x00000000        0x8 source/encod_k.o
  .group         0x00000000        0x8 source/encod_k.o
@@ -1386,7 +1387,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/encod_k.o
  .debug_macro   0x00000000       0x2e source/encod_k.o
  .debug_macro   0x00000000       0x5e source/encod_k.o
- .debug_macro   0x00000000       0x28 source/encod_k.o
+ .debug_macro   0x00000000       0x2e source/encod_k.o
  .debug_macro   0x00000000      0x44a source/encod_k.o
  .debug_macro   0x00000000       0x16 source/encod_k.o
  .debug_macro   0x00000000       0x52 source/encod_k.o
@@ -1401,8 +1402,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/encod_k.o
  .debug_macro   0x00000000       0x16 source/encod_k.o
  .debug_macro   0x00000000      0x18b source/encod_k.o
- .debug_macro   0x00000000       0x46 source/encod_k.o
- .debug_macro   0x00000000       0x70 source/encod_k.o
+ .debug_macro   0x00000000       0x58 source/encod_k.o
+ .debug_macro   0x00000000       0x8e source/encod_k.o
  .group         0x00000000        0x8 source/eth_parse.o
  .group         0x00000000        0x8 source/eth_parse.o
  .group         0x00000000        0x8 source/eth_parse.o
@@ -1606,7 +1607,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/eth_parse.o
  .debug_macro   0x00000000       0x2e source/eth_parse.o
  .debug_macro   0x00000000       0x5e source/eth_parse.o
- .debug_macro   0x00000000       0x28 source/eth_parse.o
+ .debug_macro   0x00000000       0x2e source/eth_parse.o
  .debug_macro   0x00000000      0x44a source/eth_parse.o
  .debug_macro   0x00000000       0x16 source/eth_parse.o
  .debug_macro   0x00000000       0x52 source/eth_parse.o
@@ -1621,8 +1622,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/eth_parse.o
  .debug_macro   0x00000000       0x16 source/eth_parse.o
  .debug_macro   0x00000000      0x18b source/eth_parse.o
- .debug_macro   0x00000000       0x46 source/eth_parse.o
- .debug_macro   0x00000000       0x70 source/eth_parse.o
+ .debug_macro   0x00000000       0x58 source/eth_parse.o
+ .debug_macro   0x00000000       0x8e source/eth_parse.o
  .group         0x00000000        0x8 source/flash.o
  .group         0x00000000        0x8 source/flash.o
  .group         0x00000000        0x8 source/flash.o
@@ -1828,7 +1829,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/flash.o
  .debug_macro   0x00000000       0x2e source/flash.o
  .debug_macro   0x00000000       0x5e source/flash.o
- .debug_macro   0x00000000       0x28 source/flash.o
+ .debug_macro   0x00000000       0x2e source/flash.o
  .debug_macro   0x00000000      0x44a source/flash.o
  .debug_macro   0x00000000       0x16 source/flash.o
  .debug_macro   0x00000000       0x52 source/flash.o
@@ -1843,8 +1844,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/flash.o
  .debug_macro   0x00000000       0x16 source/flash.o
  .debug_macro   0x00000000      0x18b source/flash.o
- .debug_macro   0x00000000       0x46 source/flash.o
- .debug_macro   0x00000000       0x70 source/flash.o
+ .debug_macro   0x00000000       0x58 source/flash.o
+ .debug_macro   0x00000000       0x8e source/flash.o
  .group         0x00000000        0x8 source/gpio.o
  .group         0x00000000        0x8 source/gpio.o
  .group         0x00000000        0x8 source/gpio.o
@@ -2049,7 +2050,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/gpio.o
  .debug_macro   0x00000000       0x2e source/gpio.o
  .debug_macro   0x00000000       0x5e source/gpio.o
- .debug_macro   0x00000000       0x28 source/gpio.o
+ .debug_macro   0x00000000       0x2e source/gpio.o
  .debug_macro   0x00000000      0x44a source/gpio.o
  .debug_macro   0x00000000       0x16 source/gpio.o
  .debug_macro   0x00000000       0x52 source/gpio.o
@@ -2064,8 +2065,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/gpio.o
  .debug_macro   0x00000000       0x16 source/gpio.o
  .debug_macro   0x00000000      0x18b source/gpio.o
- .debug_macro   0x00000000       0x46 source/gpio.o
- .debug_macro   0x00000000       0x70 source/gpio.o
+ .debug_macro   0x00000000       0x58 source/gpio.o
+ .debug_macro   0x00000000       0x8e source/gpio.o
  .group         0x00000000        0x8 source/iap.o
  .group         0x00000000        0x8 source/iap.o
  .group         0x00000000        0x8 source/iap.o
@@ -2270,7 +2271,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/iap.o
  .debug_macro   0x00000000       0x2e source/iap.o
  .debug_macro   0x00000000       0x5e source/iap.o
- .debug_macro   0x00000000       0x28 source/iap.o
+ .debug_macro   0x00000000       0x2e source/iap.o
  .debug_macro   0x00000000      0x44a source/iap.o
  .debug_macro   0x00000000       0x16 source/iap.o
  .debug_macro   0x00000000       0x52 source/iap.o
@@ -2285,8 +2286,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/iap.o
  .debug_macro   0x00000000       0x16 source/iap.o
  .debug_macro   0x00000000      0x18b source/iap.o
- .debug_macro   0x00000000       0x46 source/iap.o
- .debug_macro   0x00000000       0x70 source/iap.o
+ .debug_macro   0x00000000       0x58 source/iap.o
+ .debug_macro   0x00000000       0x8e source/iap.o
  .group         0x00000000        0x8 source/main.o
  .group         0x00000000        0x8 source/main.o
  .group         0x00000000        0x8 source/main.o
@@ -2398,7 +2399,7 @@ Discarded input sections
  .group         0x00000000        0x8 source/main.o
  .group         0x00000000        0x8 source/main.o
  .data          0x00000000        0x0 source/main.o
- .bss           0x00000000        0x0 source/main.o
+ .bss           0x00000000        0x1 source/main.o
  .debug_macro   0x00000000      0x89e source/main.o
  .debug_macro   0x00000000       0x22 source/main.o
  .debug_macro   0x00000000       0x52 source/main.o
@@ -2492,7 +2493,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/main.o
  .debug_macro   0x00000000       0x2e source/main.o
  .debug_macro   0x00000000       0x5e source/main.o
- .debug_macro   0x00000000       0x28 source/main.o
+ .debug_macro   0x00000000       0x2e source/main.o
  .debug_macro   0x00000000      0x44a source/main.o
  .debug_macro   0x00000000       0x16 source/main.o
  .debug_macro   0x00000000       0x52 source/main.o
@@ -2507,8 +2508,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/main.o
  .debug_macro   0x00000000       0x16 source/main.o
  .debug_macro   0x00000000      0x18b source/main.o
- .debug_macro   0x00000000       0x46 source/main.o
- .debug_macro   0x00000000       0x70 source/main.o
+ .debug_macro   0x00000000       0x58 source/main.o
+ .debug_macro   0x00000000       0x8e source/main.o
  .group         0x00000000        0x8 source/socket.o
  .group         0x00000000        0x8 source/socket.o
  .group         0x00000000        0x8 source/socket.o
@@ -2714,7 +2715,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/socket.o
  .debug_macro   0x00000000       0x2e source/socket.o
  .debug_macro   0x00000000       0x5e source/socket.o
- .debug_macro   0x00000000       0x28 source/socket.o
+ .debug_macro   0x00000000       0x2e source/socket.o
  .debug_macro   0x00000000      0x44a source/socket.o
  .debug_macro   0x00000000       0x16 source/socket.o
  .debug_macro   0x00000000       0x52 source/socket.o
@@ -2729,8 +2730,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/socket.o
  .debug_macro   0x00000000       0x16 source/socket.o
  .debug_macro   0x00000000      0x18b source/socket.o
- .debug_macro   0x00000000       0x46 source/socket.o
- .debug_macro   0x00000000       0x70 source/socket.o
+ .debug_macro   0x00000000       0x58 source/socket.o
+ .debug_macro   0x00000000       0x8e source/socket.o
  .group         0x00000000        0x8 source/spi.o
  .group         0x00000000        0x8 source/spi.o
  .group         0x00000000        0x8 source/spi.o
@@ -2935,7 +2936,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/spi.o
  .debug_macro   0x00000000       0x2e source/spi.o
  .debug_macro   0x00000000       0x5e source/spi.o
- .debug_macro   0x00000000       0x28 source/spi.o
+ .debug_macro   0x00000000       0x2e source/spi.o
  .debug_macro   0x00000000      0x44a source/spi.o
  .debug_macro   0x00000000       0x16 source/spi.o
  .debug_macro   0x00000000       0x52 source/spi.o
@@ -2950,8 +2951,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/spi.o
  .debug_macro   0x00000000       0x16 source/spi.o
  .debug_macro   0x00000000      0x18b source/spi.o
- .debug_macro   0x00000000       0x46 source/spi.o
- .debug_macro   0x00000000       0x70 source/spi.o
+ .debug_macro   0x00000000       0x58 source/spi.o
+ .debug_macro   0x00000000       0x8e source/spi.o
  .group         0x00000000        0x8 source/sys_clock.o
  .group         0x00000000        0x8 source/sys_clock.o
  .group         0x00000000        0x8 source/sys_clock.o
@@ -3157,7 +3158,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/sys_clock.o
  .debug_macro   0x00000000       0x2e source/sys_clock.o
  .debug_macro   0x00000000       0x5e source/sys_clock.o
- .debug_macro   0x00000000       0x28 source/sys_clock.o
+ .debug_macro   0x00000000       0x2e source/sys_clock.o
  .debug_macro   0x00000000      0x44a source/sys_clock.o
  .debug_macro   0x00000000       0x16 source/sys_clock.o
  .debug_macro   0x00000000       0x52 source/sys_clock.o
@@ -3172,8 +3173,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/sys_clock.o
  .debug_macro   0x00000000       0x16 source/sys_clock.o
  .debug_macro   0x00000000      0x18b source/sys_clock.o
- .debug_macro   0x00000000       0x46 source/sys_clock.o
- .debug_macro   0x00000000       0x70 source/sys_clock.o
+ .debug_macro   0x00000000       0x58 source/sys_clock.o
+ .debug_macro   0x00000000       0x8e source/sys_clock.o
  .group         0x00000000        0x8 source/timer.o
  .group         0x00000000        0x8 source/timer.o
  .group         0x00000000        0x8 source/timer.o
@@ -3378,7 +3379,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/timer.o
  .debug_macro   0x00000000       0x2e source/timer.o
  .debug_macro   0x00000000       0x5e source/timer.o
- .debug_macro   0x00000000       0x28 source/timer.o
+ .debug_macro   0x00000000       0x2e source/timer.o
  .debug_macro   0x00000000      0x44a source/timer.o
  .debug_macro   0x00000000       0x16 source/timer.o
  .debug_macro   0x00000000       0x52 source/timer.o
@@ -3393,8 +3394,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/timer.o
  .debug_macro   0x00000000       0x16 source/timer.o
  .debug_macro   0x00000000      0x18b source/timer.o
- .debug_macro   0x00000000       0x46 source/timer.o
- .debug_macro   0x00000000       0x70 source/timer.o
+ .debug_macro   0x00000000       0x58 source/timer.o
+ .debug_macro   0x00000000       0x8e source/timer.o
  .group         0x00000000        0x8 source/usart.o
  .group         0x00000000        0x8 source/usart.o
  .group         0x00000000        0x8 source/usart.o
@@ -3600,7 +3601,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/usart.o
  .debug_macro   0x00000000       0x2e source/usart.o
  .debug_macro   0x00000000       0x5e source/usart.o
- .debug_macro   0x00000000       0x28 source/usart.o
+ .debug_macro   0x00000000       0x2e source/usart.o
  .debug_macro   0x00000000      0x44a source/usart.o
  .debug_macro   0x00000000       0x16 source/usart.o
  .debug_macro   0x00000000       0x52 source/usart.o
@@ -3615,8 +3616,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/usart.o
  .debug_macro   0x00000000       0x16 source/usart.o
  .debug_macro   0x00000000      0x18b source/usart.o
- .debug_macro   0x00000000       0x46 source/usart.o
- .debug_macro   0x00000000       0x70 source/usart.o
+ .debug_macro   0x00000000       0x58 source/usart.o
+ .debug_macro   0x00000000       0x8e source/usart.o
  .group         0x00000000        0x8 source/w5500_reg.o
  .group         0x00000000        0x8 source/w5500_reg.o
  .group         0x00000000        0x8 source/w5500_reg.o
@@ -3821,7 +3822,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/w5500_reg.o
  .debug_macro   0x00000000       0x2e source/w5500_reg.o
  .debug_macro   0x00000000       0x5e source/w5500_reg.o
- .debug_macro   0x00000000       0x28 source/w5500_reg.o
+ .debug_macro   0x00000000       0x2e source/w5500_reg.o
  .debug_macro   0x00000000      0x44a source/w5500_reg.o
  .debug_macro   0x00000000       0x16 source/w5500_reg.o
  .debug_macro   0x00000000       0x52 source/w5500_reg.o
@@ -3836,8 +3837,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/w5500_reg.o
  .debug_macro   0x00000000       0x16 source/w5500_reg.o
  .debug_macro   0x00000000      0x18b source/w5500_reg.o
- .debug_macro   0x00000000       0x46 source/w5500_reg.o
- .debug_macro   0x00000000       0x70 source/w5500_reg.o
+ .debug_macro   0x00000000       0x58 source/w5500_reg.o
+ .debug_macro   0x00000000       0x8e source/w5500_reg.o
  .group         0x00000000        0x8 source/cfg.o
  .group         0x00000000        0x8 source/cfg.o
  .group         0x00000000        0x8 source/cfg.o
@@ -4042,7 +4043,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 source/cfg.o
  .debug_macro   0x00000000       0x2e source/cfg.o
  .debug_macro   0x00000000       0x5e source/cfg.o
- .debug_macro   0x00000000       0x28 source/cfg.o
+ .debug_macro   0x00000000       0x2e source/cfg.o
  .debug_macro   0x00000000      0x44a source/cfg.o
  .debug_macro   0x00000000       0x16 source/cfg.o
  .debug_macro   0x00000000       0x52 source/cfg.o
@@ -4057,8 +4058,8 @@ Discarded input sections
  .debug_macro   0x00000000       0xd7 source/cfg.o
  .debug_macro   0x00000000       0x16 source/cfg.o
  .debug_macro   0x00000000      0x18b source/cfg.o
- .debug_macro   0x00000000       0x46 source/cfg.o
- .debug_macro   0x00000000       0x70 source/cfg.o
+ .debug_macro   0x00000000       0x58 source/cfg.o
+ .debug_macro   0x00000000       0x8e source/cfg.o
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_udivsi3.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_udivsi3.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_dvmd_tls.o)
@@ -4196,7 +4197,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtn.o
                 0x00002000                STACK_SIZE = DEFINED (STACK_SIZE)?STACK_SIZE:DEFINED (__stack_size__)?__stack_size__:0x2000
 
-.text           0x00004000     0x8964
+.text           0x00004000     0x8c60
                 0x00004000                . = ALIGN (0x4)
                 0x00004000                _sfixed = .
  *(.vectors .vectors.*)
@@ -4233,247 +4234,250 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x0000420c                PTC_Handler
                 0x0000420c                TC5_Handler
                 0x0000420c                SYSCTRL_Handler
- .text          0x00004214      0x55c source/acc_and_logs.o
+ .text          0x00004214      0x57c source/acc_and_logs.o
                 0x00004214                acc
                 0x00004398                acces_ip
                 0x000044c8                log_ch
-                0x00004584                log_safe
-                0x00004710                log_clear
- .text          0x00004770      0x228 source/alg.o
-                0x00004770                random_gen
-                0x000047e0                num_to_byte
-                0x000048a4                num_aus_byte
-                0x0000493a                SRAV
- .text          0x00004998     0x1264 source/cmd.o
-                0x00004998                cmd_process
-                0x000049aa                cmd_common_process
-                0x000056ac                cmd_usart_process
-                0x00005708                usart_process
- .text          0x00005bfc      0x188 source/crc.o
-                0x00005bfc                crc16_ccit
-                0x00005cbc                crc16_mbus
- .text          0x00005d84      0x258 source/encod_k.o
-                0x00005d84                crypted
-                0x00005db2                decrypted
-                0x00005de0                wave
-                0x00005e96                shell_game
-                0x00005f84                move
- .text          0x00005fdc      0x484 source/eth_parse.o
-                0x00005fdc                eth_init
-                0x000060f0                eth_process
-                0x00006210                check_sockets_process
-                0x00006290                eth_parse
-                0x0000636c                check_data_wr_process
- .text          0x00006460      0x2fc source/flash.o
-                0x00006460                flash_empty
-                0x000064a6                flash_erase_page
-                0x000064f4                flash_write
-                0x000065f0                flash_copy
-                0x000066d4                flash_read
- .text          0x0000675c      0x544 source/gpio.o
-                0x0000675c                gpio_init
-                0x00006a70                pin_ctrl
-                0x00006c08                check_gerkon
- .text          0x00006ca0      0x290 source/iap.o
-                0x00006ca0                iap_process
- .text          0x00006f30      0x16c source/main.o
-                0x00006f30                main
- .text          0x0000709c      0x1c4 source/socket.o
-                0x0000709c                socket_init
- .text          0x00007260      0x80c source/spi.o
-                0x000073b0                spi_init
-                0x0000758c                spi_process
-                0x00007634                spi_write
-                0x000077ec                spi_read
-                0x00007970                SERCOM5_Handler
- .text          0x00007a6c      0x110 source/sys_clock.o
-                0x00007a6c                sys_clock_init_USE_OSC8M
-                0x00007aa8                sys_clock_init_USE_DFLL48M
- .text          0x00007b7c      0x64c source/timer.o
-                0x00007d00                TC3_Handler
-                0x00007db4                TC3_init
-                0x00007eb0                wait
-                0x00007f08                tc3_process
- .text          0x000081c8     0x11ac source/usart.o
-                0x00008318                usart_init
-                0x0000834a                init
-                0x00008ba0                usart_write
-                0x00008cb4                usart_read
-                0x00008e04                sercom_proc
-                0x00009334                SERCOM3_Handler
-                0x00009344                SERCOM2_Handler
-                0x00009354                SERCOM0_Handler
-                0x00009364                SERCOM1_Handler
- .text          0x00009374     0x1468 source/w5500_reg.o
-                0x00009374                w5500_init_reg
-                0x000093ec                mac_init
-                0x0000942c                gw_init
-                0x0000946c                mask_init
-                0x000094ac                ip_init
-                0x000094ec                w5500_process
-                0x00009670                w5500_cmd_read_socket_udp
-                0x00009998                w5500_write_socket_udp
-                0x00009e34                w5500_cmd_read_socket_tcp
-                0x0000a330                w5500_write_socket_tcp
- .text          0x0000a7dc      0x518 source/cfg.o
-                0x0000a7dc                cfg_init
-                0x0000a810                cfg_read
-                0x0000a870                cfg_2_read
-                0x0000a8d0                cfg_default
-                0x0000abe0                cfg_check
-                0x0000aca8                cfg_save
- .text          0x0000acf4      0x114 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_udivsi3.o)
-                0x0000acf4                __aeabi_uidiv
-                0x0000acf4                __udivsi3
-                0x0000ae00                __aeabi_uidivmod
- .text          0x0000ae08        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_dvmd_tls.o)
-                0x0000ae08                __aeabi_idiv0
-                0x0000ae08                __aeabi_ldiv0
- .text          0x0000ae0c       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_fixunsdfsi.o)
-                0x0000ae0c                __aeabi_d2uiz
-                0x0000ae0c                __fixunsdfsi
- .text          0x0000ae48       0x8c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(floatunsisf.o)
-                0x0000ae48                __aeabi_ui2f
- .text          0x0000aed4      0x668 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(divdf3.o)
-                0x0000aed4                __aeabi_ddiv
- .text          0x0000b53c      0x500 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(muldf3.o)
-                0x0000b53c                __aeabi_dmul
- .text          0x0000ba3c      0x62c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(subdf3.o)
-                0x0000ba3c                __aeabi_dsub
- .text          0x0000c068       0x68 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(fixdfsi.o)
-                0x0000c068                __aeabi_d2iz
- .text          0x0000c0d0       0x70 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(floatunsidf.o)
-                0x0000c0d0                __aeabi_ui2d
- .text          0x0000c140       0xa4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(extendsfdf2.o)
-                0x0000c140                __aeabi_f2d
- .text          0x0000c1e4       0x7c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_arm_cmpdf2.o)
-                0x0000c1e4                __aeabi_cdrcmple
-                0x0000c1f4                __aeabi_cdcmple
-                0x0000c1f4                __aeabi_cdcmpeq
-                0x0000c204                __aeabi_dcmpeq
-                0x0000c210                __aeabi_dcmplt
-                0x0000c224                __aeabi_dcmple
-                0x0000c238                __aeabi_dcmpgt
-                0x0000c24c                __aeabi_dcmpge
- .text          0x0000c260       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_clzsi2.o)
-                0x0000c260                __clzsi2
- .text          0x0000c29c       0x74 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(eqdf2.o)
-                0x0000c29c                __nedf2
-                0x0000c29c                __eqdf2
- .text          0x0000c310       0xc8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(gedf2.o)
-                0x0000c310                __gedf2
-                0x0000c310                __gtdf2
- .text          0x0000c3d8       0xc4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(ledf2.o)
-                0x0000c3d8                __ledf2
-                0x0000c3d8                __ltdf2
+                0x0000455c                log_safe
+                0x00004730                log_clear
+ .text          0x00004790      0x228 source/alg.o
+                0x00004790                random_gen
+                0x00004800                num_to_byte
+                0x000048c4                num_aus_byte
+                0x0000495a                SRAV
+ .text          0x000049b8     0x1330 source/cmd.o
+                0x000049b8                cmd_process
+                0x000049ca                cmd_common_process
+                0x00005798                cmd_usart_process
+                0x000057f4                usart_process
+ .text          0x00005ce8      0x2d4 source/crc.o
+                0x00005ce8                crc16_ccit
+                0x00005da8                crc16_mbus
+                0x00005e70                crc32
+ .text          0x00005fbc      0x258 source/encod_k.o
+                0x00005fbc                crypted
+                0x00005fea                decrypted
+                0x00006018                wave
+                0x000060ce                shell_game
+                0x000061bc                move
+ .text          0x00006214      0x484 source/eth_parse.o
+                0x00006214                eth_init
+                0x00006328                eth_process
+                0x00006448                check_sockets_process
+                0x000064c8                eth_parse
+                0x000065a4                check_data_wr_process
+ .text          0x00006698      0x384 source/flash.o
+                0x00006698                flash_empty
+                0x000066de                flash_erase_page
+                0x0000672c                flash_write
+                0x00006804                flash_copy
+                0x000068e8                flash_read
+                0x00006970                flash_erase_row
+                0x000069c0                flash_write_dword
+ .text          0x00006a1c      0x54c source/gpio.o
+                0x00006a1c                gpio_init
+                0x00006d30                pin_ctrl
+                0x00006ec8                check_gerkon
+ .text          0x00006f68      0x290 source/iap.o
+                0x00006f68                iap_process
+ .text          0x000071f8      0x194 source/main.o
+                0x000071f8                main
+ .text          0x0000738c      0x1c4 source/socket.o
+                0x0000738c                socket_init
+ .text          0x00007550      0x80c source/spi.o
+                0x000076a0                spi_init
+                0x0000787c                spi_process
+                0x00007924                spi_write
+                0x00007adc                spi_read
+                0x00007c60                SERCOM5_Handler
+ .text          0x00007d5c      0x110 source/sys_clock.o
+                0x00007d5c                sys_clock_init_USE_OSC8M
+                0x00007d98                sys_clock_init_USE_DFLL48M
+ .text          0x00007e6c      0x658 source/timer.o
+                0x00007ff0                TC3_Handler
+                0x000080a4                TC3_init
+                0x000081a0                wait
+                0x000081f8                tc3_process
+ .text          0x000084c4     0x11ac source/usart.o
+                0x00008614                usart_init
+                0x00008646                init
+                0x00008e9c                usart_write
+                0x00008fb0                usart_read
+                0x00009100                sercom_proc
+                0x00009630                SERCOM3_Handler
+                0x00009640                SERCOM2_Handler
+                0x00009650                SERCOM0_Handler
+                0x00009660                SERCOM1_Handler
+ .text          0x00009670     0x1468 source/w5500_reg.o
+                0x00009670                w5500_init_reg
+                0x000096e8                mac_init
+                0x00009728                gw_init
+                0x00009768                mask_init
+                0x000097a8                ip_init
+                0x000097e8                w5500_process
+                0x0000996c                w5500_cmd_read_socket_udp
+                0x00009c94                w5500_write_socket_udp
+                0x0000a130                w5500_cmd_read_socket_tcp
+                0x0000a62c                w5500_write_socket_tcp
+ .text          0x0000aad8      0x518 source/cfg.o
+                0x0000aad8                cfg_init
+                0x0000ab0c                cfg_read
+                0x0000ab6c                cfg_2_read
+                0x0000abcc                cfg_default
+                0x0000aedc                cfg_check
+                0x0000afa4                cfg_save
+ .text          0x0000aff0      0x114 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_udivsi3.o)
+                0x0000aff0                __aeabi_uidiv
+                0x0000aff0                __udivsi3
+                0x0000b0fc                __aeabi_uidivmod
+ .text          0x0000b104        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_dvmd_tls.o)
+                0x0000b104                __aeabi_idiv0
+                0x0000b104                __aeabi_ldiv0
+ .text          0x0000b108       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_fixunsdfsi.o)
+                0x0000b108                __aeabi_d2uiz
+                0x0000b108                __fixunsdfsi
+ .text          0x0000b144       0x8c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(floatunsisf.o)
+                0x0000b144                __aeabi_ui2f
+ .text          0x0000b1d0      0x668 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(divdf3.o)
+                0x0000b1d0                __aeabi_ddiv
+ .text          0x0000b838      0x500 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(muldf3.o)
+                0x0000b838                __aeabi_dmul
+ .text          0x0000bd38      0x62c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(subdf3.o)
+                0x0000bd38                __aeabi_dsub
+ .text          0x0000c364       0x68 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(fixdfsi.o)
+                0x0000c364                __aeabi_d2iz
+ .text          0x0000c3cc       0x70 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(floatunsidf.o)
+                0x0000c3cc                __aeabi_ui2d
+ .text          0x0000c43c       0xa4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(extendsfdf2.o)
+                0x0000c43c                __aeabi_f2d
+ .text          0x0000c4e0       0x7c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_arm_cmpdf2.o)
+                0x0000c4e0                __aeabi_cdrcmple
+                0x0000c4f0                __aeabi_cdcmple
+                0x0000c4f0                __aeabi_cdcmpeq
+                0x0000c500                __aeabi_dcmpeq
+                0x0000c50c                __aeabi_dcmplt
+                0x0000c520                __aeabi_dcmple
+                0x0000c534                __aeabi_dcmpgt
+                0x0000c548                __aeabi_dcmpge
+ .text          0x0000c55c       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_clzsi2.o)
+                0x0000c55c                __clzsi2
+ .text          0x0000c598       0x74 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(eqdf2.o)
+                0x0000c598                __nedf2
+                0x0000c598                __eqdf2
+ .text          0x0000c60c       0xc8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(gedf2.o)
+                0x0000c60c                __gedf2
+                0x0000c60c                __gtdf2
+ .text          0x0000c6d4       0xc4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(ledf2.o)
+                0x0000c6d4                __ledf2
+                0x0000c6d4                __ltdf2
  .text.__libc_init_array
-                0x0000c49c       0x48 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-init.o)
-                0x0000c49c                __libc_init_array
- .text.memcpy   0x0000c4e4       0x84 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-memcpy-stub.o)
-                0x0000c4e4                memcpy
- .text.memset   0x0000c568       0x94 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-memset.o)
-                0x0000c568                memset
+                0x0000c798       0x48 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-init.o)
+                0x0000c798                __libc_init_array
+ .text.memcpy   0x0000c7e0       0x84 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-memcpy-stub.o)
+                0x0000c7e0                memcpy
+ .text.memset   0x0000c864       0x94 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-memset.o)
+                0x0000c864                memset
  .text.startup.register_fini
-                0x0000c5fc       0x18 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-__call_atexit.o)
- .text.atexit   0x0000c614       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-atexit.o)
-                0x0000c614                atexit
+                0x0000c8f8       0x18 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-__call_atexit.o)
+ .text.atexit   0x0000c910       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-atexit.o)
+                0x0000c910                atexit
  .text.__libc_fini_array
-                0x0000c624       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-fini.o)
-                0x0000c624                __libc_fini_array
+                0x0000c920       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-fini.o)
+                0x0000c920                __libc_fini_array
  .text.__retarget_lock_acquire_recursive
-                0x0000c658        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-lock.o)
-                0x0000c658                __retarget_lock_acquire_recursive
+                0x0000c954        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-lock.o)
+                0x0000c954                __retarget_lock_acquire_recursive
  .text.__retarget_lock_release_recursive
-                0x0000c65c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-lock.o)
-                0x0000c65c                __retarget_lock_release_recursive
+                0x0000c958        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-lock.o)
+                0x0000c958                __retarget_lock_release_recursive
  .text.__register_exitproc
-                0x0000c660       0xf4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-__atexit.o)
-                0x0000c660                __register_exitproc
+                0x0000c95c       0xf4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-__atexit.o)
+                0x0000c95c                __register_exitproc
  *(.glue_7t)
- .glue_7t       0x0000c754        0x0 linker stubs
+ .glue_7t       0x0000ca50        0x0 linker stubs
  *(.glue_7)
- .glue_7        0x0000c754        0x0 linker stubs
+ .glue_7        0x0000ca50        0x0 linker stubs
  *(.rodata .rodata* .gnu.linkonce.r.*)
- .rodata        0x0000c754        0xd source/acc_and_logs.o
- *fill*         0x0000c761        0x3 
- .rodata        0x0000c764       0xc4 source/cmd.o
- .rodata        0x0000c828       0x88 source/w5500_reg.o
- .rodata        0x0000c8b0        0xc source/cfg.o
- .rodata        0x0000c8bc       0x40 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(divdf3.o)
- .rodata        0x0000c8fc       0x40 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(muldf3.o)
+ .rodata        0x0000ca50        0xd source/acc_and_logs.o
+ *fill*         0x0000ca5d        0x3 
+ .rodata        0x0000ca60       0xc4 source/cmd.o
+ .rodata        0x0000cb24       0x88 source/w5500_reg.o
+ .rodata        0x0000cbac        0xc source/cfg.o
+ .rodata        0x0000cbb8       0x40 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(divdf3.o)
+ .rodata        0x0000cbf8       0x40 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(muldf3.o)
  .rodata._global_impure_ptr
-                0x0000c93c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-impure.o)
-                0x0000c93c                _global_impure_ptr
+                0x0000cc38        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-impure.o)
+                0x0000cc38                _global_impure_ptr
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x0000c940                . = ALIGN (0x4)
+                0x0000cc3c                . = ALIGN (0x4)
  *(.init)
- .init          0x0000c940        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crti.o
-                0x0000c940                _init
- .init          0x0000c944        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtn.o
-                0x0000c94c                . = ALIGN (0x4)
-                0x0000c94c                __preinit_array_start = .
+ .init          0x0000cc3c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crti.o
+                0x0000cc3c                _init
+ .init          0x0000cc40        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtn.o
+                0x0000cc48                . = ALIGN (0x4)
+                0x0000cc48                __preinit_array_start = .
  *(.preinit_array)
-                0x0000c94c                __preinit_array_end = .
-                0x0000c94c                . = ALIGN (0x4)
-                0x0000c94c                __init_array_start = .
+                0x0000cc48                __preinit_array_end = .
+                0x0000cc48                . = ALIGN (0x4)
+                0x0000cc48                __init_array_start = .
  *(SORT(.init_array.*))
  .init_array.00000
-                0x0000c94c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-__call_atexit.o)
+                0x0000cc48        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-__call_atexit.o)
  *(.init_array)
- .init_array    0x0000c950        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
-                0x0000c954                __init_array_end = .
-                0x0000c954                . = ALIGN (0x4)
+ .init_array    0x0000cc4c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
+                0x0000cc50                __init_array_end = .
+                0x0000cc50                . = ALIGN (0x4)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *crtend.o(.ctors)
-                0x0000c954                . = ALIGN (0x4)
+                0x0000cc50                . = ALIGN (0x4)
  *(.fini)
- .fini          0x0000c954        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crti.o
-                0x0000c954                _fini
- .fini          0x0000c958        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtn.o
-                0x0000c960                . = ALIGN (0x4)
-                0x0000c960                __fini_array_start = .
+ .fini          0x0000cc50        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crti.o
+                0x0000cc50                _fini
+ .fini          0x0000cc54        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtn.o
+                0x0000cc5c                . = ALIGN (0x4)
+                0x0000cc5c                __fini_array_start = .
  *(.fini_array)
- .fini_array    0x0000c960        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
+ .fini_array    0x0000cc5c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
  *(SORT(.fini_array.*))
-                0x0000c964                __fini_array_end = .
+                0x0000cc60                __fini_array_end = .
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *crtend.o(.dtors)
-                0x0000c964                . = ALIGN (0x4)
-                0x0000c964                _efixed = .
+                0x0000cc60                . = ALIGN (0x4)
+                0x0000cc60                _efixed = .
                 [!provide]                PROVIDE (__exidx_start, .)
 
-.vfp11_veneer   0x0000c964        0x0
- .vfp11_veneer  0x0000c964        0x0 linker stubs
+.vfp11_veneer   0x0000cc60        0x0
+ .vfp11_veneer  0x0000cc60        0x0 linker stubs
 
-.v4_bx          0x0000c964        0x0
- .v4_bx         0x0000c964        0x0 linker stubs
+.v4_bx          0x0000cc60        0x0
+ .v4_bx         0x0000cc60        0x0 linker stubs
 
-.iplt           0x0000c964        0x0
- .iplt          0x0000c964        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
+.iplt           0x0000cc60        0x0
+ .iplt          0x0000cc60        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
 
-.eh_frame       0x0000c964        0x0
- .eh_frame      0x0000c964        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
+.eh_frame       0x0000cc60        0x0
+ .eh_frame      0x0000cc60        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
 
-.rel.dyn        0x0000c964        0x0
- .rel.iplt      0x0000c964        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
+.rel.dyn        0x0000cc60        0x0
+ .rel.iplt      0x0000cc60        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
 
-.jcr            0x0000c964        0x0
- .jcr           0x0000c964        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
+.jcr            0x0000cc60        0x0
+ .jcr           0x0000cc60        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
 
-.igot.plt       0x0000c964        0x0
- .igot.plt      0x0000c964        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
+.igot.plt       0x0000cc60        0x0
+ .igot.plt      0x0000cc60        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
                 [!provide]                PROVIDE (__exidx_end, .)
-                0x0000c964                . = ALIGN (0x4)
-                0x0000c964                _etext = .
+                0x0000cc60                . = ALIGN (0x4)
+                0x0000cc60                _etext = .
 
-.relocate       0x20000000      0x434 load address 0x0000c964
+.relocate       0x20000000      0x434 load address 0x0000cc60
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _srelocate = .
  *(.ramfunc .ramfunc.*)
@@ -4491,28 +4495,29 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x20000434                . = ALIGN (0x4)
                 0x20000434                _erelocate = .
 
-.bss            0x20000434     0x3ab0 load address 0x0000cd98
+.bss            0x20000434     0x3ab4 load address 0x0000d094
                 0x20000434                . = ALIGN (0x4)
                 0x20000434                _sbss = .
                 0x20000434                _szero = .
  *(.bss .bss.*)
  .bss           0x20000434       0x1c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m/crtbegin.o
- .bss           0x20000450        0xc source/cmd.o
+ .bss           0x20000450        0xa source/cmd.o
                 0x20000450                log_stat
                 0x20000451                actv_user_id
                 0x20000454                rsv_time
-                0x20000458                logout_timer
- .bss           0x2000045c        0x1 source/eth_parse.o
- .bss           0x2000045d        0x1 source/gpio.o
- *fill*         0x2000045e        0x2 
- .bss           0x20000460        0xd source/iap.o
-                0x20000460                iap_addr
-                0x20000464                iap_size
-                0x20000468                iap_key
- .bss           0x2000046d        0x2 source/spi.o
- *fill*         0x2000046f        0x1 
- .bss           0x20000470       0x10 source/timer.o
-                0x20000470                tc3_cnt
+                0x20000458                wr_flag_cfg
+                0x20000459                wr_flag_acc
+ .bss           0x2000045a        0x1 source/eth_parse.o
+ .bss           0x2000045b        0x1 source/gpio.o
+ .bss           0x2000045c        0xd source/iap.o
+                0x2000045c                iap_addr
+                0x20000460                iap_size
+                0x20000464                iap_key
+ .bss           0x20000469        0x2 source/spi.o
+ *fill*         0x2000046b        0x1 
+ .bss           0x2000046c       0x14 source/timer.o
+                0x2000046c                tc3_cnt
+                0x20000470                loggin_timeout
                 0x20000474                ger_wait
                 0x20000478                time_100mk
                 0x2000047c                TTL
@@ -4532,47 +4537,47 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
  COMMON         0x20002348      0x200 source/iap.o
                 0x20002348                iap_page
                 0x20002448                iap_buf
- COMMON         0x20002548      0x108 source/main.o
+ COMMON         0x20002548      0x10c source/main.o
                 0x20002548                reset
-                0x2000254c                err_dword
-                0x20002550                accnts
- COMMON         0x20002650      0xba0 source/spi.o
-                0x20002650                spi
- COMMON         0x200031f0        0x8 source/timer.o
-                0x200031f0                spi_wait
-                0x200031f2                cmd_spi_wait
-                0x200031f4                time_wait
- COMMON         0x200031f8      0x900 source/usart.o
-                0x200031f8                port
- COMMON         0x20003af8       0xc6 source/w5500_reg.o
-                0x20003af8                ptr_buf
-                0x20003afc                w5500_mode
-                0x20003b00                chip
-                0x20003bb3                cmd
-                0x20003bb4                wbuf_w55
- *fill*         0x20003bbe        0x2 
- COMMON         0x20003bc0      0x300 source/cfg.o
-                0x20003bc0                cfg_2
-                0x20003cc0                cfg_1_tmp
-                0x20003dc0                cfg_1
- COMMON         0x20003ec0       0x21 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-lock.o)
-                0x20003ec0                __lock___atexit_recursive_mutex
-                0x20003ec4                __lock___arc4random_mutex
-                0x20003ec8                __lock___env_recursive_mutex
-                0x20003ecc                __lock___sinit_recursive_mutex
-                0x20003ed0                __lock___malloc_recursive_mutex
-                0x20003ed4                __lock___at_quick_exit_mutex
-                0x20003ed8                __lock___dd_hash_mutex
-                0x20003edc                __lock___tz_mutex
-                0x20003ee0                __lock___sfp_recursive_mutex
-                0x20003ee4                . = ALIGN (0x4)
- *fill*         0x20003ee1        0x3 
-                0x20003ee4                _ebss = .
-                0x20003ee4                _ezero = .
+                0x2000254c                crc_fw
+                0x20002550                err_dword
+                0x20002554                accnts
+ COMMON         0x20002654      0xba0 source/spi.o
+                0x20002654                spi
+ COMMON         0x200031f4        0x8 source/timer.o
+                0x200031f4                spi_wait
+                0x200031f6                cmd_spi_wait
+                0x200031f8                time_wait
+ COMMON         0x200031fc      0x900 source/usart.o
+                0x200031fc                port
+ COMMON         0x20003afc       0xc6 source/w5500_reg.o
+                0x20003afc                ptr_buf
+                0x20003b00                w5500_mode
+                0x20003b04                chip
+                0x20003bb7                cmd
+                0x20003bb8                wbuf_w55
+ *fill*         0x20003bc2        0x2 
+ COMMON         0x20003bc4      0x300 source/cfg.o
+                0x20003bc4                cfg_2
+                0x20003cc4                cfg_1_tmp
+                0x20003dc4                cfg_1
+ COMMON         0x20003ec4       0x21 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-lock.o)
+                0x20003ec4                __lock___atexit_recursive_mutex
+                0x20003ec8                __lock___arc4random_mutex
+                0x20003ecc                __lock___env_recursive_mutex
+                0x20003ed0                __lock___sinit_recursive_mutex
+                0x20003ed4                __lock___malloc_recursive_mutex
+                0x20003ed8                __lock___at_quick_exit_mutex
+                0x20003edc                __lock___dd_hash_mutex
+                0x20003ee0                __lock___tz_mutex
+                0x20003ee4                __lock___sfp_recursive_mutex
+                0x20003ee8                . = ALIGN (0x4)
+ *fill*         0x20003ee5        0x3 
+                0x20003ee8                _ebss = .
+                0x20003ee8                _ezero = .
 
-.stack          0x20003ee4     0x2004 load address 0x00010848
+.stack          0x20003ee8     0x2000 load address 0x00010b48
                 0x20003ee8                . = ALIGN (0x8)
- *fill*         0x20003ee4        0x4 
                 0x20003ee8                _sstack = .
                 0x20005ee8                . = (. + STACK_SIZE)
  *fill*         0x20003ee8     0x2000 
@@ -4696,65 +4701,65 @@ OUTPUT(eth-rs485.elf elf32-littlearm)
  .comment       0x00000059       0x5a source/w5500_reg.o
  .comment       0x00000059       0x5a source/cfg.o
 
-.debug_info     0x00000000    0x46de0
+.debug_info     0x00000000    0x473db
  .debug_info    0x00000000     0x3a26 Device_Startup/startup_samr21.o
- .debug_info    0x00003a26     0x3ab6 source/acc_and_logs.o
- .debug_info    0x000074dc     0x3879 source/alg.o
- .debug_info    0x0000ad55     0x3c3a source/cmd.o
- .debug_info    0x0000e98f     0x379b source/crc.o
- .debug_info    0x0001212a     0x395d source/encod_k.o
- .debug_info    0x00015a87     0x3859 source/eth_parse.o
- .debug_info    0x000192e0     0x407c source/flash.o
- .debug_info    0x0001d35c     0x3dd7 source/gpio.o
- .debug_info    0x00021133     0x3b46 source/iap.o
- .debug_info    0x00024c79     0x3d6c source/main.o
- .debug_info    0x000289e5     0x377d source/socket.o
- .debug_info    0x0002c162     0x4d16 source/spi.o
- .debug_info    0x00030e78     0x4eba source/sys_clock.o
- .debug_info    0x00035d32     0x55f0 source/timer.o
- .debug_info    0x0003b322     0x4763 source/usart.o
- .debug_info    0x0003fa85     0x3a94 source/w5500_reg.o
- .debug_info    0x00043519     0x38c7 source/cfg.o
+ .debug_info    0x00003a26     0x3a9f source/acc_and_logs.o
+ .debug_info    0x000074c5     0x3893 source/alg.o
+ .debug_info    0x0000ad58     0x3c1d source/cmd.o
+ .debug_info    0x0000e975     0x3b7a source/crc.o
+ .debug_info    0x000124ef     0x3977 source/encod_k.o
+ .debug_info    0x00015e66     0x3873 source/eth_parse.o
+ .debug_info    0x000196d9     0x40fc source/flash.o
+ .debug_info    0x0001d7d5     0x3e1a source/gpio.o
+ .debug_info    0x000215ef     0x3b60 source/iap.o
+ .debug_info    0x0002514f     0x3dce source/main.o
+ .debug_info    0x00028f1d     0x3797 source/socket.o
+ .debug_info    0x0002c6b4     0x4d30 source/spi.o
+ .debug_info    0x000313e4     0x4ed4 source/sys_clock.o
+ .debug_info    0x000362b8     0x5617 source/timer.o
+ .debug_info    0x0003b8cf     0x477d source/usart.o
+ .debug_info    0x0004004c     0x3aae source/w5500_reg.o
+ .debug_info    0x00043afa     0x38e1 source/cfg.o
 
-.debug_abbrev   0x00000000     0x348d
+.debug_abbrev   0x00000000     0x34b5
  .debug_abbrev  0x00000000      0x225 Device_Startup/startup_samr21.o
- .debug_abbrev  0x00000225      0x337 source/acc_and_logs.o
- .debug_abbrev  0x0000055c      0x287 source/alg.o
- .debug_abbrev  0x000007e3      0x395 source/cmd.o
- .debug_abbrev  0x00000b78      0x280 source/crc.o
- .debug_abbrev  0x00000df8      0x2e3 source/encod_k.o
- .debug_abbrev  0x000010db      0x2f0 source/eth_parse.o
- .debug_abbrev  0x000013cb      0x2a7 source/flash.o
- .debug_abbrev  0x00001672      0x304 source/gpio.o
- .debug_abbrev  0x00001976      0x2d2 source/iap.o
- .debug_abbrev  0x00001c48      0x30b source/main.o
- .debug_abbrev  0x00001f53      0x274 source/socket.o
- .debug_abbrev  0x000021c7      0x37f source/spi.o
- .debug_abbrev  0x00002546      0x25e source/sys_clock.o
- .debug_abbrev  0x000027a4      0x369 source/timer.o
- .debug_abbrev  0x00002b0d      0x3a1 source/usart.o
- .debug_abbrev  0x00002eae      0x317 source/w5500_reg.o
- .debug_abbrev  0x000031c5      0x2c8 source/cfg.o
+ .debug_abbrev  0x00000225      0x31f source/acc_and_logs.o
+ .debug_abbrev  0x00000544      0x287 source/alg.o
+ .debug_abbrev  0x000007cb      0x395 source/cmd.o
+ .debug_abbrev  0x00000b60      0x29c source/crc.o
+ .debug_abbrev  0x00000dfc      0x2e3 source/encod_k.o
+ .debug_abbrev  0x000010df      0x2f0 source/eth_parse.o
+ .debug_abbrev  0x000013cf      0x2a7 source/flash.o
+ .debug_abbrev  0x00001676      0x317 source/gpio.o
+ .debug_abbrev  0x0000198d      0x2d2 source/iap.o
+ .debug_abbrev  0x00001c5f      0x31c source/main.o
+ .debug_abbrev  0x00001f7b      0x274 source/socket.o
+ .debug_abbrev  0x000021ef      0x37f source/spi.o
+ .debug_abbrev  0x0000256e      0x25e source/sys_clock.o
+ .debug_abbrev  0x000027cc      0x369 source/timer.o
+ .debug_abbrev  0x00002b35      0x3a1 source/usart.o
+ .debug_abbrev  0x00002ed6      0x317 source/w5500_reg.o
+ .debug_abbrev  0x000031ed      0x2c8 source/cfg.o
 
-.debug_loc      0x00000000     0x115e
+.debug_loc      0x00000000     0x1208
  .debug_loc     0x00000000       0x64 Device_Startup/startup_samr21.o
  .debug_loc     0x00000064      0x11c source/acc_and_logs.o
  .debug_loc     0x00000180       0xe0 source/alg.o
  .debug_loc     0x00000260       0xc8 source/cmd.o
- .debug_loc     0x00000328       0x70 source/crc.o
- .debug_loc     0x00000398      0x11a source/encod_k.o
- .debug_loc     0x000004b2      0x118 source/eth_parse.o
- .debug_loc     0x000005ca      0x118 source/flash.o
- .debug_loc     0x000006e2       0x90 source/gpio.o
- .debug_loc     0x00000772       0x38 source/iap.o
- .debug_loc     0x000007aa       0x2c source/main.o
- .debug_loc     0x000007d6       0x38 source/socket.o
- .debug_loc     0x0000080e      0x1a8 source/spi.o
- .debug_loc     0x000009b6       0x70 source/sys_clock.o
- .debug_loc     0x00000a26      0x19c source/timer.o
- .debug_loc     0x00000bc2      0x270 source/usart.o
- .debug_loc     0x00000e32      0x1f4 source/w5500_reg.o
- .debug_loc     0x00001026      0x138 source/cfg.o
+ .debug_loc     0x00000328       0xaa source/crc.o
+ .debug_loc     0x000003d2      0x11a source/encod_k.o
+ .debug_loc     0x000004ec      0x118 source/eth_parse.o
+ .debug_loc     0x00000604      0x188 source/flash.o
+ .debug_loc     0x0000078c       0x90 source/gpio.o
+ .debug_loc     0x0000081c       0x38 source/iap.o
+ .debug_loc     0x00000854       0x2c source/main.o
+ .debug_loc     0x00000880       0x38 source/socket.o
+ .debug_loc     0x000008b8      0x1a8 source/spi.o
+ .debug_loc     0x00000a60       0x70 source/sys_clock.o
+ .debug_loc     0x00000ad0      0x19c source/timer.o
+ .debug_loc     0x00000c6c      0x270 source/usart.o
+ .debug_loc     0x00000edc      0x1f4 source/w5500_reg.o
+ .debug_loc     0x000010d0      0x138 source/cfg.o
 
 .debug_aranges  0x00000000      0x240
  .debug_aranges
@@ -4794,7 +4799,7 @@ OUTPUT(eth-rs485.elf elf32-littlearm)
  .debug_aranges
                 0x00000220       0x20 source/cfg.o
 
-.debug_macro    0x00000000    0x17009
+.debug_macro    0x00000000    0x17045
  .debug_macro   0x00000000      0x2f7 Device_Startup/startup_samr21.o
  .debug_macro   0x000002f7      0x89e Device_Startup/startup_samr21.o
  .debug_macro   0x00000b95       0x22 Device_Startup/startup_samr21.o
@@ -4892,137 +4897,137 @@ OUTPUT(eth-rs485.elf elf32-littlearm)
  .debug_macro   0x000114c3       0x34 source/acc_and_logs.o
  .debug_macro   0x000114f7       0x2e source/acc_and_logs.o
  .debug_macro   0x00011525       0x5e source/acc_and_logs.o
- .debug_macro   0x00011583       0x28 source/acc_and_logs.o
- .debug_macro   0x000115ab      0x44a source/acc_and_logs.o
- .debug_macro   0x000119f5       0x16 source/acc_and_logs.o
- .debug_macro   0x00011a0b       0x52 source/acc_and_logs.o
- .debug_macro   0x00011a5d       0x1c source/acc_and_logs.o
- .debug_macro   0x00011a79       0x10 source/acc_and_logs.o
- .debug_macro   0x00011a89       0x10 source/acc_and_logs.o
- .debug_macro   0x00011a99       0x1c source/acc_and_logs.o
- .debug_macro   0x00011ab5       0x52 source/acc_and_logs.o
- .debug_macro   0x00011b07       0x40 source/acc_and_logs.o
- .debug_macro   0x00011b47       0x10 source/acc_and_logs.o
- .debug_macro   0x00011b57       0x40 source/acc_and_logs.o
- .debug_macro   0x00011b97       0xd7 source/acc_and_logs.o
- .debug_macro   0x00011c6e       0x16 source/acc_and_logs.o
- .debug_macro   0x00011c84      0x18b source/acc_and_logs.o
- .debug_macro   0x00011e0f       0x46 source/acc_and_logs.o
- .debug_macro   0x00011e55       0x70 source/acc_and_logs.o
- .debug_macro   0x00011ec5      0x50f source/alg.o
- .debug_macro   0x000123d4      0x54b source/cmd.o
- .debug_macro   0x0001291f      0x50f source/crc.o
- .debug_macro   0x00012e2e      0x521 source/encod_k.o
- .debug_macro   0x0001334f      0x50f source/eth_parse.o
- .debug_macro   0x0001385e      0x50f source/flash.o
- .debug_macro   0x00013d6d      0x50f source/gpio.o
- .debug_macro   0x0001427c      0x50f source/iap.o
- .debug_macro   0x0001478b      0x50f source/main.o
- .debug_macro   0x00014c9a      0x50f source/socket.o
- .debug_macro   0x000151a9      0x50f source/spi.o
- .debug_macro   0x000156b8      0x50f source/sys_clock.o
- .debug_macro   0x00015bc7      0x50f source/timer.o
- .debug_macro   0x000160d6      0x50f source/usart.o
- .debug_macro   0x000165e5      0x50f source/w5500_reg.o
- .debug_macro   0x00016af4      0x515 source/cfg.o
+ .debug_macro   0x00011583       0x2e source/acc_and_logs.o
+ .debug_macro   0x000115b1      0x44a source/acc_and_logs.o
+ .debug_macro   0x000119fb       0x16 source/acc_and_logs.o
+ .debug_macro   0x00011a11       0x52 source/acc_and_logs.o
+ .debug_macro   0x00011a63       0x1c source/acc_and_logs.o
+ .debug_macro   0x00011a7f       0x10 source/acc_and_logs.o
+ .debug_macro   0x00011a8f       0x10 source/acc_and_logs.o
+ .debug_macro   0x00011a9f       0x1c source/acc_and_logs.o
+ .debug_macro   0x00011abb       0x52 source/acc_and_logs.o
+ .debug_macro   0x00011b0d       0x40 source/acc_and_logs.o
+ .debug_macro   0x00011b4d       0x10 source/acc_and_logs.o
+ .debug_macro   0x00011b5d       0x40 source/acc_and_logs.o
+ .debug_macro   0x00011b9d       0xd7 source/acc_and_logs.o
+ .debug_macro   0x00011c74       0x16 source/acc_and_logs.o
+ .debug_macro   0x00011c8a      0x18b source/acc_and_logs.o
+ .debug_macro   0x00011e15       0x58 source/acc_and_logs.o
+ .debug_macro   0x00011e6d       0x8e source/acc_and_logs.o
+ .debug_macro   0x00011efb      0x50f source/alg.o
+ .debug_macro   0x0001240a      0x551 source/cmd.o
+ .debug_macro   0x0001295b      0x50f source/crc.o
+ .debug_macro   0x00012e6a      0x521 source/encod_k.o
+ .debug_macro   0x0001338b      0x50f source/eth_parse.o
+ .debug_macro   0x0001389a      0x50f source/flash.o
+ .debug_macro   0x00013da9      0x50f source/gpio.o
+ .debug_macro   0x000142b8      0x50f source/iap.o
+ .debug_macro   0x000147c7      0x50f source/main.o
+ .debug_macro   0x00014cd6      0x50f source/socket.o
+ .debug_macro   0x000151e5      0x50f source/spi.o
+ .debug_macro   0x000156f4      0x50f source/sys_clock.o
+ .debug_macro   0x00015c03      0x50f source/timer.o
+ .debug_macro   0x00016112      0x50f source/usart.o
+ .debug_macro   0x00016621      0x50f source/w5500_reg.o
+ .debug_macro   0x00016b30      0x515 source/cfg.o
 
-.debug_line     0x00000000     0xa682
+.debug_line     0x00000000     0xa70b
  .debug_line    0x00000000      0x6c8 Device_Startup/startup_samr21.o
- .debug_line    0x000006c8      0x93a source/acc_and_logs.o
- .debug_line    0x00001002      0x906 source/alg.o
- .debug_line    0x00001908      0xa85 source/cmd.o
- .debug_line    0x0000238d      0x8d8 source/crc.o
- .debug_line    0x00002c65      0x93e source/encod_k.o
- .debug_line    0x000035a3      0x941 source/eth_parse.o
- .debug_line    0x00003ee4      0x960 source/flash.o
- .debug_line    0x00004844      0x90d source/gpio.o
- .debug_line    0x00005151      0x8e7 source/iap.o
- .debug_line    0x00005a38      0x8d9 source/main.o
- .debug_line    0x00006311      0x919 source/socket.o
- .debug_line    0x00006c2a      0x99f source/spi.o
- .debug_line    0x000075c9      0x8c6 source/sys_clock.o
- .debug_line    0x00007e8f      0x968 source/timer.o
- .debug_line    0x000087f7      0xa45 source/usart.o
- .debug_line    0x0000923c      0xaf0 source/w5500_reg.o
- .debug_line    0x00009d2c      0x956 source/cfg.o
+ .debug_line    0x000006c8      0x931 source/acc_and_logs.o
+ .debug_line    0x00000ff9      0x906 source/alg.o
+ .debug_line    0x000018ff      0xab9 source/cmd.o
+ .debug_line    0x000023b8      0x91f source/crc.o
+ .debug_line    0x00002cd7      0x93e source/encod_k.o
+ .debug_line    0x00003615      0x937 source/eth_parse.o
+ .debug_line    0x00003f4c      0x987 source/flash.o
+ .debug_line    0x000048d3      0x910 source/gpio.o
+ .debug_line    0x000051e3      0x8e7 source/iap.o
+ .debug_line    0x00005aca      0x8d6 source/main.o
+ .debug_line    0x000063a0      0x919 source/socket.o
+ .debug_line    0x00006cb9      0x99f source/spi.o
+ .debug_line    0x00007658      0x8c6 source/sys_clock.o
+ .debug_line    0x00007f1e      0x962 source/timer.o
+ .debug_line    0x00008880      0xa45 source/usart.o
+ .debug_line    0x000092c5      0xaf0 source/w5500_reg.o
+ .debug_line    0x00009db5      0x956 source/cfg.o
 
-.debug_str      0x00000000    0x7198e
+.debug_str      0x00000000    0x71a7d
  .debug_str     0x00000000    0x69829 Device_Startup/startup_samr21.o
                               0x69c4e (size before relaxing)
- .debug_str     0x00069829     0x6e22 source/acc_and_logs.o
-                              0x6fab4 (size before relaxing)
- .debug_str     0x0007064b       0x43 source/alg.o
-                              0x6f9f0 (size before relaxing)
- .debug_str     0x0007068e      0x217 source/cmd.o
-                              0x6fc58 (size before relaxing)
- .debug_str     0x000708a5       0x10 source/crc.o
-                              0x6f9ce (size before relaxing)
- .debug_str     0x000708b5       0x86 source/encod_k.o
-                              0x6fa47 (size before relaxing)
- .debug_str     0x0007093b       0xa6 source/eth_parse.o
-                              0x6fa4e (size before relaxing)
- .debug_str     0x000709e1       0xc5 source/flash.o
-                              0x6fbbe (size before relaxing)
- .debug_str     0x00070aa6      0x1a5 source/gpio.o
-                              0x6fb76 (size before relaxing)
- .debug_str     0x00070c4b       0x26 source/iap.o
-                              0x6fad4 (size before relaxing)
- .debug_str     0x00070c71       0x91 source/main.o
-                              0x6fb6d (size before relaxing)
- .debug_str     0x00070d02       0x1d source/socket.o
-                              0x6f9d1 (size before relaxing)
- .debug_str     0x00070d1f      0x4f8 source/spi.o
-                              0x700da (size before relaxing)
- .debug_str     0x00071217      0x3d4 source/sys_clock.o
-                              0x6ff54 (size before relaxing)
- .debug_str     0x000715eb      0x23b source/timer.o
-                              0x7021d (size before relaxing)
- .debug_str     0x00071826       0x25 source/usart.o
-                              0x6ffa0 (size before relaxing)
- .debug_str     0x0007184b      0x120 source/w5500_reg.o
-                              0x6fb09 (size before relaxing)
- .debug_str     0x0007196b       0x23 source/cfg.o
-                              0x6fa76 (size before relaxing)
+ .debug_str     0x00069829     0x6ea9 source/acc_and_logs.o
+                              0x6fb43 (size before relaxing)
+ .debug_str     0x000706d2       0x43 source/alg.o
+                              0x6fa6f (size before relaxing)
+ .debug_str     0x00070715      0x24c source/cmd.o
+                              0x6fd18 (size before relaxing)
+ .debug_str     0x00070961       0xd9 source/crc.o
+                              0x6fb38 (size before relaxing)
+ .debug_str     0x00070a3a       0x86 source/encod_k.o
+                              0x6fac6 (size before relaxing)
+ .debug_str     0x00070ac0       0xa6 source/eth_parse.o
+                              0x6facd (size before relaxing)
+ .debug_str     0x00070b66       0x2f source/flash.o
+                              0x6fc5f (size before relaxing)
+ .debug_str     0x00070b95      0x1a5 source/gpio.o
+                              0x6fbff (size before relaxing)
+ .debug_str     0x00070d3a       0x26 source/iap.o
+                              0x6fb53 (size before relaxing)
+ .debug_str     0x00070d60       0x93 source/main.o
+                              0x6fbf3 (size before relaxing)
+ .debug_str     0x00070df3       0x1d source/socket.o
+                              0x6fa50 (size before relaxing)
+ .debug_str     0x00070e10      0x4f8 source/spi.o
+                              0x70159 (size before relaxing)
+ .debug_str     0x00071308      0x3d2 source/sys_clock.o
+                              0x6ffd3 (size before relaxing)
+ .debug_str     0x000716da      0x23b source/timer.o
+                              0x7029c (size before relaxing)
+ .debug_str     0x00071915       0x25 source/usart.o
+                              0x7001f (size before relaxing)
+ .debug_str     0x0007193a      0x120 source/w5500_reg.o
+                              0x6fb88 (size before relaxing)
+ .debug_str     0x00071a5a       0x23 source/cfg.o
+                              0x6faf5 (size before relaxing)
 
-.debug_frame    0x00000000      0xff0
+.debug_frame    0x00000000     0x1054
  .debug_frame   0x00000000       0x4c Device_Startup/startup_samr21.o
  .debug_frame   0x0000004c       0xb4 source/acc_and_logs.o
  .debug_frame   0x00000100       0x90 source/alg.o
  .debug_frame   0x00000190       0x8c source/cmd.o
- .debug_frame   0x0000021c       0x50 source/crc.o
- .debug_frame   0x0000026c       0xb0 source/encod_k.o
- .debug_frame   0x0000031c       0xb4 source/eth_parse.o
- .debug_frame   0x000003d0       0xb0 source/flash.o
- .debug_frame   0x00000480       0x68 source/gpio.o
- .debug_frame   0x000004e8       0x30 source/iap.o
- .debug_frame   0x00000518       0x2c source/main.o
- .debug_frame   0x00000544       0x30 source/socket.o
- .debug_frame   0x00000574      0x110 source/spi.o
- .debug_frame   0x00000684       0x50 source/sys_clock.o
- .debug_frame   0x000006d4      0x10c source/timer.o
- .debug_frame   0x000007e0      0x18c source/usart.o
- .debug_frame   0x0000096c      0x14c source/w5500_reg.o
- .debug_frame   0x00000ab8       0xcc source/cfg.o
- .debug_frame   0x00000b84       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_udivsi3.o)
- .debug_frame   0x00000ba4       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_fixunsdfsi.o)
- .debug_frame   0x00000bd0       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(floatunsisf.o)
- .debug_frame   0x00000bf8       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(divdf3.o)
- .debug_frame   0x00000c34       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(muldf3.o)
- .debug_frame   0x00000c70       0x38 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(subdf3.o)
- .debug_frame   0x00000ca8       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(fixdfsi.o)
- .debug_frame   0x00000cd4       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(floatunsidf.o)
- .debug_frame   0x00000cfc       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(extendsfdf2.o)
- .debug_frame   0x00000d28       0x38 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(eqdf2.o)
- .debug_frame   0x00000d60       0x38 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(gedf2.o)
- .debug_frame   0x00000d98       0x38 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(ledf2.o)
- .debug_frame   0x00000dd0       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-init.o)
- .debug_frame   0x00000dfc       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-memcpy-stub.o)
- .debug_frame   0x00000e2c       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-memset.o)
- .debug_frame   0x00000e5c       0x54 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-__call_atexit.o)
- .debug_frame   0x00000eb0       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-atexit.o)
- .debug_frame   0x00000ed8       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-fini.o)
- .debug_frame   0x00000f04       0xb0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-lock.o)
- .debug_frame   0x00000fb4       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-__atexit.o)
+ .debug_frame   0x0000021c       0x70 source/crc.o
+ .debug_frame   0x0000028c       0xb0 source/encod_k.o
+ .debug_frame   0x0000033c       0xb4 source/eth_parse.o
+ .debug_frame   0x000003f0       0xf0 source/flash.o
+ .debug_frame   0x000004e0       0x68 source/gpio.o
+ .debug_frame   0x00000548       0x30 source/iap.o
+ .debug_frame   0x00000578       0x30 source/main.o
+ .debug_frame   0x000005a8       0x30 source/socket.o
+ .debug_frame   0x000005d8      0x110 source/spi.o
+ .debug_frame   0x000006e8       0x50 source/sys_clock.o
+ .debug_frame   0x00000738      0x10c source/timer.o
+ .debug_frame   0x00000844      0x18c source/usart.o
+ .debug_frame   0x000009d0      0x14c source/w5500_reg.o
+ .debug_frame   0x00000b1c       0xcc source/cfg.o
+ .debug_frame   0x00000be8       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_udivsi3.o)
+ .debug_frame   0x00000c08       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_fixunsdfsi.o)
+ .debug_frame   0x00000c34       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(floatunsisf.o)
+ .debug_frame   0x00000c5c       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(divdf3.o)
+ .debug_frame   0x00000c98       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(muldf3.o)
+ .debug_frame   0x00000cd4       0x38 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(subdf3.o)
+ .debug_frame   0x00000d0c       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(fixdfsi.o)
+ .debug_frame   0x00000d38       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(floatunsidf.o)
+ .debug_frame   0x00000d60       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(extendsfdf2.o)
+ .debug_frame   0x00000d8c       0x38 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(eqdf2.o)
+ .debug_frame   0x00000dc4       0x38 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(gedf2.o)
+ .debug_frame   0x00000dfc       0x38 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(ledf2.o)
+ .debug_frame   0x00000e34       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-init.o)
+ .debug_frame   0x00000e60       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-memcpy-stub.o)
+ .debug_frame   0x00000e90       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-memset.o)
+ .debug_frame   0x00000ec0       0x54 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-__call_atexit.o)
+ .debug_frame   0x00000f14       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-atexit.o)
+ .debug_frame   0x00000f3c       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-fini.o)
+ .debug_frame   0x00000f68       0xb0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-lock.o)
+ .debug_frame   0x00001018       0x3c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc.a(lib_a-__atexit.o)
 
 .debug_ranges   0x00000000       0x30
  .debug_ranges  0x00000000       0x30 source/cmd.o

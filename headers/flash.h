@@ -9,24 +9,24 @@
 	#define ACC2				2
 	#define ACC3				3
 	////place in flash
-		#define ACCOUNT_PLACE	(DWORD)0x0003FB00
+		#define ACCOUNT_PLACE	(DWORD)0x0003F300
 		//CFG
 		#define CFG_1_ADDR		(DWORD)0x0003F000
 		#define CFG_2_ADDR		(DWORD)0x0003F100
 		//LOGs
-		#define LOGS_ADDR		(DWORD)0x0003F300
+		#define LOGS_ADDR		(DWORD)0x0002C000
+		#define CELLS			256
+		#define CELL			16
+		#define BLOCK			256
 //typedefs
 	////
+
 	#pragma pack(1)
-	typedef struct { BYTE indx; BYTE operat_code; BYTE rsv[2];}CELL_INFO;
-	#pragma pack()
-	
-	#pragma pack(1)
-	typedef struct {DWORD ip; DWORD times; CELL_INFO inform;}LOG_CELL;
+	typedef struct { DWORD ip; DWORD times; DWORD indx; WORD operat_code; WORD version;}LOG_CELL;//(4;4;2;2;4)16
 	#pragma pack()
 
 	#pragma pack(1)
-	typedef struct {BYTE ptr; BYTE rsv[7]; LOG_CELL cell[170];}LOG_DATA;
+	typedef struct { LOG_CELL cell[CELLS];}LOG_DATA;//(1;2;13;(16*127)2032)2048
 	#pragma pack()
 	////accounts
 	#pragma pack(1)

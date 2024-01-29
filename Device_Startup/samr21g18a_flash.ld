@@ -32,15 +32,15 @@ ATSAMR21x18A - RAM-32k FLASH-256k
 ATSAMR21x19A - RAM-32k FLASH-256k + 512k   
 
 rom_boot        (rx)  : ORIGIN = 0x00000000, LENGTH = 0x00004000  //boot			16k
-rom_main		(rx)  : ORIGIN = 0x00004000, LENGTH = 0x0001C000  //main			112k
-rom_copy_main   (rx)  : ORIGIN = 0x00020000, LENGTH = 0x0001C000  //copy main		112k
-res			    (rx)  : ORIGIN = 0x0003C000, LENGTH = 0x00003000  //reserv			12k	
+rom_main		(rx)  : ORIGIN = 0x00004000, LENGTH = 0x00014000  //main			82k
+rom_copy_main   (rx)  : ORIGIN = 0x00018000, LENGTH = 0x00014000  //copy main		82k
+logs		    (rx)  : ORIGIN = 0x0002C000, LENGTH = 0x00001000  //logs			4k	
+rsv				(rx)  :	ORIGIN = 0x0002D000, LENGHT = 0X00012F00  //reserv			77kb
 cfg			    (rx)  : ORIGIN = 0x0003F000, LENGTH = 0x00000100  //config			256b
 cfg_2			(rx)  : ORIGIN = 0x0003F100, LENGTH = 0x00000100  //config_2		256b
 key				(rx)  : ORIGIN = 0x0003F200, LENGTH = 0x00000100  //key				256b
-logs		    (rx)  : ORIGIN = 0x0003F300, LENGTH = 0x00000800  //logs			2k
-logins		    (rx)  : ORIGIN = 0x0003FB00, LENGTH = 0x00000100  //logins and pass	256b			
-res			    (rx)  : ORIGIN = 0x0003FC00, LENGTH = 0x00000400  //reserv			1k	
+acc				(rx)  : ORIGIN = 0x0003F300, LENGTH = 0x00000100  //accounts		256b		
+res			    (rx)  : ORIGIN = 0x0003F400, LENGTH = 0x00000D00  //reserv			3k
 
 ram_main		(rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000
 ram_boot        (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000

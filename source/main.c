@@ -3,7 +3,8 @@
 ERRORS err_dword;
 WORD reset;
 ACCOUNTS accnts;
-
+DWORD crc_fw;
+BYTE deb = 0;
 int main(void)
 {
 	SCB->VTOR=0x00004000;
@@ -27,20 +28,22 @@ int main(void)
 	eth_init();
 	
 	acc(READ);
+	log_ch();
+	log_safe(0, 0x00000000, 0x00000000, START);
+	
+	crc_fw = crc32(0x00004000, 0x00014000);
+	
 	led_init();
 		
-	log_ch();
+	
 /*DEBUG*/
-	log_clear();
-	//log_safe(1, 0xAAAAAAAA, 0xBBBBBBBB, 109);
-	//acc(DROP);
-	//cfg_drop();
 	if (sizeof(CFG_1) != 0x100 ) { warning_led(1); DWORD ERR1 = sizeof(CFG_1);}
 	if (sizeof(CFG_2) != 0x100 ) { warning_led(2); DWORD ERR2 = sizeof(CFG_2);}
 /*DEBUG*/				
 	while (1)
 	{
-	    if(reset == NULL) {wdt_reset();}//wdt-drop timer
+	    if(reset == NULL)
+		 {wdt_reset();}//wdt-drop timer
 		eth_process();
 		cmd_process();
 		tc3_process();
