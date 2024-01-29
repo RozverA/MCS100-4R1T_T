@@ -60,7 +60,7 @@ void init(BYTE n_port)
 	port[n_port].sercom->USART.CTRLA.bit.CPOL    =0x00;									// Bit  29    - CPOL: Clock Polarity (0: SCK is low when idle. The leading edge of a clock cycle is a rising edge, while the trailing edge is a falling edge)
 	port[n_port].sercom->USART.CTRLA.bit.CMODE   =0x00;									// Bit  28    - CMODE: Communication Mode (0: Asynchronous communication.)
 	port[n_port].sercom->USART.CTRLA.bit.SAMPA   =0x00;									// Bits 23:22 - SAMPA[1:0]: Sample Adjustment (0: 3-4-5)
-	port[n_port].sercom->USART.CTRLA.bit.SAMPR   =0x02;									// Bits 15:13 - SAMPR[2:0]: Sample Rate (2: 8x over-sampling using arithmetic baud rate generation.)
+	port[n_port].sercom->USART.CTRLA.bit.SAMPR   =0x00;									// Bits 15:13 - SAMPR[2:0]: Sample Rate (2: 8x over-sampling using arithmetic baud rate generation.)
 	port[n_port].sercom->USART.CTRLA.bit.IBON    =0x00;									// Bit  8     - IBON: Immediate Buffer Overflow Notification (0: STATUS.BUFOVF is asserted when it occurs in the data stream)
 	port[n_port].sercom->USART.CTRLA.bit.RUNSTDBY=0x00;									// Bit  7     - RUNSTDBY: Run In Standby (Generic clock is disabled when ongoing transaction is finished. All interrupts can wake up the device.)
 	port[n_port].sercom->USART.CTRLA.bit.MODE    =0x01;									// Bits 4:2   - MODE: Operating Mode (1: USART with internal clock.)
@@ -82,8 +82,8 @@ void init(BYTE n_port)
 	//stop bit
 	switch(cfg_1.sock_rs485[n_port].stop)	
 	{
-		case 2:		port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 1; break;
-		default:	port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 0; break;
+		case 2:		port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 1; break;//2 stop bits
+		default:	port[n_port].sercom->USART.CTRLB.bit.SBMODE  = 0; break;//1 stop bits
 	}
 	//char size
 	switch (cfg_1.sock_rs485[n_port].bsize)
@@ -94,7 +94,8 @@ void init(BYTE n_port)
 	//baud
 	val = cfg_1.sock_rs485[n_port].baud;
 	if ( !((val == 600) || (val == 1200) || (val == 2400) || (val == 4800) || (val == 9600) || (val == 19200) || (val == 38400) || (val == 57600) || (val == 115200) || (val == 128000) || (val == 256000)) ) {val = 38400;}
-	port[n_port].sercom->USART.BAUD.bit.BAUD = 65536.0f*(1.0f-(8.0*(float)(val))/(float)(PROC_HERZ)); 
+	port[n_port].sercom->USART.BAUD.bit.BAUD =	65536.0f*(1.0f-(16.0*(float)(val))/(float)(PROC_HERZ)); 
+	//SERCOM1->USART.BAUD.bit.BAUD=				65536.0f*(1.0f-(8.0*(float)(38400))/(float)(8000000));
 	//cfg settings end
 
 	port[n_port].sercom->USART.INTENSET.bit.RXC  =0x01; // Bit 2 RXC: Receive Complete Interrupt Enable
@@ -157,9 +158,9 @@ WORD usart_read (BYTE n_port, BYTE* rbuf,WORD size)
 void sercom_proc(BYTE n_port)
 {
 	if (port[n_port].sercom->USART.STATUS.bit.COLL)		{port[n_port].errors.collision++;		port[n_port].sercom->USART.STATUS.bit.COLL   = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.ISF)		{port[n_port].errors.synchr++;		port[n_port].sercom->USART.STATUS.bit.ISF    = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.BUFOVF)	{port[n_port].errors.buf_ovf++;		port[n_port].sercom->USART.STATUS.bit.BUFOVF = 1;}
-	if (port[n_port].sercom->USART.STATUS.bit.FERR)		{port[n_port].errors.st_bit++;		port[n_port].sercom->USART.STATUS.bit.FERR   = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.ISF)		{port[n_port].errors.synchr++;		    port[n_port].sercom->USART.STATUS.bit.ISF    = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.BUFOVF)	{port[n_port].errors.buf_ovf++;		    port[n_port].sercom->USART.STATUS.bit.BUFOVF = 1;}
+	if (port[n_port].sercom->USART.STATUS.bit.FERR)		{port[n_port].errors.st_bit++;		    port[n_port].sercom->USART.STATUS.bit.FERR   = 1;}
 	if (port[n_port].sercom->USART.STATUS.bit.PERR)		{port[n_port].errors.prty++;			port[n_port].sercom->USART.STATUS.bit.PERR   = 1;}
 		
 	if (port[n_port].sercom->USART.INTFLAG.bit.RXC)

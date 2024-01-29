@@ -48,8 +48,16 @@ void spi_init(void)
 	SERCOM5->SPI.CTRLB.bit.SSDE   =0x00;  // Bit  9     - SSDE: Slave Select Low Detect Enable (0: _SS low detector is disabled.)
 	SERCOM5->SPI.CTRLB.bit.PLOADEN=0x00;  // Bit 6      – PLOADEN: Slave Data Preload Enable ()
 	SERCOM5->SPI.CTRLB.bit.CHSIZE =0x00;  // Bits 2:0   - CHSIZE: Character Size (0: 8 bits)
-
-	SERCOM5->SPI.BAUD.bit.BAUD        = (float)(PROC_HERZ ) / (2 * (float)(1000000 )) - 1;
+	
+	//SERCOM5->SPI.BAUD.bit.BAUD   =0x00;   // 0: 16MHz/1
+     /*
+     / Fix the baud rate at 1000000
+     / SystemCoreClock / (2 * baudrate) - 1
+     / SystemCoreClock = 8000000
+     / baudrate = 1000000
+    */	
+	
+	SERCOM5->SPI.BAUD.bit.BAUD        = (float)(PROC_HERZ ) / (2 * (float)(8000000 )) - 1;
 	SERCOM5->SPI.INTENSET.bit.TXC	  = 0x00;
 	SERCOM5->SPI.INTENSET.bit.DRE     = 0x00;
 	SERCOM5->SPI.INTENSET.bit.RXC     = 0x00;	
