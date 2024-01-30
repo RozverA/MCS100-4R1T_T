@@ -282,12 +282,17 @@ void usart_process (BYTE n_port)
 			
 			if(!cfg_1.access[n_port - 1].en) {	if (!acces_ip(n_port - 1)) {return;} 	}	//check access ip
 			
-			port[n_port-1].time_port = port[n_port-1].tout_port*10;							//check timeout
+ 			port[n_port-1].time_port = port[n_port-1].tout_port*10;							//check timeout
 		
 			size = eth_sock[n_port].len[0] << 8 | eth_sock[n_port].len[1];				//give size
 		
 			if(size>USART_BUF_SIZE)	{eth_sock[n_port].r_status = 0; return;}			//check overload
 				
+			if (n_port == 4)
+			{
+				n_port = 4;
+			}
+			
 			switch(cfg_1.sock_rs485[n_port - 1].pl)
 			{
 				case MBUS:		

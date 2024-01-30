@@ -13,6 +13,9 @@ W5500_MODE w5500_mode;
 
 volatile WORD sizert=0;
 
+volatile BYTE ip_tcp[4];
+
+
 BYTE w5500_init_reg(void)
 {
 	pin_ctrl(W55,PWR,SET);
@@ -268,6 +271,8 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb)
 	static BYTE st_cmd_w5500=0;
 	static WORD size=0;
 	static BYTE status_ded[MAX_SOCKETS_CNT];
+	
+	
 	BYTE cnt=0;
 
 	switch(st_cmd_w5500)
@@ -356,9 +361,20 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb)
 			ptr_buf=wbuf_w55;
 			len_buf=cnt;
 			cmd=WRITE_DATA;
-			st_cmd_w5500 = TCP_BK_START;//"next" 
+			st_cmd_w5500 = TCP_GIVE_IP;//"next" 
 		break;
+		case TCP_GIVE_IP:
+			addr_w5500=ADDR_SOC_D_IP_ADDR0;//addr
+			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb
+			ptr_buf=ip_tcp;//data
+			len_buf=4;
+			cmd=READ_DATA;//mode
+			st_cmd_w5500 = TCP_BK_START; //"next"
+
+		break;		
 		case TCP_BK_START:
+			//memcpy((BYTE*) & eth_sock[sock_numb].ip_addr, ip_tcp, 4);
+			eth_sock[sock_numb].ip_addr[0]=ip_tcp[0];
 			st_cmd_w5500=TCP_GIVE_LEN;//סבנמס ןאנאלוענמג
 			if(!size)					 {return PROC_ER;}
 			if(size > USART_BUF_SIZE)	 {return PROC_ER;}

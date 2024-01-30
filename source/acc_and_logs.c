@@ -35,12 +35,11 @@ void acc(BYTE cmd)//command(читать, записать, сбросить)
 
 BYTE acces_ip(BYTE n_port)//True-1,F-0;
 {
-	BYTE ch = 0;
-	if		(SRAV(4, &cfg_1.access[n_port].ip[0], eth_sock[n_port+1].ip_addr)) {ch++;}
-	else if (SRAV(4, &cfg_1.access[n_port].ip[1], eth_sock[n_port+1].ip_addr)) {ch++;}
-	else if (SRAV(4, &cfg_1.access[n_port].ip[2], eth_sock[n_port+1].ip_addr)) {ch++;}
-	else if (SRAV(4, &cfg_1.access[n_port].ip[3], eth_sock[n_port+1].ip_addr)) {ch++;}
-	return ch;
+	if		(SRAV(4, &cfg_1.access[n_port].ip[0], eth_sock[n_port+1].ip_addr)) {return 1;}
+	if		(SRAV(4, &cfg_1.access[n_port].ip[1], eth_sock[n_port+1].ip_addr)) {return 1;}
+	if		(SRAV(4, &cfg_1.access[n_port].ip[2], eth_sock[n_port+1].ip_addr)) {return 1;}
+	if		(SRAV(4, &cfg_1.access[n_port].ip[3], eth_sock[n_port+1].ip_addr)) {return 1;}
+	return 0;
 }
 
 void log_ch( )

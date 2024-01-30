@@ -44,6 +44,7 @@
 	#define TCP_BK_START		4//
 	#define TCP_STATUS_RD		5//
 	#define TCP_FORK			6
+	#define TCP_GIVE_IP			7
 ////socket_write_tcp
 	#define TCP_RD_FSR			0
 	#define TCP_WR_DATA			1

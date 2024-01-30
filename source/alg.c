@@ -33,8 +33,7 @@ DWORD num_aus_byte(BYTE len, BYTE* src, BYTE side)//read bite line as number
 BYTE SRAV(BYTE len, BYTE* buf1, BYTE* buf2)//True-1,F-0;
 {	for(BYTE i = 0; i < len; i++)	
 	{	
-		if(*buf1++ != *buf2++) 
-		{return FALSE;}	
+		if(*buf1++ != *buf2++) 		{return FALSE;}	
 	}
 	return TRUE;	
 }
