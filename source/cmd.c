@@ -20,8 +20,7 @@ BYTE			wr_flag_acc = 0;
 #define check_permission()	{if(actv_user_id != ADMIN_LOGIN) {send_error();}}
 #define save_log(n)			{if (rsv_time != 0 ) {log_safe(actv_user_id, ip_addrs, rsv_time, n);}}
 
-#define SEC					10000
-//#define if (rsv_time == 0) {break;} 
+#define SEC					10000 
 
 #define CM2_STATUS_PACK 0x02
 #define UID_STATUS_PACK 0x8002
@@ -287,11 +286,6 @@ void usart_process (BYTE n_port)
 			size = eth_sock[n_port].len[0] << 8 | eth_sock[n_port].len[1];				//give size
 		
 			if(size>USART_BUF_SIZE)	{eth_sock[n_port].r_status = 0; return;}			//check overload
-				
-			if (n_port == 4)
-			{
-				n_port = 4;
-			}
 			
 			switch(cfg_1.sock_rs485[n_port - 1].pl)
 			{

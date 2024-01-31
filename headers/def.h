@@ -37,9 +37,10 @@
 	#define PROC_OK		1
 	#define PROC_ER		2
 ////HERZ SETTINGS
+#define MHz					1000000
+#define PROC_HERZ48			48*MHz
+//#define PROC_HERZ8			8*MHz
 
-#define PROC_HERZ48			48000000
-//#define PROC_HERZ8			8000000
 
 #ifdef PROC_HERZ8
 	#define PROC_HERZ		PROC_HERZ8
@@ -82,5 +83,7 @@
 	extern void flash_write(DWORD addr,BYTE *buf,WORD size);
 	extern WORD flash_copy(DWORD dst,DWORD src,DWORD size);
 	extern WORD flash_read(DWORD addr,void* buf,WORD size);
+//////debug
+	#define find()	{BP(&buf_cnt, 200);}
 
 #endif /* DEF_H_ */

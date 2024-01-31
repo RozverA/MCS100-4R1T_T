@@ -9,7 +9,7 @@ int main(void)
 {
 	SCB->VTOR=0x00004000;
 	
-	if (PROC_HERZ == (8 * 1000000))	{sys_clock_init_USE_OSC8M();}   //8MHz
+	if (PROC_HERZ == (8 * MHz))		{sys_clock_init_USE_OSC8M();}   //8MHz
 	else							{sys_clock_init_USE_DFLL48M();}	//48MHz
 		
 	__enable_irq();
@@ -39,6 +39,7 @@ int main(void)
 /*DEBUG*/
 	if (sizeof(CFG_1) != 0x100 ) { warning_led(1); DWORD ERR1 = sizeof(CFG_1);}
 	if (sizeof(CFG_2) != 0x100 ) { warning_led(2); DWORD ERR2 = sizeof(CFG_2);}
+	WORD buf_cnt = 0;
 /*DEBUG*/				
 	while (1)
 	{

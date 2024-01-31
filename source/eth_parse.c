@@ -21,7 +21,6 @@ void eth_process(void)
 {
 	static BYTE eth_st=0;
 	WORD rtrn = 0;
-	
 	switch(eth_st)
 	{
 		case CHECK:				

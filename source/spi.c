@@ -75,7 +75,6 @@ WORD spi_process (uint16_t addr, uint8_t cb, uint8_t *buf, uint16_t len, BYTE cm
 {
 	BYTE st_spi=0;
 	WORD rn_wn=0;
-	
 	st_spi = cmd;
 	switch(st_spi)
 	{
@@ -133,7 +132,6 @@ WORD spi_read(uint16_t addr, uint8_t cb, uint8_t *rx_buf, uint16_t len)
 {
 	WORD cnt=0;
 	static BYTE st_read=0;
-	
 	switch (st_read)
 	{
 		case 0:
@@ -152,11 +150,10 @@ WORD spi_read(uint16_t addr, uint8_t cb, uint8_t *rx_buf, uint16_t len)
 		case 1:
 			if(spi.wx)							{return 0;}
 			if(spi.rn!=spi.wn)					{return 0;}
-			memcpy(rx_buf,&spi.rbuf[3],spi.rn);
+			memcpy(rx_buf,&spi.rbuf[3],(spi.rn-3));
 			st_read--;
-			CS_set();
-				
-			return (spi.rn);
+			CS_set();	
+			return (spi.rn-3);
 		break;
 	}
 	return 0;

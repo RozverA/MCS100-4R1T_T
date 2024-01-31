@@ -37,3 +37,11 @@ BYTE SRAV(BYTE len, BYTE* buf1, BYTE* buf2)//True-1,F-0;
 	}
 	return TRUE;	
 }
+
+BYTE BP(BYTE* target, BYTE num)
+{
+	if (*target == num)
+	{
+		return 0;
+	}
+}//#define find()	{BP(&w5500_mode.numb_socket, 0x0a);}

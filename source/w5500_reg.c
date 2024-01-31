@@ -13,9 +13,6 @@ W5500_MODE w5500_mode;
 
 volatile WORD sizert=0;
 
-volatile BYTE ip_tcp[4];
-
-
 BYTE w5500_init_reg(void)
 {
 	pin_ctrl(W55,PWR,SET);
@@ -56,7 +53,6 @@ WORD w5500_process (BYTE spi_mode, BYTE sock_numb)
 	static BYTE w5500_st=0;
 	WORD rtrn=0;
 	if(!cmd_spi_wait){w5500_st=0;return 2;} //if 20 mS no answer, break process
-		
 		
 	switch (w5500_st)
 	{
@@ -366,15 +362,12 @@ WORD w5500_cmd_read_socket_tcp (BYTE sock_numb)
 		case TCP_GIVE_IP:
 			addr_w5500=ADDR_SOC_D_IP_ADDR0;//addr
 			cb_w5500=SOCKET_REGISTER | SOCKET(sock_numb);//bsb
-			ptr_buf=ip_tcp;//data
+			ptr_buf=(BYTE*) & eth_sock[sock_numb].ip_addr;//data
 			len_buf=4;
 			cmd=READ_DATA;//mode
 			st_cmd_w5500 = TCP_BK_START; //"next"
-
 		break;		
 		case TCP_BK_START:
-			//memcpy((BYTE*) & eth_sock[sock_numb].ip_addr, ip_tcp, 4);
-			eth_sock[sock_numb].ip_addr[0]=ip_tcp[0];
 			st_cmd_w5500=TCP_GIVE_LEN;//סבנמס ןאנאלוענמג
 			if(!size)					 {return PROC_ER;}
 			if(size > USART_BUF_SIZE)	 {return PROC_ER;}
@@ -475,28 +468,3 @@ WORD w5500_write_socket_tcp (BYTE sock_numb)
 	}
 	return PROC_WAIT;
 }
-
-// BYTE w5500_read_mac()
-// {
-// 	
-// }
-// sizert=(*(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27.case1<<8) | (*(BYTE*)&chip.sockReg[sock_numb].R017_Sn_RX_RSR_26_27.case2);//check len
-// if(sizert!=0x0000)//back & return
-// {
-// 	addr_w5500=eth_sock[sock_numb].ptr_rx_buf;//addr start messege
-// 	cb_w5500=SOCKET_RX_BUFFER | SOCKET(sock_numb);//bsb sock RX
-// 	ptr_buf=(BYTE*) & eth_sock[sock_numb].data;
-// 	len_buf = sizert;
-// 	eth_sock[sock_numb].ptr_rx_buf=eth_sock[sock_numb].ptr_rx_buf+len_buf;
-// 	
-// 	size=len_buf;
-// 	if(len_buf>DEFAULT_MTU_TCP){size=PROC_ER;}
-// 	
-// 	eth_sock[sock_numb].len[0]=	(size & 0xFF00)>>8;
-// 	eth_sock[sock_numb].len[1]=	(size & 0x00FF);
-// 	cmd=READ_DATA;
-// 	st_cmd_w5500 = TCP_DROP_PTR;
-// 	break;
-// }
-// st_cmd_w5500=TCP_GIVE_LEN;
-// return PROC_ER;
