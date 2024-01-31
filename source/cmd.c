@@ -184,7 +184,7 @@ void cmd_common_process (void)
  					check_permission();
 					cnt = 3;
 					
-					memcpy(&cbuf[3], &accnts.accnt[0].login[0], 256);
+					memcpy(&cbuf[3], &accnts.accnt[0].login[0], USART_BUF_SIZE);
 					crypted(&cbuf[cnt]);		cnt += 64;
 					crypted(&cbuf[cnt]);		cnt += 64;
 					crypted(&cbuf[cnt]);		cnt += 64;
@@ -200,7 +200,7 @@ void cmd_common_process (void)
 					decrypted(&cbuf[cnt]);		cnt += 64;	
 					decrypted(&cbuf[cnt]);		cnt += 64;
 					
-					memcpy(&accnts.accnt[0].login[0], &cbuf[3], 256);
+					memcpy(&accnts.accnt[0].login[0], &cbuf[3], USART_BUF_SIZE);
 					wr_flag_acc = 1;
 
 		break;
@@ -217,7 +217,7 @@ void cmd_common_process (void)
 					
 					if (wr_flag_cfg)
 					{	
-						if((crc16_ccit((BYTE*)&cfg_1_tmp,sizeof(CFG_1)) != 0))		{break;}		
+						if((crc16_ccit((BYTE*)&cfg_1_tmp,sizeof(CFG_1)) != 0))		{send_error();}		
 						memcpy(&cfg_1,&cfg_1_tmp,sizeof(CFG_1));
 						save_log(EEPROM);
 						wn |=+cfg_save();
@@ -250,6 +250,7 @@ void cmd_common_process (void)
 	cbuf[wn] = (BYTE)(cs & 0x00ff);         wn++;
 	cbuf[wn] = (BYTE)((cs & 0xff00) >> 8);  wn++;
 	
+	if (wn > MAX_SIZE_BUF_SPI) {return;}
 	memcpy((BYTE*)&eth_sock[0].data,cbuf,wn);
 	
 	eth_sock[0].len[0]=((wn & 0xFF00)>>8);
@@ -278,6 +279,7 @@ void usart_process (BYTE n_port)
 		case RS485_WRITE:
 			//ETH message check
 			if (!eth_sock[n_port].r_status){return;}										//check read stat
+/*			cfg_1.sock_rs485[3].en*/
 			
 			if(!cfg_1.access[n_port - 1].en) {	if (!acces_ip(n_port - 1)) {return;} 	}	//check access ip
 			
@@ -310,12 +312,13 @@ void usart_process (BYTE n_port)
 				switch (cfg_1.sock_rs485[n_port - 1].pl)
 				{
 					case MBUS:
-					
+						if (size > USART_BUF_SIZE) {return;}
 						memcpy(eth_sock[n_port].data + MBAP_HDR_LEN, port[n_port-1].rbuf, size);
 						size += MBAP_HDR_LEN - 2;
 						eth_sock[n_port].data[5]=size-MBAP_HDR_LEN;
 					break;
 					default://GATE
+						if (size > USART_BUF_SIZE) {return;}
 						memcpy(eth_sock[n_port].data, port[n_port-1].rbuf, size); 
 					break;
 				}

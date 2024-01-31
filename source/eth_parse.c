@@ -12,7 +12,7 @@ void eth_init(void)
 	//port socket
 	for(BYTE i=0; i<4; i++)
 	{
-		if(cfg_1.sock_rs485[i].en==FALSE) {i++; continue;} 
+		if(cfg_1.sock_rs485[i].en==FALSE) {continue;} 
 		if(socket_init(i+1,cfg_1.sock_rs485[i].src_port,cfg_1.sock_rs485[i].mode)) {err_dword.socket += (1 << i);}
 	}
 }
