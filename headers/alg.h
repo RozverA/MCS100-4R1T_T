@@ -15,9 +15,6 @@
 
 #define OK	1
 
-#define HEX	0
-#define NOHEX 1
-
 	extern DWORD num_aus_byte(BYTE len, BYTE* src, BYTE side);
 	extern void random_gen(BYTE size,BYTE* ptr);
 	extern BYTE num_to_byte(DWORD num, BYTE len, BYTE* dst, BYTE side);

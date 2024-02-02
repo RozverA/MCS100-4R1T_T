@@ -91,8 +91,6 @@ typedef struct             // size 256 bytes
 #pragma pack()
 
 //extern
-////variables
-	extern BYTE	cfg_2_err;	//error counter
 ////struct
 	extern CFG_1 cfg_1;
 	extern CFG_1 cfg_1_tmp;

@@ -2,7 +2,8 @@
 
 void acc(BYTE cmd)//command(читать, записать, сбросить)
 {
-	if (sizeof(ACCOUNTS) != 256) {cmd = 109;}
+	if (sizeof(ACCOUNTS) != 256) {warning_led(3);return;}
+		
 	switch(cmd)
 	{
 		case READ:
@@ -27,8 +28,7 @@ void acc(BYTE cmd)//command(читать, записать, сбросить)
 			if(!flash_empty(ACCOUNT_PLACE,256))	{flash_erase_page(ACCOUNT_PLACE);}
 			flash_write(ACCOUNT_PLACE, &accnts.accnt[0].login[0] , sizeof(ACCOUNTS));
 		break;
-		default:
-			warning_led(3);
+		default:			
 		break;
 	}
 }
@@ -65,11 +65,10 @@ void log_safe(BYTE actv_user_id, DWORD ip, DWORD times, WORD operat_code)
 	
 	while(1)	
 	{
-		if (ptr == CELLS)
-			{ptr = 0; break;}//OVF
-		if ((data.cell[last_ptr].indx + 1) != data.cell[ptr].indx) 
-			{ break;}
-		last_ptr++;	ptr++;	
+		if (ptr == CELLS)											{ptr = 0; break;}//OVF
+		if ((data.cell[last_ptr].indx + 1) != data.cell[ptr].indx)  { break;}
+		last_ptr++;	
+		ptr++;	
 	}
 	data.cell[ptr].ip			= ip;
 	data.cell[ptr].times		= times;

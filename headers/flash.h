@@ -4,7 +4,6 @@
 	////login
 	#define ADMIN				"admin"
 	#define USER				"user"
-	#define CHIRIT				"CHIRIT"
 	#define ACC1				1
 	#define ACC2				2
 	#define ACC3				3

@@ -55,15 +55,11 @@ uint_least32_t crc32(unsigned char *buf, size_t len)
 
 	crc = 0xFFFFFFFFUL;
 	
-
-	
 	while (len--)
 	{
-		if(!(len % 32768)) 
-		{wdt_reset();}
+		if(!(len % 32768)) {wdt_reset();}
 		crc = crc_table[(crc ^ *buf++) & 0xFF] ^ (crc >> 8);
 	}
 	
-
 	return crc ^ 0xFFFFFFFFUL;
 }

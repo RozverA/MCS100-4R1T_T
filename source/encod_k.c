@@ -1,7 +1,5 @@
 #include "def.h"
 
-#define acc1 		"0123456789abcdefhgijklmnopqrstuv"
-//#define admin 		"admin"
 #define CRYPTED 	1
 #define DECRYPTED 	0
 
@@ -23,10 +21,14 @@ void wave(char* ptr, char mode)
 {
 	char plus;
 	char sign = -1;
+	char i=0;
+	char step=0;
+	
+	
 	if (mode == CRYPTED) {sign = 1;}
-	for (char i = 0; i < 64; i++)
+	for ( i= 0; i < 64; i++)
 	{
-		char step = i % 2;
+		step = i % 2;
 		plus = ((63 - i) / 2) * sign;
 		if (step) { *ptr -= plus; } else {*ptr += plus;}
 		ptr++;
@@ -36,15 +38,18 @@ void wave(char* ptr, char mode)
 void shell_game(char* ptr, char mode)
 {
 	char buf[64];
-	char region[8];
 	char lap = 0;
 	char cursour = 0;
 	char* debug = ptr;
+	BYTE j = 0;
+	BYTE i = 0;
+	
 	memcpy(buf, ptr, 64);
 	if (mode == CRYPTED) {mode = 3;} else {mode = 1;}
-	for (int j = 0; j < mode; j++)
+		
+	for (j = 0; j < mode; j++)
 	{
-		for (int i = 0; i < 63 ; i++)
+		for (i = 0; i < 63 ; i++)
 		{
 			if (cursour > 63)	{lap++; cursour = lap;}
 			*ptr = buf[cursour];
@@ -61,8 +66,11 @@ void shell_game(char* ptr, char mode)
 void move(char* ptr, char mode)
 {
 	char sign = - 1;
+	BYTE i = 0;
+	
+	
 	if (mode == CRYPTED){sign = 1;}
-	for (int i = 0; i < 63; i++)
+	for (i = 0; i < 63; i++)
 	{
 		*ptr += 68 * sign;
 	}	

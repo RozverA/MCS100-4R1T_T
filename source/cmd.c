@@ -13,11 +13,11 @@ BYTE			wr_flag_acc = 0;
 #define UID_WHO_ARE_YOU 0x8001
 
 #define send_error()		{cbuf[wn] = 0; wn++; break;}
-#define send_error_EX()		{cbuf[wn] = 0; memset(cbuf[wn - 4], 0, 4); wn+=5; break;}
+#define send_error_EX()		{cbuf[wn++] = 0;cbuf[wn++] = 0;cbuf[wn++] = 0;cbuf[wn++] = 0;cbuf[wn++] = 0;break;}
 #define send_admin()		{cbuf[wn] = 1; wn++;}
 #define send_user()			{cbuf[wn] = 2; wn++;}
 #define send_numb(numb)		{cbuf[wn] = numb; wn++;}
-#define check_permission()	{if(actv_user_id != ADMIN_LOGIN) {send_error();}}
+#define check_admin()		{if(actv_user_id != ADMIN_LOGIN) {send_error();}}
 #define save_log(n)			{if (rsv_time != 0 ) {log_safe(actv_user_id, ip_addrs, rsv_time, n);}}
 
 #define SEC					10000 
@@ -41,10 +41,11 @@ void cmd_common_process (void)
 	WORD	cs		= 0;
 	BYTE	i		= 0;
 	WORD	ixo		= 0;
+	BYTE	ch		= 0;
 	
 	if (log_stat == 1)	
 	{
-		if (loggin_timeout > (300 * 10000)) 
+		if (loggin_timeout > (3010000)) 
 		{log_stat = 0;}
 	}
 			
@@ -53,9 +54,9 @@ void cmd_common_process (void)
 
 	size=((eth_sock[0].len[0]<<8) | (eth_sock[0].len[1]));
 	
-	if(size  >    sizeof(cbuf))	{size=sizeof(cbuf);}
 	if(size	 <    5			  )	{ return; }
 	
+	if(size  >    sizeof(cbuf))	{size=sizeof(cbuf);}
 	memcpy(cbuf,(BYTE*)&eth_sock[0].data,size);
 
 	if(crc16_ccit(cbuf,size)   !=   0)		{ return; }
@@ -66,7 +67,9 @@ void cmd_common_process (void)
 	wn++;//cmd
 //logging
 	if (!SRAV(4, &eth_sock[0].ip_addr[0], &ip_addrs)) {log_stat = 0;}
-	if (((cbuf[0] != 0x00) || (cbuf[2] != 0x20)) && (!log_stat)) {return 0;}
+
+	if ( ( (cbuf[2] != 0x00) && (cbuf[2] != 0x20) && (cbuf[2] != 0x10) ) && (!log_stat) ) 
+	{return 0;}
 	
 	
 	
@@ -107,7 +110,7 @@ void cmd_common_process (void)
 		//......................................................................
 		//......................................................................
 		case 0x07:	if(size != 7)			{ return; }										// CMD=0x07 Read CFG_1	
-					check_permission();	
+					check_admin();	
 					ixo=cbuf[3] | (cbuf[4]<<8);							wn+=sizeof(WORD);
 					cnt= sizeof(CFG_1) - ixo;
 					if(ixo > sizeof(CFG_1)	) { break;  }
@@ -120,7 +123,7 @@ void cmd_common_process (void)
 
 		//......................................................................
 		case 0x08:	if(size != 7) { return; }												// CMD=0x08 Read CFG 2
-					check_permission();	
+					check_admin();	
 		
 					ixo=cbuf[3] | (cbuf[4]<<8);							wn+=sizeof(WORD);
 					cnt= sizeof(CFG_2) - ixo;
@@ -158,15 +161,11 @@ void cmd_common_process (void)
 		break;
 		//......................................................................
 		case 0x20:	if(size <  7)		{ return; }								//login
-					
-					
-					BYTE ch = 0;
+
 					cnt = 3;
 					decrypted(&cbuf[cnt]);
-					
-					ch = 0;
-					
-					for (BYTE i = 0; i < 2; i++ ) { if (SRAV(32, &cbuf[3], &accnts.accnt[i].login[0])) 	{ch = i + 1; break;	} } //compare login
+
+					for (i = 0; i < 2; i++ ) { if (SRAV(32, &cbuf[3], &accnts.accnt[i].login[0])) 	{ch = i + 1; break;	} } //compare login
 					if (!ch) {send_error_EX();}																				//if login not searched
 
 					cnt += 32;
@@ -176,12 +175,12 @@ void cmd_common_process (void)
 					actv_user_id = ch;
 					log_stat = 1;	
 					loggin_timeout = 0;																						//login status up
-					memcpy(&ip_addrs, &eth_sock[0].ip_addr[0], DW_LEN);														//write crc firmware
+					memcpy((BYTE*)&ip_addrs, &eth_sock[0].ip_addr[0], DW_LEN);														//write crc firmware
 					num_to_byte(crc_fw, DW_LEN, &cbuf[wn], L_SIDE);			wn += 4;
 		break;
 		//......................................................................
 		case 0x21:	if(size < 5)		{ return; }								//login send
- 					check_permission();
+ 					check_admin();
 					cnt = 3;
 					
 					memcpy(&cbuf[3], &accnts.accnt[0].login[0], USART_BUF_SIZE);
@@ -193,7 +192,7 @@ void cmd_common_process (void)
 		break;
 		//......................................................................
 		case 0x22:	if(size <  5)		{ return; }								//login change
-					check_permission();
+					check_admin();
 					cnt = 3;
 					decrypted(&cbuf[cnt]);		cnt += 64;	
 					decrypted(&cbuf[cnt]);		cnt += 64;	
@@ -207,13 +206,13 @@ void cmd_common_process (void)
 		
 		//......................................................................
 		case 0x23:	if(size <  5)		{ return; }								//read logs
- 					check_permission();
+ 					check_admin();
 					cnt = 3; wn++;
 					flash_read(LOGS_ADDR + (256 * cbuf[3]), &cbuf[4], 256);		wn +=256;
 		break;
 		//......................................................................
 		case 0x27:	if(size  !=  5) { return; }									//change config
-					check_permission();	
+					check_admin();	
 					
 					if (wr_flag_cfg)
 					{	
@@ -234,7 +233,7 @@ void cmd_common_process (void)
 		break;
 		//......................................................................
 		case 0x29:	if(size  !=  5) { return; }									//reboot
-					check_permission();
+					check_admin();
 					reset=1; wn++;
 					send_admin();
 		break;
@@ -279,11 +278,10 @@ void usart_process (BYTE n_port)
 		case RS485_WRITE:
 			//ETH message check
 			if (!eth_sock[n_port].r_status){return;}										//check read stat
-/*			cfg_1.sock_rs485[3].en*/
 			
 			if(!cfg_1.access[n_port - 1].en) {	if (!acces_ip(n_port - 1)) {return;} 	}	//check access ip
 			
- 			port[n_port-1].time_port = port[n_port-1].tout_port*10;							//check timeout
+ 			port[n_port-1].time_port = port[n_port-1].tout_port*10;							//launch timeout
 		
 			size = eth_sock[n_port].len[0] << 8 | eth_sock[n_port].len[1];				//give size
 		

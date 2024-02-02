@@ -61,7 +61,7 @@
 			WORD	wtime;
 	
 			WORD	tout_port;
-			WORD	dt;
+			WORD	dt;//таймаут - оставшееся время (Время передачи - время приема = дельта время)
 	
 			BYTE	stage;
 			DWORD	time_port;

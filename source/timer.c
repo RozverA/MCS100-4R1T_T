@@ -71,8 +71,11 @@ void TC3_init(void)
 	void wait(DWORD time_100mk)
 	{
 	time_wait=0;
-	while(1){if(reset   == NULL) 
-		{wdt_reset();}if(time_wait>time_100mk){break;}}
+	while(1)
+		{
+			if(reset   == NULL)		{wdt_reset();}
+			if(time_wait>time_100mk){break;}
+		}
 	}
 	
 	

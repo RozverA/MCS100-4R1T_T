@@ -129,9 +129,8 @@ WORD usart_write(BYTE n_port, BYTE* wbuf,WORD size)
 	if(size > USART_BUF_SIZE) { size = USART_BUF_SIZE; }
 	memcpy(port[n_port].wbuf,wbuf,size);
 	port[n_port].wn = size;
-	//port[n_port].wx = 1;
 	port[n_port].wx = 0;
-	//port[n_port].sercom->USART.DATA.reg=port[n_port].wbuf[0];
+
 	port[n_port].sercom->USART.INTENCLR.bit.RXC = 1;
 	port[n_port].sercom->USART.INTENSET.bit.DRE = 1;
 	port[n_port].counters.tx++;
